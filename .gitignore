@@ -27,3 +27,4 @@ pip-log.txt
 .mr.developer.cfg
 /.project
 /.pydevproject
+/pyramid_blogr.sqlite

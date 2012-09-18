@@ -7,7 +7,7 @@ First we need to install pyramid framework itself::
     pip install pyramid
 
 
-This will install pyramid itself with it's base dependancies, your python 
+This will install pyramid itself with it's base dependencies, your python 
 environment (ideally VirtualEnv), will now contain some helpful commands 
 including:
 
@@ -20,14 +20,24 @@ provide SQLAlchemy as our default ORM layer::
 
     ~/yourVenv/bin/pcreate -s alchemy pyramid_blogr
 
-Adding dependancies to the project
+We will end up with pyramid_blogr dir that should have following structure::
+
+    /pyramid_blogr
+        /scripts/ <- util python scripts
+        /static/ <- usually css, js, images
+        /templates/ <- template files
+        /__init__.py <- main file that will configure and return WSGI application
+        /models.py <- model definitions aka data sources (often RDBMS or noSQL)
+        /views.py <- views aka business logic 
+
+Adding dependencies to the project
 ----------------------------------
 
 Since pyramid tries it's best to be a non-opinionated solution we will have to 
 decide what libraries we want for form handling and template helpers.
 For this tutorial we will use great WTForms library and webhelpers packages.
 
-To make them dependancies of our application we need to open setup.py file 
+To make them dependencies of our application we need to open setup.py file 
 and extend **requires** with additional packages, in the end it should look 
 like this::
 
@@ -44,7 +54,7 @@ like this::
         ]
         
 Now we can setup our application for development and add it to out environment 
-path. In the root of our project where setup.py lives execute followin line::
+path. In the root of our project where setup.py lives execute following line::
 
     ~/yourVenv/bin/pip install -e .
 
@@ -64,7 +74,7 @@ the content to the browser with following command::
 
     ~/yourVenv/bin/pserve --reload development.ini
 
-This will launch instance of a WSGI (waitress by default) server that will run 
+This will launch an instance of a WSGI (waitress by default) server that will run 
 both your application code and static files, our **development.ini file is used 
 to provide all the configuration details**, the *--reload* parameter tells the 
 server to restart our application every time it's code changes, this is a great 
