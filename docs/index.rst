@@ -16,8 +16,7 @@ Contents:
 
    intro
    step_1
-
-   :maxdepth: 2 
+   step_2
 
 Indices and tables
 ==================
