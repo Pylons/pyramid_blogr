@@ -6,12 +6,18 @@
 Welcome to pyramid_blogr's documentation!
 =========================================
 
+
+Pyramid_blogr is reimplementation of Flaskr application - tutorial app for 
+Flask Web Framework.
+
 Contents:
 
 .. toctree::
-   :maxdepth: 2
 
+   intro
+   step_1
 
+   :maxdepth: 2 
 
 Indices and tables
 ==================
