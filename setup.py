@@ -14,6 +14,8 @@ requires = [
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
+    'wtforms',
+    'webhelpers'
     ]
 
 setup(name='pyramid_blogr',
