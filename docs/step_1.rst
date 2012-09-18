@@ -22,13 +22,14 @@ provide SQLAlchemy as our default ORM layer::
 
 We will end up with pyramid_blogr dir that should have following structure::
 
-    /pyramid_blogr
-        /scripts/ <- util python scripts
-        /static/ <- usually css, js, images
-        /templates/ <- template files
-        /__init__.py <- main file that will configure and return WSGI application
-        /models.py <- model definitions aka data sources (often RDBMS or noSQL)
-        /views.py <- views aka business logic 
+    pyramid_blogr/
+    ├── __init__.py <- main file that will configure and return WSGI application
+    ├── models.py   <- model definitions aka data sources (often RDBMS or noSQL)
+    ├── scripts/    <- util python scripts
+    ├── static/     <- usually css, js, images
+    ├── templates/  <- template files
+    ├── tests.py    <- tests
+    └── views.py    <- views aka business logic 
 
 Adding dependencies to the project
 ----------------------------------
@@ -53,7 +54,7 @@ like this::
         'webhelpers'
         ]
         
-Now we can setup our application for development and add it to out environment 
+Now we can setup our application for development and add it to our environment 
 path. In the root of our project where setup.py lives execute following line::
 
     ~/yourVenv/bin/pip install -e .
@@ -75,10 +76,11 @@ the content to the browser with following command::
     ~/yourVenv/bin/pserve --reload development.ini
 
 This will launch an instance of a WSGI (waitress by default) server that will run 
-both your application code and static files, our **development.ini file is used 
-to provide all the configuration details**, the *--reload* parameter tells the 
-server to restart our application every time it's code changes, this is a great 
-setting for fast development and testing live changes to our app. 
+both your application code and static files.
+**development.ini file is used to provide all the configuration details**, 
+the *--reload* parameter tells the server to restart our application every 
+time it's code changes, this is a great setting for fast development and 
+testing live changes to our app. 
 
 You should see something like this::
 
