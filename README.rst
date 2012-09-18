@@ -1,8 +1,12 @@
 pyramid_blogr README
-==================
+====================
+
+pyramid_blogr is an example implementation of Flaskr app with Pyramid Web Framework
 
 Getting Started
 ---------------
+
+**Read the docs**
 
 - cd <directory containing this file>
 
