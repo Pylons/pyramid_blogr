@@ -1,6 +1,6 @@
-===============
-Database models
-===============
+=========================
+2. Create database models
+=========================
 
 At this point we should create our models. In a nutshell models are representing 
 data and it's underlaying storage mechanisms in application. 
@@ -23,6 +23,7 @@ We also need to import some helper modules to generate our slugs,
 add pagination, and print nice dates - they will all come from excellent 
 webhelpers package - so the top of models.py should look like this::
 
+    import datetime <- will be used to set default dates on models
     from sqlalchemy import (
         Column,
         Integer,
@@ -35,7 +36,13 @@ webhelpers package - so the top of models.py should look like this::
     from webhelpers.text import urlify <- will generate slugs
     from webhelpers.paginate import PageURL <- provides pagination
     from webhelpers.date import time_ago_in_words <- human friendly dates
-    import datetime <- will be used to set default dates on models
+
+Database session management
+---------------------------
+
+.. hint ::
+    To learn how to use sqlalchemy please consult its 
+    Object Relational Tutorial: http://docs.sqlalchemy.org/en/latest/orm/tutorial.html
 
 If you are new to sqlalchemy or ORM's you are probably wondering what this 
 code does::
@@ -51,7 +58,13 @@ our code from different views will not impact other requests.
 It also has a registered zope transaction extension that will work 
 with pyramid_tm (transaction manager).
 
+What does transaction manager do?
+---------------------------------
+
 **WHOA THIS SOUNDS LIKE SCARY MAGIC!!**
+
+.. hint ::
+    It's not.
 
 Ok, so while it might sound complicated - in practice it's very simple and 
 saves developer a lot of headaches managing transactions inside application.
@@ -68,7 +81,7 @@ How it works:
     back all the changes/queries that were sent to our datastore - transaction 
     manager will handle this for us 
 
-Also this system is extendable and pluggable - what are the implications of this?
+What are the implications of this?
 
 Imagine you have an application that sends a confirmation email, every time 
 user registers. User inputs the data, we send him a nice welcome email and  
@@ -78,15 +91,25 @@ happens and the code errored out.
 It is very uncommon in this situation that the user would get a welcome email, 
 but in reality his profile was never persisted in database.
 With packages like **pyramid_mailer** it is perfectly possible to delay email 
-sending AFTER the user got successfully saved in database.
+sending **after** the user got successfully saved in database.
+
+Nice, huh?
 
 But this is a more advanced topic not covered in this tutorial, the most simple 
 explanation is that transaction manager will make sure our data gets correctly 
 saved if everything went fine and if an error occurs - our datastore 
 modifications are rolled back.
- 
 
-We will need two model definitions that will replace *MyModel* ::
+
+Adding model definitions
+------------------------
+
+.. hint ::
+    This will make the app error out and prevent it from starting till we reach the last 
+    point of current step and fix imports in other files. 
+    It's perfectly normal and don't worry about this. 
+
+We will need two declarations of models that will replace *MyModel* class ::
 
     class User(Base):
         __tablename__ = 'users'
@@ -102,4 +125,33 @@ We will need two model definitions that will replace *MyModel* ::
         body = Column(UnicodeText, default=u'')
         created = Column(DateTime, default=datetime.datetime.utcnow)
         edited = Column(DateTime, default=datetime.datetime.utcnow)
-        
+
+Update initialization script
+----------------------------
+
+It's time to update our database initialization script to mirror the changes in
+models.py.
+
+For this we need to open */pyramid_blogr/scripts/initializedb.py* - this is the 
+file that actually gets executed when we run *initialize_pyramid_blogr_db*.
+
+Since MyModel model is now gone we want to replace::
+
+
+    with transaction.manager:
+        model = MyModel(name='one', value=1)
+        DBSession.add(model)
+
+with::
+
+    with transaction.manager:
+        admin = User(username=u'admin', password=u'admin')
+        DBSession.add(admin)
+
+Now we need to fix the imports from MyModel to User model.
+
+.. warning ::
+
+    Remember to replace the imports of MyModel class in 
+    */pyramid_blogr/scripts/initializedb.py* **and** */pyramid_blogr/views.py*,
+    otherwise your app will not start because of failed imports.

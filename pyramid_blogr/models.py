@@ -1,3 +1,4 @@
+import datetime
 from sqlalchemy import (
     Column,
     Integer,
@@ -10,7 +11,6 @@ from sqlalchemy import (
 from webhelpers.text import urlify
 from webhelpers.paginate import PageURL
 from webhelpers.date import time_ago_in_words
-import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
 

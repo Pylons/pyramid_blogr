@@ -1,6 +1,6 @@
-======================================
-Create your tutorial project structure
-======================================
+=========================================
+1. Create your tutorial project structure
+=========================================
 
 First we need to install pyramid framework itself::
 
