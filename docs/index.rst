@@ -6,9 +6,9 @@
 Welcome to pyramid_blogr's documentation!
 =========================================
 
+Pyramid_blogr is inspired by Flaskr tutorial app for Flask Web Framework.
 
-Pyramid_blogr is fairly close reimplementation of Flaskr application - tutorial 
-app for Flask Web Framework.
+It will showcase some basic concepts of Pyramid Web Framework.
 
 Contents:
 
