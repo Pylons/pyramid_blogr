@@ -13,10 +13,12 @@ app for Flask Web Framework.
 Contents:
 
 .. toctree::
+   :maxdepth: 2
 
    intro
-   step_1
-   step_2
+   project_structure
+   basic_models
+   routes
 
 Indices and tables
 ==================

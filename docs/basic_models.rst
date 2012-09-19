@@ -88,7 +88,7 @@ user registers. User inputs the data, we send him a nice welcome email and
 maybe an activation link, but during registration flow something unexpected 
 happens and the code errored out.
 
-It is very uncommon in this situation that the user would get a welcome email, 
+It is very common in this situation that the user would get a welcome email, 
 but in reality his profile was never persisted in database.
 With packages like **pyramid_mailer** it is perfectly possible to delay email 
 sending **after** the user got successfully saved in database.
@@ -155,3 +155,14 @@ Now we need to fix the imports from MyModel to User model.
     Remember to replace the imports of MyModel class in 
     */pyramid_blogr/scripts/initializedb.py* **and** */pyramid_blogr/views.py*,
     otherwise your app will not start because of failed imports.
+
+Since we don't want any initial scaffold code in our view lets remove whole 
+view code from view.py and only keep the imports.    
+            
+Our application should start again if we try running the server. In case you 
+have problems starting the application, below you can see complete source code 
+of the files we modifed so far. 
+
+.. toctree::
+
+   basic_models_src
