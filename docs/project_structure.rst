@@ -62,6 +62,9 @@ path. In the root of our project where setup.py lives execute following line::
 This will install all the requirements for our application and will make it 
 importable in our python environment.
 
+.. warning::
+    Don't forget to add the . after -e switch
+
 Another side effect of this command is that our environment gained another 
 command called **initialize_pyramid_blogr_db**, we will use it to 
 create/populate the database from the models we will create in a moment, 

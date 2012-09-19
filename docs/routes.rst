@@ -104,7 +104,9 @@ Now two routes are added:
     
 This runs the scan process that will scan all our whole project and load all 
 decorators and includes to add them to our config object.
+
 ::
+
     return config.make_wsgi_app()
 
 Instance of WSGI app is returned to the server.
