@@ -19,6 +19,7 @@ Contents:
    project_structure
    basic_models
    routes
+   initial_views
 
 Indices and tables
 ==================

@@ -11,6 +11,10 @@ def main(global_config, **settings):
     config = Configurator(settings=settings)
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
+    config.add_route('blog', '/blog/{entry_id:\d+}/{slug}')
+    config.add_route('blog_action', '/blog/{action}')
+    config.add_route('sign_in', '/sign_in')
+    config.add_route('sign_out', '/sign_out')
     config.scan()
     return config.make_wsgi_app()
 

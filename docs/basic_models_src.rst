@@ -34,14 +34,14 @@ This is how models.py should look like at this point::
     class User(Base):
         __tablename__ = 'users'
         id = Column(Integer, primary_key=True)
-        name = Column(Unicode, unique=True, nullable=False)
-        password = Column(Unicode, nullable=False)
+        name = Column(Unicode(255), unique=True, nullable=False)
+        password = Column(Unicode(255), nullable=False)
         last_logged = Column(DateTime, default=datetime.datetime.utcnow)
         
     class Entry(Base):
         __tablename__ = 'entries'
         id = Column(Integer, primary_key=True)
-        title = Column(Unicode, unique=True, nullable=False)
+        title = Column(Unicode(255), unique=True, nullable=False)
         body = Column(UnicodeText, default=u'')
         created = Column(DateTime, default=datetime.datetime.utcnow)
         edited = Column(DateTime, default=datetime.datetime.utcnow)

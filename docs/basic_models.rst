@@ -50,13 +50,15 @@ code does::
     DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
     Base = declarative_base()
 
-The first line initializes sqlalchemy's threaded session maker - we will use it
-to interact with database and persist our changes to database. It is thread-safe 
-meaning that it will handle multiple requests at same time in a safe way, and 
-our code from different views will not impact other requests.
+The first line initializes sqlalchemy's threaded **session maker** - we will use it
+to interact with database and persist our changes to database. 
+It is thread-safe meaning that it will handle multiple requests at same time 
+in a safe way, and our code from different views will not impact other requests.
+It will also open and close database connections for us transparently when 
+needed.
  
-It also has a registered zope transaction extension that will work 
-with pyramid_tm (transaction manager).
+Also a registered zope transaction extension that will work with 
+pyramid_tm (transaction manager).
 
 What does transaction manager do?
 ---------------------------------
@@ -114,14 +116,14 @@ We will need two declarations of models that will replace *MyModel* class ::
     class User(Base):
         __tablename__ = 'users'
         id = Column(Integer, primary_key=True)
-        name = Column(Unicode, unique=True, nullable=False)
-        password = Column(Unicode, nullable=False)
+        name = Column(Unicode(255), unique=True, nullable=False)
+        password = Column(Unicode(255), nullable=False)
         last_logged = Column(DateTime, default=datetime.datetime.utcnow)
         
     class Entry(Base):
         __tablename__ = 'entries'
         id = Column(Integer, primary_key=True)
-        title = Column(Unicode, unique=True, nullable=False)
+        title = Column(Unicode(255), unique=True, nullable=False)
         body = Column(UnicodeText, default=u'')
         created = Column(DateTime, default=datetime.datetime.utcnow)
         edited = Column(DateTime, default=datetime.datetime.utcnow)
@@ -148,7 +150,15 @@ with::
         admin = User(username=u'admin', password=u'admin')
         DBSession.add(admin)
 
-Now we need to fix the imports from MyModel to User model.
+When you initialize a fresh database this will populate it with a single user, 
+with both login and unencrypted password equal to admin.
+
+.. warning ::
+    This is just a tutorial example and **production code should utilize 
+    passwords hashed with a strong one-way encryption function**. 
+    You can use a package like **cryptacular** for this purpose.
+
+The last step is to fix the imports from MyModel to User model.
 
 .. warning ::
 
