@@ -34,7 +34,7 @@ webhelpers package - so the top of models.py should look like this::
         )
         
     from webhelpers.text import urlify <- will generate slugs
-    from webhelpers.paginate import PageURL <- provides pagination
+    from webhelpers.paginate import PageURL_WebOb, Page <- provides pagination
     from webhelpers.date import time_ago_in_words <- human friendly dates
 
 Database session management

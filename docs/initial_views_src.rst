@@ -19,9 +19,9 @@ Contents of views.py::
     def blog_view(request):
         return {}
     
-    @view_config(route_name='blog_action', match_param="action=create", request_method="POST",
+    @view_config(route_name='blog_action', match_param="action=create",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
-    @view_config(route_name='blog_action', match_param="action=edit", request_method="POST",
+    @view_config(route_name='blog_action', match_param="action=edit",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
     def blog_create_update(request):
         return {}

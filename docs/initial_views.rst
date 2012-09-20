@@ -58,9 +58,9 @@ response.
     
 ::
 
-    @view_config(route_name='blog_action', match_param="action=create", request_method="POST",
+    @view_config(route_name='blog_action', match_param="action=create",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
-    @view_config(route_name='blog_action', match_param="action=update", request_method="POST",
+    @view_config(route_name='blog_action', match_param="action=update",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
     def blog_create_update(request):
         return {}
@@ -78,9 +78,6 @@ following urls:
 But **not** */blog/someotherfoo*, so you can decorate many views with same route,
 but different match parameters.
 
-**request_method** just restricts view resolution to specific request method,
-this route will not be reachable with GET requests. 
-
 .. hint::
     Every view can be decorated unlimited times with different parameters passed 
     to @view_config, . 
@@ -92,7 +89,12 @@ this route will not be reachable with GET requests.
     @view_config(route_name='sign_in', renderer="string", request_method="POST")
     def sign_in(request):
         return {}
-    
+
+**request_method** just restricts view resolution to specific request method,
+this route will not be reachable with GET requests. 
+
+::
+
     @view_config(route_name='sign_out', renderer="string")
     def sign_out(request):
         return {}

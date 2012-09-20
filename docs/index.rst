@@ -20,6 +20,7 @@ Contents:
    basic_models
    routes
    initial_views
+   blog_models_and_views
 
 Indices and tables
 ==================

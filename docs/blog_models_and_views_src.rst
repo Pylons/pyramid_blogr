@@ -1,9 +1,8 @@
 ======================
-Source code for step 2 
+Source code for step 5
 ======================
 
-
-This is how models.py should look like at this point::
+Contents of models.py::
 
     import datetime
     from sqlalchemy import (
@@ -45,50 +44,25 @@ This is how models.py should look like at this point::
         body = Column(UnicodeText, default=u'')
         created = Column(DateTime, default=datetime.datetime.utcnow)
         edited = Column(DateTime, default=datetime.datetime.utcnow)
-              
-This is how views.py should look like at this point::
         
-    from pyramid.view import view_config
+        @classmethod
+        def all(cls):
+            return DBSession.query(Entry)
     
-    from .models import (
-        DBSession,
-        User,
-        )
-
-This is how /scripts/initializedb.py should look like at this point::
+        @classmethod
+        def by_id(cls, id):
+            return DBSession.query(Entry).filter(Entry.id == id).first()
         
-    import os
-    import sys
-    import transaction
+        @property
+        def slug(self):
+            return urlify(self.title)
     
-    from sqlalchemy import engine_from_config
+        @property
+        def created_in_words(self):
+            return time_ago_in_words(self.created)
     
-    from pyramid.paster import (
-        get_appsettings,
-        setup_logging,
-        )
-    
-    from ..models import (
-        DBSession,
-        User,
-        Base,
-        )
-    
-    def usage(argv):
-        cmd = os.path.basename(argv[0])
-        print('usage: %s <config_uri>\n'
-              '(example: "%s development.ini")' % (cmd, cmd)) 
-        sys.exit(1)
-    
-    def main(argv=sys.argv):
-        if len(argv) != 2:
-            usage(argv)
-        config_uri = argv[1]
-        setup_logging(config_uri)
-        settings = get_appsettings(config_uri)
-        engine = engine_from_config(settings, 'sqlalchemy.')
-        DBSession.configure(bind=engine)
-        Base.metadata.create_all(engine)
-        with transaction.manager:
-            admin = User(name=u'admin', password=u'admin')
-            DBSession.add(admin)
+        @classmethod
+        def get_paginator(cls, request, page=1):
+            page_url = PageURL_WebOb(request)
+            return Page(Entry.all(), page, url=page_url, items_per_page=5)
+        
