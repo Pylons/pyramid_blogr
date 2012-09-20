@@ -196,8 +196,56 @@ our project. For example::
 
     ${request.route_url('blog_action',action='create')} -> /blog/create
 
+Blog view
+---------
+
+Time to update our blog view.
+
+At the top of views.py lets add following import::
+
+    from pyramid.httpexceptions import HTTPNotFound, HTTPFound
+    
+Those exceptions will be used to perform redirects inside our apps.
+
+* **HTTPFound** will return a 200  HTTP code response, it can accept *location* 
+  argument that will add a Location: header for the browser - we will perform 
+  redirects to other pages this way.  
+* **HTTPNotFound** on other hand will just make the server serve a standard 404 
+  response. 
+
+::
+
+    @view_config(route_name='blog', renderer="pyramid_blogr:templates/view_blog.mako")
+    def blog_view(request):
+        id = int(request.matchdict.get('entry_id', -1))
+        entry = Entry.by_id(id)
+        if not entry:
+            return HTTPNotFound()
+        return {'entry':entry}
+
+This view is also very simple, first we get the entry_id variable from our 
+route. It will be present in **matchdict** property of request object - all of 
+our defined route arguments will end up there.
+
+After we get entry_id, that will be passed to Entry classmethod **by_id()** to 
+fetch specific blog entry, if it's found - we return the db row for the 
+template to use, otherwise we present user with standard 404 response.
+
 Blog view template
 -------------------
+
+The template used for blog article presentation is named view_blog.mako::
+
+    <%inherit file="pyramid_blogr:templates/layout.mako"/>
+    
+    <h1>${entry.title}</h1>
+    <hr/>
+    <p>${entry.body}</p>
+    <hr/>
+    <p>Created <strong title="${entry.created}">
+    ${entry.created_in_words}</strong> ago</p>
+    
+    <p><a href="${request.route_url('home')}">Go Back</a></p>
 
 .. toctree::
 
