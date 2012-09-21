@@ -26,9 +26,9 @@ code in next chapters.
         return {}
     
 Here @view_config takes 2 params that will register our index_page callable 
-within pyramid registry, specifying the route that should be used to match this 
-view, we also specified renderer that will be used to render the response to the 
-browser.
+within pyramid's registry, specifying the route that should be used to match this 
+view, we also specified renderer that will be used to transfor the data view 
+returns into response suitable for the client.
 
 The template location is specified using *asset location* format which is in 
 form of *package_name:path_to_template*.
@@ -55,52 +55,57 @@ form of *package_name:path_to_template*.
         
 Registers blog_view with a route named "blog" using view_blog.mako template as 
 response.
-    
+
+The next views we should create are views that will handle creation and updates 
+to our blog entries.
+
 ::
 
     @view_config(route_name='blog_action', match_param="action=create",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
-    @view_config(route_name='blog_action', match_param="action=update",
-                 renderer="pyramid_blogr:templates/edit_blog.mako")
-    def blog_create_update(request):
+    def blog_create(request):
         return {}
 
-Note that this view is decorated more than once, and with two new keyword 
-introduced.
+Notice that there is a new keyword introduced to @view_config decorator. 
 
 **match_params** purpose is to tell pyramid which view callable to use when our 
 dynamic part of route {action} is matched, so this view will be launched for 
-following urls:
+following URL: */blog/create*.
 
-* /blog/create
-* /blog/update
+And then we have the view for */blog/edit* URL. 
 
-But **not** */blog/someotherfoo*, so you can decorate many views with same route,
-but different match parameters.
+::
+
+    @view_config(route_name='blog_action', match_param="action=edit",
+                 renderer="pyramid_blogr:templates/edit_blog.mako")
+    def blog_update(request):
+        return {}
+
 
 .. hint::
     Every view can be decorated unlimited times with different parameters passed 
     to @view_config, . 
 
-    
-
 ::
 
-    @view_config(route_name='sign_in', renderer="string", request_method="POST")
-    def sign_in(request):
-        return {}
-
-**request_method** just restricts view resolution to specific request method,
-this route will not be reachable with GET requests. 
-
-::
-
-    @view_config(route_name='sign_out', renderer="string")
-    def sign_out(request):
+    @view_config(route_name='sign', match_param="action=in", renderer="string",
+                 request_method="POST")
+    @view_config(route_name='sign', match_param="action=out", renderer="string")
+    def sign_in_out(request):
         return {}
 
 These routes will handle user authentication and logout. They are not using any 
-template because they will just perform HTTP redirects.  
+template because they will just perform HTTP redirects.
+
+Note that this view is decorated more than once, also it introduces one new 
+parameter.
+
+**request_method** just restricts view resolution to specific request method,
+this route will not be reachable with GET requests.
+
+.. hint::
+    if you navigate your browser directly to /sign/in - you will get a 404 page, 
+    because this view is not matched for GET requests.
 
 At this point we can start implementing our view code.
 

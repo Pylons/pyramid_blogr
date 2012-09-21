@@ -9,7 +9,7 @@
     <ul>
     % for entry in paginator.items:
     <li>
-    <a href="${request.route_url('blog', entry_id=entry.id, slug=entry.slug)}">
+    <a href="${request.route_url('blog', id=entry.id, slug=entry.slug)}">
     ${entry.title}</a>
     </li>
     % endfor

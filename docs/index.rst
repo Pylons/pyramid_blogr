@@ -21,6 +21,7 @@ Contents:
    routes
    initial_views
    blog_models_and_views
+   blog_create_and_update_view
 
 Indices and tables
 ==================

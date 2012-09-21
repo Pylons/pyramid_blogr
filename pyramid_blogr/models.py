@@ -1,4 +1,5 @@
 import datetime
+import sqlalchemy as sa
 from sqlalchemy import (
     Column,
     Integer,
@@ -41,7 +42,7 @@ class Entry(Base):
     
     @classmethod
     def all(cls):
-        return DBSession.query(Entry)
+        return DBSession.query(Entry).order_by(sa.desc(Entry.created))
 
     @classmethod
     def by_id(cls, id):

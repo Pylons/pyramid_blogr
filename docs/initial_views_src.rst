@@ -21,15 +21,17 @@ Contents of views.py::
     
     @view_config(route_name='blog_action', match_param="action=create",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
+    def blog_create(request):
+        return {}
+        
     @view_config(route_name='blog_action', match_param="action=edit",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
-    def blog_create_update(request):
+    def blog_update(request):
         return {}
     
-    @view_config(route_name='sign_in', renderer="string", request_method="POST")
-    def sign_in(request):
+    @view_config(route_name='sign', match_param="action=in", renderer="string",
+                 request_method="POST")
+    @view_config(route_name='sign', match_param="action=out", renderer="string")
+    def sign_in_out(request):
         return {}
-    
-    @view_config(route_name='sign_out', renderer="string")
-    def sign_out(request):
-        return {}
+

@@ -18,14 +18,14 @@ Our urls could look like this:
 
 To sign in users::
 
-    /sign_in
+    /sign/in
 
-So when user visits http://somedomain.foo/sign_in - the view callable responsible 
+So when user visits http://somedomain.foo/sign/in - the view callable responsible 
 for signing in the user based on POST vars will be executed.
 
 To sign out users::
     
-    /sign_out
+    /sign/out
 
 Index page (it is already defined via default scaffold under name "home")::
 
@@ -46,9 +46,9 @@ This single route could map to different views.
  
 Finally a route used to for our blog entries::
 
-    /blog/{entry_id:\d+}/{slug} 
+    /blog/{id:\d+}/{slug} 
     
-This route constists of two dynamic parts, {entry_id:\\d+} and {slug}.
+This route constists of two dynamic parts, {id:\\d+} and {slug}.
 
 The **:\d+** pattern means that the route will only match integers, so url like::
 
@@ -116,10 +116,9 @@ Adding routes to application configuration
 
 Lets add our routes to configurator after "home" route::
 
-    config.add_route('blog', '/blog/{entry_id:\d+}/{slug}')
+    config.add_route('blog', '/blog/{id:\d+}/{slug}')
     config.add_route('blog_action', '/blog/{action}')
-    config.add_route('sign_in', '/sign_in')
-    config.add_route('sign_out', '/sign_out')
+    config.add_route('sign', '/sign/{action}')
     
 Now we are ready to develop actual views
 

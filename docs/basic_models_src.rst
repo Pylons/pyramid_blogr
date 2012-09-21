@@ -6,6 +6,7 @@ Source code for step 2
 This is how models.py should look like at this point::
 
     import datetime
+    import sqlalchemy as sa
     from sqlalchemy import (
         Column,
         Integer,

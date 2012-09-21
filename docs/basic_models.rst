@@ -24,13 +24,14 @@ add pagination, and print nice dates - they will all come from excellent
 webhelpers package - so the top of models.py should look like this::
 
     import datetime <- will be used to set default dates on models
+    import sqlalchemy as sa <- provides access to sqlalchemy constructs
     from sqlalchemy import (
         Column,
         Integer,
         Text,
         Unicode,    <- will provide unicode field,
         UnicodeText,<- will provide unicode text text,
-        DateTime    <- time abstraction field
+        DateTime    <- time abstraction field,
         )
         
     from webhelpers.text import urlify <- will generate slugs

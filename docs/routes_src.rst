@@ -17,10 +17,9 @@ Source of the __init__.py file::
         config = Configurator(settings=settings)
         config.add_static_view('static', 'static', cache_max_age=3600)
         config.add_route('home', '/')
-        config.add_route('blog', '/blog/{entry_id:\d+}/{slug}')
+        config.add_route('blog', '/blog/{id:\d+}/{slug}')
         config.add_route('blog_action', '/blog/{action}')
-        config.add_route('sign_in', '/sign_in')
-        config.add_route('sign_out', '/sign_out')
+        config.add_route('sign', '/sign/{action}')
         config.scan()
         return config.make_wsgi_app()
 

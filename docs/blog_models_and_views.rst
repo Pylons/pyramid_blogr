@@ -15,9 +15,12 @@ Lets open **models.py** and  update our Entry model with following methods:
 
     @classmethod
     def all(cls):
-        return DBSession.query(Entry)
+        return DBSession.query(Entry).order_by(sa.desc(Entry.created))
 
 This method will return query object that can return whole dataset to us when needed.
+
+The query object will be sorting the rows  by date in descending order. 
+
 ::
 
     @classmethod
@@ -169,7 +172,7 @@ Now lets create another template called index.mako with following contents::
         <ul>
         % for entry in paginator.items:
         <li>
-        <a href="${request.route_url('blog', entry_id=entry.id, slug=entry.slug)}">
+        <a href="${request.route_url('blog', id=entry.id, slug=entry.slug)}">
         ${entry.title}</a>
         </li>
         % endfor
@@ -189,7 +192,8 @@ Now lets create another template called index.mako with following contents::
 This template inherits from layout.mako which means that it's contents will be 
 wrapped by layout provided by parent template.
 
-**${paginator.pager()}** - will print nice paginator links
+**${paginator.pager()}** - will print nice paginator links (it will only show up, 
+if you have more than 5 blog entries in database)
 
 **${request.route_url** - is used to generate links based on routes defined in 
 our project. For example::
@@ -217,17 +221,17 @@ Those exceptions will be used to perform redirects inside our apps.
 
     @view_config(route_name='blog', renderer="pyramid_blogr:templates/view_blog.mako")
     def blog_view(request):
-        id = int(request.matchdict.get('entry_id', -1))
+        id = int(request.matchdict.get('id', -1))
         entry = Entry.by_id(id)
         if not entry:
             return HTTPNotFound()
         return {'entry':entry}
 
-This view is also very simple, first we get the entry_id variable from our 
+This view is also very simple, first we get the id variable from our 
 route. It will be present in **matchdict** property of request object - all of 
 our defined route arguments will end up there.
 
-After we get entry_id, that will be passed to Entry classmethod **by_id()** to 
+After we get entry id, that will be passed to Entry classmethod **by_id()** to 
 fetch specific blog entry, if it's found - we return the db row for the 
 template to use, otherwise we present user with standard 404 response.
 
@@ -245,7 +249,14 @@ The template used for blog article presentation is named view_blog.mako::
     <p>Created <strong title="${entry.created}">
     ${entry.created_in_words}</strong> ago</p>
     
-    <p><a href="${request.route_url('home')}">Go Back</a></p>
+    <p><a href="${request.route_url('home')}">Go Back</a> :: 
+    <a href="${request.route_url('blog_action', action='edit', 
+    _query=(('id',entry.id),))}">Edit Entry</a>
+    
+    </p>
+
+The **_query** argument introduced here to url generator is a list of k,v tuples ,
+that will be used to append GET(query) parameters, in our case it will be ?id=X. 
 
 .. toctree::
 
