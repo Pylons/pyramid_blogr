@@ -22,6 +22,8 @@ Contents:
    initial_views
    blog_models_and_views
    blog_create_and_update_view
+   authorization
+   authentication
 
 Indices and tables
 ==================

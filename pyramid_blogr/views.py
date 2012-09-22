@@ -28,7 +28,8 @@ def blog_view(request):
 
 
 @view_config(route_name='blog_action', match_param="action=create",
-             renderer="pyramid_blogr:templates/edit_blog.mako")
+             renderer="pyramid_blogr:templates/edit_blog.mako",
+             permission='create')
 def blog_create(request):
     entry = Entry()
     form = BlogCreateForm(request.POST)
@@ -40,7 +41,8 @@ def blog_create(request):
 
 
 @view_config(route_name='blog_action', match_param="action=edit",
-             renderer="pyramid_blogr:templates/edit_blog.mako")
+             renderer="pyramid_blogr:templates/edit_blog.mako",
+             permission='edit')
 def blog_update(request):
     id = int(request.params.get('id', -1))
     entry = Entry.by_id(id)
