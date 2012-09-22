@@ -110,6 +110,70 @@ What it does step by step:
 * if the form is valid - our form sets its values to the model instance
 * redirect to blog page is performed
 
+The final step is to add a view that will present users with form to create and 
+edit entries, lets call it *edit_blog.mako* ::
+
+    <%inherit file="pyramid_blogr:templates/layout.mako"/>
+    
+    <form action="${request.route_url('blog_action',action=action)}" method="post">
+    %if action =='edit':
+    ${form.id()}
+    %endif
+    
+    % for error in form.title.errors:
+        <div class="error">${ error }</div>
+    % endfor
+    
+    <div><label>${form.title.label}</label>${form.title()}</div>
+    
+    % for error in form.body.errors:
+    <div class="error">${error}</div>
+    % endfor
+    
+    <div><label>${form.body.label}</label>${form.body()}</div>
+    <div><input type="submit" value="Submit"></div>
+    </form>
+    <p><a href="${request.route_url('home')}">Go Back</a></p>
+    
+    <style type="text/css">
+    form{
+        text-align: right;
+    }
+    label{
+        min-width: 150px;
+        vertical-align: top;
+        text-align: right;
+        display: inline-block;
+    }
+    input[type=text]{
+        min-width: 505px;
+    }
+    textarea{
+        color: #222;
+        border: 1px solid #CCC;
+        font-family: sans-serif;
+        font-size: 12px;
+        line-height: 16px;
+        min-width: 505px;
+        min-height: 100px; 
+    }
+    .error{
+        font-weight: bold;
+        color: red;
+    }
+    </style>
+
+Our template knows if we are creating new row or updating existing one based on 
+action variable value, if we are editing existing row - it will add a hidden 
+field "id" that holds the id of entry that is being updated. 
+
+If the form doesn't validate field errors properties contain lists of errors for 
+us to present to user.
+
+.. hint::
+    Because WTForms form instances are iterable you can easly write a template, 
+    function that will iterate over their fields and auto generate dynamic html 
+    for each of them.  
 
 
 .. toctree::

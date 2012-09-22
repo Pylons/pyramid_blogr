@@ -2,10 +2,14 @@
 1. Create your tutorial project structure
 =========================================
 
+.. hint ::
+    At the time of writing of this tutorial this was the mos recent stable version 
+    of pyramid, you can use newer version of pyramid but there will be some slight
+    differences in default project templates.
+
 First we need to install pyramid framework itself::
 
-    pip install pyramid
-
+    pip install pyramid==1.3.4
 
 This will install pyramid itself with it's base dependencies, your python 
 environment (ideally VirtualEnv), will now contain some helpful commands 

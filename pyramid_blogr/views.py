@@ -1,8 +1,9 @@
+from .forms import BlogCreateForm, BlogUpdateForm
+from pyramid.httpexceptions import HTTPNotFound, HTTPFound
+from pyramid.response import Response
 from pyramid.view import view_config
 
-from pyramid.httpexceptions import HTTPNotFound, HTTPFound
-
-from .forms import BlogCreateForm, BlogUpdateForm
+from sqlalchemy.exc import DBAPIError
 
 from .models import (
     DBSession,
@@ -16,6 +17,7 @@ def index_page(request):
     paginator = Entry.get_paginator(request, page)
     return {'paginator':paginator}
 
+
 @view_config(route_name='blog', renderer="pyramid_blogr:templates/view_blog.mako")
 def blog_view(request):
     id = int(request.matchdict.get('id', -1))
@@ -24,9 +26,10 @@ def blog_view(request):
         return HTTPNotFound()
     return {'entry':entry}
 
+
 @view_config(route_name='blog_action', match_param="action=create",
              renderer="pyramid_blogr:templates/edit_blog.mako")
-def blog_create(request): 
+def blog_create(request):
     entry = Entry()
     form = BlogCreateForm(request.POST)
     if request.method == 'POST' and form.validate():
@@ -34,6 +37,7 @@ def blog_create(request):
         DBSession.add(entry)
         return HTTPFound(location=request.route_url('home'))
     return {'form':form, 'action':request.matchdict.get('action')}
+
 
 @view_config(route_name='blog_action', match_param="action=edit",
              renderer="pyramid_blogr:templates/edit_blog.mako")
@@ -50,8 +54,8 @@ def blog_update(request):
     return {'form':form, 'action':request.matchdict.get('action')}
 
 
-@view_config(route_name='sign', match_param="action=in", renderer="string",
+@view_config(route_name='auth', match_param="action=in", renderer="string",
              request_method="POST")
-@view_config(route_name='sign', match_param="action=out", renderer="string")
+@view_config(route_name='auth', match_param="action=out", renderer="string")
 def sign_in_out(request):
     return {}

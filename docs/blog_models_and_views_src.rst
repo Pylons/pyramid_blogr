@@ -37,7 +37,7 @@ Contents of models.py::
         name = Column(Unicode(255), unique=True, nullable=False)
         password = Column(Unicode(255), nullable=False)
         last_logged = Column(DateTime, default=datetime.datetime.utcnow)
-        
+    
     class Entry(Base):
         __tablename__ = 'entries'
         id = Column(Integer, primary_key=True)
@@ -49,7 +49,7 @@ Contents of models.py::
         @classmethod
         def all(cls):
             return DBSession.query(Entry).order_by(sa.desc(Entry.created))
-    
+        
         @classmethod
         def by_id(cls, id):
             return DBSession.query(Entry).filter(Entry.id == id).first()
@@ -57,11 +57,11 @@ Contents of models.py::
         @property
         def slug(self):
             return urlify(self.title)
-    
+        
         @property
         def created_in_words(self):
             return time_ago_in_words(self.created)
-    
+        
         @classmethod
         def get_paginator(cls, request, page=1):
             page_url = PageURL_WebOb(request)
@@ -70,9 +70,11 @@ Contents of models.py::
 
 Contents of views.py::
         
+    from pyramid.httpexceptions import HTTPNotFound, HTTPFound
+    from pyramid.response import Response
     from pyramid.view import view_config
     
-    from pyramid.httpexceptions import HTTPNotFound, HTTPFound
+    from sqlalchemy.exc import DBAPIError
     
     from .models import (
         DBSession,
@@ -86,6 +88,7 @@ Contents of views.py::
         paginator = Entry.get_paginator(request, page)
         return {'paginator':paginator}
     
+    
     @view_config(route_name='blog', renderer="pyramid_blogr:templates/view_blog.mako")
     def blog_view(request):
         id = int(request.matchdict.get('id', -1))
@@ -94,18 +97,21 @@ Contents of views.py::
             return HTTPNotFound()
         return {'entry':entry}
     
+    
     @view_config(route_name='blog_action', match_param="action=create",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
     def blog_create(request):
         return {}
-        
+    
+    
     @view_config(route_name='blog_action', match_param="action=edit",
                  renderer="pyramid_blogr:templates/edit_blog.mako")
     def blog_update(request):
         return {}
     
-    @view_config(route_name='sign', match_param="action=in", renderer="string",
+    
+    @view_config(route_name='auth', match_param="action=in", renderer="string",
                  request_method="POST")
-    @view_config(route_name='sign', match_param="action=out", renderer="string")
+    @view_config(route_name='auth', match_param="action=out", renderer="string")
     def sign_in_out(request):
         return {}

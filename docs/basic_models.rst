@@ -19,24 +19,18 @@ We should assume that our users might use some non-english characters, so we
 need to import Unicode datatype from sqlalchemy, we will also need DateTime 
 field to timestamp our blog entries.
 
-We also need to import some helper modules to generate our slugs, 
-add pagination, and print nice dates - they will all come from excellent 
-webhelpers package - so the top of models.py should look like this::
+::
 
-    import datetime <- will be used to set default dates on models
-    import sqlalchemy as sa <- provides access to sqlalchemy constructs
+    import datetime #<- will be used to set default dates on models
+    import sqlalchemy as sa #<- provides access to sqlalchemy constructs
     from sqlalchemy import (
         Column,
         Integer,
         Text,
-        Unicode,    <- will provide unicode field,
-        UnicodeText,<- will provide unicode text text,
-        DateTime    <- time abstraction field,
+        Unicode,     #<- will provide unicode field,
+        UnicodeText, #<- will provide unicode text field,
+        DateTime     #<- time abstraction field,
         )
-        
-    from webhelpers.text import urlify <- will generate slugs
-    from webhelpers.paginate import PageURL_WebOb, Page <- provides pagination
-    from webhelpers.date import time_ago_in_words <- human friendly dates
 
 Database session management
 ---------------------------
@@ -148,7 +142,7 @@ Since MyModel model is now gone we want to replace::
 with::
 
     with transaction.manager:
-        admin = User(username=u'admin', password=u'admin')
+        admin = User(name=u'admin', password=u'admin')
         DBSession.add(admin)
 
 When you initialize a fresh database this will populate it with a single user, 
@@ -167,12 +161,18 @@ The last step is to fix the imports from MyModel to User model.
     */pyramid_blogr/scripts/initializedb.py* **and** */pyramid_blogr/views.py*,
     otherwise your app will not start because of failed imports.
 
-Since we don't want any initial scaffold code in our view lets remove whole 
-view code from view.py and only keep the imports.    
+Since we don't want any initial scaffold code in our view lets **remove whole 
+view code from view.py and only keep the imports for now**.    
             
 Our application should start again if we try running the server. In case you 
 have problems starting the application, below you can see complete source code 
 of the files we modifed so far. 
+
+If our application starts correctly, you should run the *initialize_pyramid_blogr_db*, 
+command from your environment, it may look like this::
+
+~/yourVenv/bin/initialize_pyramid_blogr_db development.ini
+
 
 .. toctree::
 

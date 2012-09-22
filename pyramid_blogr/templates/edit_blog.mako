@@ -2,29 +2,27 @@
 
 <form action="${request.route_url('blog_action',action=action)}" method="post">
 %if action =='edit':
-<div>${form.id()}</div>
+${form.id()}
 %endif
 
 % for error in form.title.errors:
     <div class="error">${ error }</div>
 % endfor
 
-<div><label>${form.title.label}</label> ${form.title()}</div>
+<div><label>${form.title.label}</label>${form.title()}</div>
 
 % for error in form.body.errors:
-    <div class="error">${ error }</div>
+<div class="error">${error}</div>
 % endfor
 
-<div><label>${form.body.label}</label> ${form.body()}</div>
+<div><label>${form.body.label}</label>${form.body()}</div>
 <div><input type="submit" value="Submit"></div>
 </form>
-
-
 <p><a href="${request.route_url('home')}">Go Back</a></p>
 
 <style type="text/css">
 form{
-text-align: right;
+    text-align: right;
 }
 label{
     min-width: 150px;
@@ -33,16 +31,16 @@ label{
     display: inline-block;
 }
 input[type=text]{
-min-width: 505px;
+    min-width: 505px;
 }
 textarea{
-color: #222;
-border: 1px solid #CCC;
-font-family: sans-serif;
-font-size: 12px;
-line-height: 16px;
-min-width: 505px;
-min-height: 100px; 
+    color: #222;
+    border: 1px solid #CCC;
+    font-family: sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    min-width: 505px;
+    min-height: 100px;
 }
 .error{
     font-weight: bold;

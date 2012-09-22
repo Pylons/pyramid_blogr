@@ -16,10 +16,6 @@ This is how models.py should look like at this point::
         DateTime
         )
     
-    from webhelpers.text import urlify
-    from webhelpers.paginate import PageURL_WebOb, Page
-    from webhelpers.date import time_ago_in_words
-    
     from sqlalchemy.ext.declarative import declarative_base
     
     from sqlalchemy.orm import (
@@ -49,7 +45,10 @@ This is how models.py should look like at this point::
               
 This is how views.py should look like at this point::
         
+    from pyramid.response import Response
     from pyramid.view import view_config
+    
+    from sqlalchemy.exc import DBAPIError
     
     from .models import (
         DBSession,

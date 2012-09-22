@@ -19,3 +19,15 @@ Pyramid_flaskr makes some initial assumptions:
 * The entries will be listed from newest to oldest one
 * We will use **webhelpers** package for pagination
 * **WTForms** form library will provide form validation
+
+This tutorial was originally created by **Marcin Lulek**, developer, freelancer 
+and founder of https://errormator.com.
+
+Documentation links
+-------------------
+
+* **Pyramid** : http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/
+* **Mako templates** : http://www.makotemplates.org/
+* **SQLAlchemy** : http://www.sqlalchemy.org/
+* **Webhelpers** : http://webhelpers.readthedocs.org/en/latest/
+* **WTForms** : http://wtforms.simplecodes.com

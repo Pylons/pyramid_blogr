@@ -13,7 +13,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('blog', '/blog/{id:\d+}/{slug}')
     config.add_route('blog_action', '/blog/{action}')
-    config.add_route('sign', '/sign/{action}')
+    config.add_route('auth', '/sign/{action}')
     config.scan()
     return config.make_wsgi_app()
 

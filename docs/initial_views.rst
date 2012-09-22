@@ -88,9 +88,9 @@ And then we have the view for */blog/edit* URL.
 
 ::
 
-    @view_config(route_name='sign', match_param="action=in", renderer="string",
+    @view_config(route_name='auth', match_param="action=in", renderer="string",
                  request_method="POST")
-    @view_config(route_name='sign', match_param="action=out", renderer="string")
+    @view_config(route_name='auth', match_param="action=out", renderer="string")
     def sign_in_out(request):
         return {}
 

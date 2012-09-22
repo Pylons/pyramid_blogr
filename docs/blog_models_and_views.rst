@@ -10,7 +10,16 @@ Since our stubs are in place we can start developing blog related code.
 First lets start with models and implement some more methods that we will use 
 in our views and templates.
 
-Lets open **models.py** and  update our Entry model with following methods:
+Lets open **models.py** and import some helper modules to generate our slugs, 
+add pagination, and print nice dates - they will all come from excellent 
+webhelpers package - so the top of models.py should look have following imports 
+added::
+
+    from webhelpers.text import urlify #<- will generate slugs
+    from webhelpers.paginate import PageURL_WebOb, Page #<- provides pagination
+    from webhelpers.date import time_ago_in_words #<- human friendly dates
+
+Now update our Entry model with following methods:
 ::
 
     @classmethod

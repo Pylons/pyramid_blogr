@@ -3,9 +3,9 @@
 % if paginator.items:
 
     ${paginator.pager()}
-    
+
     <h2>Blog entries</h2>
-    
+
     <ul>
     % for entry in paginator.items:
     <li>
@@ -14,7 +14,7 @@
     </li>
     % endfor
     </ul>
-    
+
     ${paginator.pager()}
 
 % else:
