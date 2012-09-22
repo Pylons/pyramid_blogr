@@ -3,7 +3,7 @@
 ================
 
 At this point we have a fully working application but you have probably noticed 
-everyone can alter our entries. We should change that by introducion user 
+everyone can alter our entries. We should change that by introducing user 
 authentication and permission checks.
 
 For the sake of simplicity of this tutorial we will assume that every user can 
@@ -44,7 +44,7 @@ of the site.
 
 **How does this relate to our application?**
 
-Since our application does not track who ownes blog entries, we will also assume 
+Since our application does not track who owns blog entries, we will also assume 
 the latter scenario. We will make the most trivial context factory object - as 
 its name implies factory will return the context object (in our class an 
 arbitrary class).
