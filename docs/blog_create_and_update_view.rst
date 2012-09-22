@@ -43,7 +43,7 @@ Next is BlogUpdateForm class that inherits all the fields from BlogCreateForm,
 and adds a new hidden field called id - it will be used to determine which 
 entry we want to update.
 
-Create and update view
+Create blog entry view
 ----------------------
 
 Now that our simple form definition is ready we can actually write our view code.
@@ -76,6 +76,40 @@ What it does step by step:
 
 If the form doesn't validate correctly, view result is returned and standard 
 HTML response is returned instead - form markup will have error messages included.
+
+Create update entry view
+------------------------
+
+The following view will handle updates to existing blog entries::
+
+    @view_config(route_name='blog_action', match_param="action=edit",
+                 renderer="pyramid_blogr:templates/edit_blog.mako")
+    def blog_update(request):
+        id = int(request.params.get('id', -1))
+        entry = Entry.by_id(id)
+        if not entry:
+            return HTTPNotFound()
+        form = BlogUpdateForm(request.POST, entry)
+        if request.method == 'POST' and form.validate():
+            form.populate_obj(entry)
+            return HTTPFound(location=request.route_url('blog', id=entry.id,
+                                                        slug=entry.slug))
+        return {'form':form, 'action':request.matchdict.get('action')}
+
+What it does step by step:
+
+* we fetch blog entry from the database based on the "id" query parameter
+* we show 404 page if its hot present
+* the form object is created, it gets populated from POST, and actual entry 
+  if we haven't POST-ed any values yet.
+  
+.. hint ::
+  This approach ensures our form is always populated with latest data from 
+  database, OR if it's not validated - with values we posted in our last request.
+   
+* if the form is valid - our form sets its values to the model instance
+* redirect to blog page is performed
+
 
 
 .. toctree::
