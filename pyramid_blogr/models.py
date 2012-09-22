@@ -32,6 +32,13 @@ class User(Base):
     password = Column(Unicode(255), nullable=False)
     last_logged = Column(DateTime, default=datetime.datetime.utcnow)
 
+    @classmethod
+    def by_name(cls, name):
+        return DBSession.query(User).filter(User.name == name).first()
+    
+    def verify_password(self, password):
+        return self.password == password
+
 class Entry(Base):
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)

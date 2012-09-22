@@ -120,4 +120,4 @@ they actually respond with 403 HTTP status.
 
 .. toctree::
 
-   authentication_src
+   authorization_src

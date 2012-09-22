@@ -1,44 +1,13 @@
 ======================
-Source code for step 7
+Source code for step 8
 ======================
-
-This is how __init__.py should look like at this point::
-
-    from pyramid.authentication import AuthTktAuthenticationPolicy
-    from pyramid.authorization import ACLAuthorizationPolicy
-    from pyramid.config import Configurator
-    from sqlalchemy import engine_from_config
-    
-    from .models import DBSession
-    from .security import EntryFactory
-    
-    def main(global_config, **settings):
-        """ This function returns a Pyramid WSGI application.
-        """
-        engine = engine_from_config(settings, 'sqlalchemy.')
-        DBSession.configure(bind=engine)
-        
-        authentication_policy = AuthTktAuthenticationPolicy('somesecret')
-        authorization_policy = ACLAuthorizationPolicy()
-        config = Configurator(settings=settings,
-                              authentication_policy=authentication_policy,
-                              authorization_policy=authorization_policy
-                              )
-        config.add_static_view('static', 'static', cache_max_age=3600)
-        config.add_route('home', '/')
-        config.add_route('blog', '/blog/{id:\d+}/{slug}')
-        config.add_route('blog_action', '/blog/{action}',
-                         factory='pyramid_blogr.security.EntryFactory')
-        config.add_route('auth', '/sign/{action}')
-        config.scan()
-        return config.make_wsgi_app()
-
 
 This is how views.py should look like at this point::
 
     from .forms import BlogCreateForm, BlogUpdateForm
     from pyramid.httpexceptions import HTTPNotFound, HTTPFound
     from pyramid.response import Response
+    from pyramid.security import remember, forget
     from pyramid.view import view_config
     
     from sqlalchemy.exc import DBAPIError
@@ -98,4 +67,131 @@ This is how views.py should look like at this point::
                  request_method="POST")
     @view_config(route_name='auth', match_param="action=out", renderer="string")
     def sign_in_out(request):
-        return {}
+        username = request.POST.get('username')
+        if username:
+            user = User.by_name(username)
+            if user and user.verify_password(request.POST.get('password')):
+                headers = remember(request, user.name)
+            else:
+                headers = forget(request)
+        else:
+            headers = forget(request)
+        return HTTPFound(location=request.route_url('home'),
+                         headers=headers)
+
+                     
+This is how models.py should look like at this point::
+    
+    import datetime
+    import sqlalchemy as sa
+    from sqlalchemy import (
+        Column,
+        Integer,
+        Text,
+        Unicode,
+        UnicodeText,
+        DateTime
+        )
+    
+    from webhelpers.text import urlify
+    from webhelpers.paginate import PageURL_WebOb, Page
+    from webhelpers.date import time_ago_in_words
+    
+    from sqlalchemy.ext.declarative import declarative_base
+    
+    from sqlalchemy.orm import (
+        scoped_session,
+        sessionmaker,
+        )
+    
+    from zope.sqlalchemy import ZopeTransactionExtension
+    
+    DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+    Base = declarative_base()
+    
+    class User(Base):
+        __tablename__ = 'users'
+        id = Column(Integer, primary_key=True)
+        name = Column(Unicode(255), unique=True, nullable=False)
+        password = Column(Unicode(255), nullable=False)
+        last_logged = Column(DateTime, default=datetime.datetime.utcnow)
+    
+        @classmethod
+        def by_name(cls, name):
+            return DBSession.query(User).filter(User.name == name).first()
+        
+        def verify_password(self, password):
+            return self.password == password
+    
+    class Entry(Base):
+        __tablename__ = 'entries'
+        id = Column(Integer, primary_key=True)
+        title = Column(Unicode(255), unique=True, nullable=False)
+        body = Column(UnicodeText, default=u'')
+        created = Column(DateTime, default=datetime.datetime.utcnow)
+        edited = Column(DateTime, default=datetime.datetime.utcnow)
+        
+        @classmethod
+        def all(cls):
+            return DBSession.query(Entry).order_by(sa.desc(Entry.created))
+        
+        @classmethod
+        def by_id(cls, id):
+            return DBSession.query(Entry).filter(Entry.id == id).first()
+        
+        @property
+        def slug(self):
+            return urlify(self.title)
+        
+        @property
+        def created_in_words(self):
+            return time_ago_in_words(self.created)
+        
+        @classmethod
+        def get_paginator(cls, request, page=1):
+            page_url = PageURL_WebOb(request)
+            return Page(Entry.all(), page, url=page_url, items_per_page=5)
+
+This is how /templates/index.mako should look like at this point::
+        
+    <%inherit file="pyramid_blogr:templates/layout.mako"/>
+    <%
+    from pyramid.security import authenticated_userid 
+    user_id = authenticated_userid(request)
+    %>
+    % if user_id:
+        Welcome <strong>${user_id}</strong> :: 
+        <a href="${request.route_url('auth',action='out')}">Sign Out</a>
+    %else:
+        <form action="${request.route_url('auth',action='in')}" method="post">
+        <label>User</label><input type="text" name="username">
+        <label>Password</label><input type="password" name="password">
+        <input type="submit" value="Sign in">
+        </form>
+    %endif
+    
+    % if paginator.items:
+    
+        ${paginator.pager()}
+    
+        <h2>Blog entries</h2>
+    
+        <ul>
+        % for entry in paginator.items:
+        <li>
+        <a href="${request.route_url('blog', id=entry.id, slug=entry.slug)}">
+        ${entry.title}</a>
+        </li>
+        % endfor
+        </ul>
+    
+        ${paginator.pager()}
+    
+    % else:
+    
+    <p>No blog entries found.</p>
+    
+    %endif
+    
+    <p><a href="${request.route_url('blog_action',action='create')}">
+    Create a new blog entry</a></p>
