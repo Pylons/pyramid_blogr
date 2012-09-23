@@ -25,6 +25,10 @@ Contents:
    authorization
    authentication
 
+The complete sourcecode for this application is available at:
+
+https://github.com/Pylons/pyramid_blogr
+
 Indices and tables
 ==================
 

@@ -31,3 +31,7 @@ Documentation links
 * **SQLAlchemy** : http://www.sqlalchemy.org/
 * **Webhelpers** : http://webhelpers.readthedocs.org/en/latest/
 * **WTForms** : http://wtforms.simplecodes.com
+
+The complete sourcecode for this application is available at:
+
+https://github.com/Pylons/pyramid_blogr
