@@ -220,7 +220,7 @@ At the top of views.py lets add following import::
     
 Those exceptions will be used to perform redirects inside our apps.
 
-* **HTTPFound** will return a 200  HTTP code response, it can accept *location* 
+* **HTTPFound** will return a 302  HTTP code response, it can accept *location* 
   argument that will add a Location: header for the browser - we will perform 
   redirects to other pages this way.  
 * **HTTPNotFound** on other hand will just make the server serve a standard 404 
