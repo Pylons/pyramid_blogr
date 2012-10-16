@@ -8,7 +8,7 @@ basic understanding of templating, working with databases, using url routes to
 launch our business logic(views) and authentication, example of form library 
 usage and pagination of our blog entries.
 
-Pyramid_flaskr makes some initial assumptions:
+Pyramid_blogr makes some initial assumptions:
 
 * Will use **alchemy** scaffold with SQLAlchemy as its ORM layer
 * **Mako** templates will be our choice for templating engine
