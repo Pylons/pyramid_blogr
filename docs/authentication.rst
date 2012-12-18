@@ -61,9 +61,9 @@ set the current user, "forget" is used to sign out our users.
 
 Now we have everything ready to implement our actual view::
 
-    @view_config(route_name='auth', match_param="action=in", renderer="string",
-                 request_method="POST")
-    @view_config(route_name='auth', match_param="action=out", renderer="string")
+    @view_config(route_name='auth', match_param='action=in', renderer='string',
+                 request_method='POST')
+    @view_config(route_name='auth', match_param='action=out', renderer='string')
     def sign_in_out(request):
         username = request.POST.get('username')
         if username:

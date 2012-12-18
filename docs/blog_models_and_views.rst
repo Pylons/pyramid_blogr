@@ -83,7 +83,7 @@ First lets add our Entry model to imports in views.py::
 
 Now it's time to implement our actual index view::
 
-    @view_config(route_name='home', renderer="pyramid_blogr:templates/index.mako")
+    @view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
     def index_page(request):
         page = int(request.params.get('page', 1))
         paginator = Entry.get_paginator(request, page)
@@ -228,7 +228,7 @@ Those exceptions will be used to perform redirects inside our apps.
 
 ::
 
-    @view_config(route_name='blog', renderer="pyramid_blogr:templates/view_blog.mako")
+    @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.mako')
     def blog_view(request):
         id = int(request.matchdict.get('id', -1))
         entry = Entry.by_id(id)

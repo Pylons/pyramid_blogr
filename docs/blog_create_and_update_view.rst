@@ -54,8 +54,8 @@ Lets start by importing our freshly created form schemas to views.py::
 
 Next we implement actual view callable that will handle new entries for us::
 
-    @view_config(route_name='blog_action', match_param="action=create",
-                 renderer="pyramid_blogr:templates/edit_blog.mako")
+    @view_config(route_name='blog_action', match_param='action=create',
+                 renderer='pyramid_blogr:templates/edit_blog.mako')
     def blog_create(request): 
         entry = Entry()
         form = BlogCreateForm(request.POST)
@@ -82,8 +82,8 @@ Create update entry view
 
 The following view will handle updates to existing blog entries::
 
-    @view_config(route_name='blog_action', match_param="action=edit",
-                 renderer="pyramid_blogr:templates/edit_blog.mako")
+    @view_config(route_name='blog_action', match_param='action=edit',
+                 renderer='pyramid_blogr:templates/edit_blog.mako')
     def blog_update(request):
         id = int(request.params.get('id', -1))
         entry = Entry.by_id(id)
