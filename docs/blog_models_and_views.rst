@@ -44,7 +44,7 @@ found.
     def slug(self):
         return urlify(self.title)
 
-This proprty of entry instance will return nice slugs for us to use in urls, 
+This property of entry instance will return nice slugs for us to use in urls, 
 title of "Foo Bar Baz" will become "Foo-Bar-Baz". Also non-latin characters will 
 be approximated to their closest counterparts.
 ::
