@@ -27,7 +27,7 @@ code in next chapters.
     
 Here @view_config takes 2 params that will register our index_page callable 
 within pyramid's registry, specifying the route that should be used to match this 
-view, we also specified renderer that will be used to transfor the data view 
+view, we also specified renderer that will be used to transform the data view 
 returns into response suitable for the client.
 
 The template location is specified using *asset location* format which is in 
