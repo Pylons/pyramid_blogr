@@ -16,7 +16,7 @@ user_id = authenticated_userid(request)
 
 % if paginator.items:
 
-    ${paginator.pager()}
+    ${paginator.pager() | n}
 
     <h2>Blog entries</h2>
 
@@ -29,7 +29,7 @@ user_id = authenticated_userid(request)
     % endfor
     </ul>
 
-    ${paginator.pager()}
+    ${paginator.pager() | n}
 
 % else:
 

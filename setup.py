@@ -15,7 +15,8 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'wtforms',
-    'webhelpers'
+    'webhelpers2==2.0b5',
+    'paginate'
     ]
 
 setup(name='pyramid_blogr',
