@@ -2,7 +2,7 @@
 8. Authentication
 =================
 
-Great, we secured our views, but now now one can add new entries to our 
+Great, we secured our views, but now no one can add new entries to our 
 application, so the finishing touch is to implement our authentication views.
 
 First we need to add a login form to our existing **index.mako** template::
