@@ -46,7 +46,7 @@ We add following methods to our User class in models.py::
 
 .. warning::
     In a real application verify_password should be using some strong way 
-    one-way hashing algorithm like bcypt or pbkdf2. Use a package like 
+    one-way hashing algorithm like bcrypt or pbkdf2. Use a package like 
     **cryptacular** to provide strong hashing.
 
 The final step is to update the view that handles authentication.
@@ -84,7 +84,7 @@ generated and passed back to the client on redirect.
 If user is not found or password doesnt match a set of headers meant to remove 
 the cookie (if any) is issued.
 
-**Voila!!!** 
+**Voilà!!!** 
 
 Congratulations, this tutorial is now complete, you can now sign in and out to 
 add/edit blog entries. 
