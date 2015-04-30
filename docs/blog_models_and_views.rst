@@ -15,9 +15,9 @@ add pagination, and print nice dates - they will all come from excellent
 webhelpers package - so the top of models.py should look have following imports 
 added::
 
-    from webhelpers.text import urlify #<- will generate slugs
-    from webhelpers.paginate import PageURL_WebOb, Page #<- provides pagination
-    from webhelpers.date import time_ago_in_words #<- human friendly dates
+    from webhelpers2.text import urlify #<- will generate slugs
+    from webhelpers2.date import time_ago_in_words #<- human friendly dates
+    from paginate_sqlalchemy import SqlalchemyOrmPage #<- provides pagination
 
 Now update our Entry model with following methods:
 ::
@@ -59,16 +59,22 @@ friendly form like "2 days ago".
 
     @classmethod
     def get_paginator(cls, request, page=1):
-        page_url = PageURL_WebOb(request)
-        return Page(Entry.all(), page, url=page_url, items_per_page=5)
+        query = DBSession.query(Entry)
+        query_params = request.GET.mixed()
+
+        def url_maker(link_page):
+            query_params['page'] = link_page
+            return request.current_route_url(_query=query_params)
 
 **get_paginator** method will return an excellent paginator that is able to 
 return us only the entries from specific "page" of database resulteset. It will 
 add LIMIT/OFFSET to our query based on items_per_page and current page number.
 
-This method also utilizes PageURL_WebOb - it can derive new URLs based on the 
-current URL but overriding the ‘page’ query parameter. It will be used in our 
-template to build links to other pages of blog list.
+Paginator uses SqlalchemyOrmPage wrapper that will attempt to generate a paginator with links,
+link urls will be constructed using `url_maker` function that uses request object to generate new url from current one
+replacing page query param with new value.
+
+
 
 Index view
 ----------

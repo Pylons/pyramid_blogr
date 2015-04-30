@@ -11,7 +11,7 @@ from sqlalchemy import (
 
 from webhelpers2.text import urlify
 from webhelpers2.date import time_ago_in_words
-from paginate import Page
+from paginate_sqlalchemy import SqlalchemyOrmPage
 
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -65,5 +65,12 @@ class Entry(Base):
     
     @classmethod
     def get_paginator(cls, request, page=1):
-        return Page(Entry.all(), page, items_per_page=5,
-                    url_maker=lambda p: "%s?page=%s" % (request.application_url, p))
+        query = DBSession.query(Entry)
+        query_params = request.GET.mixed()
+
+        def url_maker(link_page):
+            query_params['page'] = link_page
+            return request.current_route_url(_query=query_params)
+
+        return SqlalchemyOrmPage(query, page, items_per_page=5,
+                                 url_maker=url_maker)

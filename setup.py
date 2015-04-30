@@ -15,12 +15,13 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'wtforms',
-    'webhelpers2==2.0b5',
-    'paginate'
+    'webhelpers2',
+    'paginate',
+    'paginate_sqlalchemy'
     ]
 
 setup(name='pyramid_blogr',
-      version='0.0',
+      version='0.1',
       description='pyramid_blogr',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[

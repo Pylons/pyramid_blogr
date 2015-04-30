@@ -15,9 +15,9 @@ Contents of models.py::
         DateTime
         )
     
-    from webhelpers.text import urlify
-    from webhelpers.paginate import PageURL_WebOb, Page
-    from webhelpers.date import time_ago_in_words
+    from webhelpers2.text import urlify
+    from webhelpers2.date import time_ago_in_words
+    from paginate_sqlalchemy import SqlalchemyOrmPage
     
     from sqlalchemy.ext.declarative import declarative_base
     
@@ -64,8 +64,12 @@ Contents of models.py::
         
         @classmethod
         def get_paginator(cls, request, page=1):
-            page_url = PageURL_WebOb(request)
-            return Page(Entry.all(), page, url=page_url, items_per_page=5)
+            query = DBSession.query(Entry)
+            query_params = request.GET.mixed()
+
+            def url_maker(link_page):
+                query_params['page'] = link_page
+                return request.current_route_url(_query=query_params)
         
 
 Contents of views.py::
