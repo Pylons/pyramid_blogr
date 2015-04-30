@@ -21,7 +21,7 @@ Pyramid_blogr makes some initial assumptions:
 * **WTForms** form library will provide form validation
 
 This tutorial was originally created by **Marcin Lulek**, developer, freelancer 
-and founder of https://errormator.com.
+and founder of https://appenlight.com.
 
 Documentation links
 -------------------

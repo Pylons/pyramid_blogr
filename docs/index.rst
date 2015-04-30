@@ -11,8 +11,7 @@ Pyramid_blogr is inspired by Flaskr tutorial app for Flask Web Framework.
 It will showcase some basic concepts of Pyramid Web Framework.
 
 .. hint::
-    This tutorial is meant for **Python 2.x** branch. webhelpers package is 
-    currently not available for Python 3.
+    This tutorial is meant for **Python 2.x** and **Python 3.3+** versions of the language.
 
 
 Contents:

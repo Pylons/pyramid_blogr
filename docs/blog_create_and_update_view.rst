@@ -48,9 +48,9 @@ Create blog entry view
 
 Now that our simple form definition is ready we can actually write our view code.
 
-Lets start by importing our freshly created form schemas to views.py::
+Lets start by importing our freshly created form schemas to views/blog.py::
 
-    from .forms import BlogCreateForm, BlogUpdateForm
+    from ..forms import BlogCreateForm, BlogUpdateForm
 
 Next we implement actual view callable that will handle new entries for us::
 
@@ -114,54 +114,38 @@ The final step is to add a view that will present users with form to create and
 edit entries, lets call it *edit_blog.mako* ::
 
     <%inherit file="pyramid_blogr:templates/layout.mako"/>
-    
-    <form action="${request.route_url('blog_action',action=action)}" method="post">
-    %if action =='edit':
-    ${form.id()}
-    %endif
-    
-    % for error in form.title.errors:
-        <div class="error">${ error }</div>
-    % endfor
-    
-    <div><label>${form.title.label}</label>${form.title()}</div>
-    
-    % for error in form.body.errors:
-    <div class="error">${error}</div>
-    % endfor
-    
-    <div><label>${form.body.label}</label>${form.body()}</div>
-    <div><input type="submit" value="Submit"></div>
+
+    <form action="${request.route_url('blog_action',action=action)}" method="post" class="form">
+        %if action =='edit':
+            ${form.id()}
+        %endif
+
+        % for error in form.title.errors:
+            <div class="error">${ error }</div>
+        % endfor
+
+        <div class="form-group">
+            <label for="title">${form.title.label}</label>
+                ${form.title(class_='form-control')}
+        </div>
+
+        % for error in form.body.errors:
+            <div class="error">${error}</div>
+        % endfor
+
+        <div class="form-group">
+            <label for="body">${form.body.label}</label>
+            ${form.body(class_='form-control')}
+        </div>
+        <div class="form-group">
+            <label></label>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+
+
     </form>
     <p><a href="${request.route_url('home')}">Go Back</a></p>
-    
-    <style type="text/css">
-    form{
-        text-align: right;
-    }
-    label{
-        min-width: 150px;
-        vertical-align: top;
-        text-align: right;
-        display: inline-block;
-    }
-    input[type=text]{
-        min-width: 505px;
-    }
-    textarea{
-        color: #222;
-        border: 1px solid #CCC;
-        font-family: sans-serif;
-        font-size: 12px;
-        line-height: 16px;
-        min-width: 505px;
-        min-height: 100px; 
-    }
-    .error{
-        font-weight: bold;
-        color: red;
-    }
-    </style>
+
 
 Our template knows if we are creating new row or updating existing one based on 
 action variable value, if we are editing existing row - it will add a hidden 

@@ -1,49 +1,32 @@
 <%inherit file="pyramid_blogr:templates/layout.mako"/>
 
-<form action="${request.route_url('blog_action',action=action)}" method="post">
-%if action =='edit':
-${form.id()}
-%endif
+<form action="${request.route_url('blog_action',action=action)}" method="post" class="form">
+    %if action =='edit':
+        ${form.id()}
+    %endif
 
-% for error in form.title.errors:
-    <div class="error">${ error }</div>
-% endfor
+    % for error in form.title.errors:
+        <div class="error">${ error }</div>
+    % endfor
 
-<div><label>${form.title.label}</label>${form.title()}</div>
+    <div class="form-group">
+        <label for="title">${form.title.label}</label>
+            ${form.title(class_='form-control')}
+    </div>
 
-% for error in form.body.errors:
-<div class="error">${error}</div>
-% endfor
+    % for error in form.body.errors:
+        <div class="error">${error}</div>
+    % endfor
 
-<div><label>${form.body.label}</label>${form.body()}</div>
-<div><input type="submit" value="Submit"></div>
+    <div class="form-group">
+        <label for="body">${form.body.label}</label>
+        ${form.body(class_='form-control')}
+    </div>
+    <div class="form-group">
+        <label></label>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+
+
 </form>
 <p><a href="${request.route_url('home')}">Go Back</a></p>
-
-<style type="text/css">
-form{
-    text-align: right;
-}
-label{
-    min-width: 150px;
-    vertical-align: top;
-    text-align: right;
-    display: inline-block;
-}
-input[type=text]{
-    min-width: 505px;
-}
-textarea{
-    color: #222;
-    border: 1px solid #CCC;
-    font-family: sans-serif;
-    font-size: 12px;
-    line-height: 16px;
-    min-width: 505px;
-    min-height: 100px;
-}
-.error{
-    font-weight: bold;
-    color: red;
-}
-</style>

@@ -18,28 +18,14 @@ Contents of forms.py::
     class BlogUpdateForm(BlogCreateForm):
         id = HiddenField()
 
-Contents of views.py::
+Contents of views/blog.py::
 
-    from .forms import BlogCreateForm, BlogUpdateForm
-    from pyramid.httpexceptions import HTTPNotFound, HTTPFound
-    from pyramid.response import Response
     from pyramid.view import view_config
-    
-    from sqlalchemy.exc import DBAPIError
-    
-    from .models import (
-        DBSession,
-        User,
-        Entry
-        )
-    
-    @view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
-    def index_page(request):
-        page = int(request.params.get('page', 1))
-        paginator = Entry.get_paginator(request, page)
-        return {'paginator':paginator}
-    
-    
+    from pyramid.httpexceptions import HTTPNotFound, HTTPFound
+    from ..models import DBSession
+    from ..models.entry import Entry
+    from ..forms import BlogCreateForm, BlogUpdateForm
+
     @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.mako')
     def blog_view(request):
         id = int(request.matchdict.get('id', -1))
@@ -47,8 +33,7 @@ Contents of views.py::
         if not entry:
             return HTTPNotFound()
         return {'entry':entry}
-    
-    
+
     @view_config(route_name='blog_action', match_param='action=create',
                  renderer='pyramid_blogr:templates/edit_blog.mako')
     def blog_create(request):
@@ -59,8 +44,8 @@ Contents of views.py::
             DBSession.add(entry)
             return HTTPFound(location=request.route_url('home'))
         return {'form':form, 'action':request.matchdict.get('action')}
-    
-    
+
+
     @view_config(route_name='blog_action', match_param='action=edit',
                  renderer='pyramid_blogr:templates/edit_blog.mako')
     def blog_update(request):
@@ -74,8 +59,21 @@ Contents of views.py::
             return HTTPFound(location=request.route_url('blog', id=entry.id,
                                                         slug=entry.slug))
         return {'form':form, 'action':request.matchdict.get('action')}
-    
-    
+
+Contents of views/default.py::
+
+    from pyramid.view import view_config
+
+    from ..models import DBSession
+    from ..models.user import User
+    from ..models.entry import Entry
+
+    @view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
+    def index_page(request):
+        page = int(request.params.get('page', 1))
+        paginator = Entry.get_paginator(request, page)
+        return {'paginator': paginator}
+
     @view_config(route_name='auth', match_param='action=in', renderer='string',
                  request_method='POST')
     @view_config(route_name='auth', match_param='action=out', renderer='string')

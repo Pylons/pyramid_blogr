@@ -2,7 +2,7 @@
 4. Initial views
 ================
 
-Now it's time to open up our views.py file and add our view callables.
+Now it's time to create our views files and add our view callables.
 
 Every view will be decorated with **@view_config** decorator.
 
@@ -16,10 +16,32 @@ all of our views are registerd with our app.
     You could do it explictly with **config.add_view()** method 
     but this approach is often more convenient. 
 
-Lets make some stubs for our views, we will populate them with actual 
+First lets create a new directory called views and create 3 files, `views/__init__.py`,
+`views/default.py` and `views/blog.py`.
+
+Your project structure should look like this at this point::
+
+    pyramid_blogr/
+    ├── __init__.py <- main file that will configure and return WSGI application
+    ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
+    │     ├── __init__.py <- former models.py
+    │     ├── entry.py
+    │     └── user.py
+    ├── scripts/    <- util python scripts
+    ├── static/     <- usually css, js, images
+    ├── templates/  <- template files
+    ├── tests.py    <- tests
+    └── views    <- views aka business logic
+          ├── __init__.py <- empty
+          ├── blog.py
+          └── default.py
+
+Lets make some stubs for our views, we will populate them with actual
 code in next chapters.
 
-::
+In `views/default.py` add::
+
+    from pyramid.view import view_config
 
     @view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
     def index_page(request):
@@ -35,19 +57,22 @@ form of *package_name:path_to_template*.
 
 .. hint::
     It also easy to add your own custom renderer, or use a drop in package like 
-    pyramid_jinja2.
+    `pyramid_jinja2`.
     
     The renderer is picked up automaticly by specifying file extension 
     like: *asset.mako*/*asset.jinja2* or when your provide name for 
     string/json renderer.   
     
-    Pyramid by default provides few renderers including:
+    Pyramid by provides few renderers including:
         * mako templates
         * chameleon templates
         * string output
         * json encoder
 
-::
+
+In `views/blog.py` add::
+
+    from pyramid.view import view_config
 
     @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.mako')
     def blog_view(request):
@@ -86,7 +111,7 @@ And then we have the view for */blog/edit* URL.
     Every view can be decorated unlimited times with different parameters passed 
     to @view_config, . 
 
-::
+Now back in `views/default.py` add::
 
     @view_config(route_name='auth', match_param='action=in', renderer='string',
                  request_method='POST')

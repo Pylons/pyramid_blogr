@@ -83,7 +83,7 @@ Let's open our configuration related __init__.py and add following imports::
 Now it's time to update our configuration, we need to create our policies, and 
 pass them to configurator::
 
-    authentication_policy = AuthTktAuthenticationPolicy('somesecret')
+    authentication_policy = AuthTktAuthenticationPolicy('somesecret', hashalg='sha512')
     authorization_policy = ACLAuthorizationPolicy()
     config = Configurator(settings=settings,
                           authentication_policy=authentication_policy,

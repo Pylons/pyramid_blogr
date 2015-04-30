@@ -9,7 +9,7 @@
 
 First we need to install pyramid framework itself::
 
-    pip install pyramid==1.3.4
+    pip install pyramid==1.5.7
 
 This will install pyramid itself with it's base dependencies, your python 
 environment (ideally VirtualEnv), will now contain some helpful commands 
@@ -48,14 +48,17 @@ like this::
 
     requires = [
         'pyramid',
+        'pyramid_mako', # replaces default chameleon templates
+        'pyramid_debugtoolbar',
+        'pyramid_tm',
         'SQLAlchemy',
         'transaction',
-        'pyramid_tm',
-        'pyramid_debugtoolbar',
         'zope.sqlalchemy',
         'waitress',
-        'wtforms',
-        'webhelpers'
+        'wtforms',  # form library
+        'webhelpers2', # various web building related helpers
+        'paginate', # pagination helpers
+        'paginate_sqlalchemy'
         ]
         
 Now we can setup our application for development and add it to our environment 
@@ -89,7 +92,19 @@ the *--reload* parameter tells the server to restart our application every
 time it's code changes, this is a great setting for fast development and 
 testing live changes to our app. 
 
-You should see something like this::
+Unfortunately on our first run the application will throw exception::
+
+    ImportError: No module named 'pyramid_chameleon'
+
+This is because we switched from chameleon templating engine to mako.
+
+To fix this you need to open `pyramid_blogr/__init__.py` and change
+
+    config.include('pyramid_chameleon')
+    #to
+    config.include('pyramid_mako')
+
+On your next application restart should see something like this::
 
     Starting subprocess with file monitor
     Starting server in PID 8517.

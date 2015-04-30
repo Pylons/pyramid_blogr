@@ -8,18 +8,21 @@ application, so the finishing touch is to implement our authentication views.
 First we need to add a login form to our existing **index.mako** template::
 
     <%inherit file="pyramid_blogr:templates/layout.mako"/>
-    <%
-    from pyramid.security import authenticated_userid 
-    user_id = authenticated_userid(request)
-    %>
-    % if user_id:
-        Welcome <strong>${user_id}</strong> :: 
+
+    ...
+
+    % if request.authenticated_userid:
+        Welcome <strong>${request.authenticated_userid}</strong> ::
         <a href="${request.route_url('auth',action='out')}">Sign Out</a>
     %else:
-        <form action="${request.route_url('auth',action='in')}" method="post">
-        <label>User</label><input type="text" name="username">
-        <label>Password</label><input type="password" name="password">
-        <input type="submit" value="Sign in">
+        <form action="${request.route_url('auth',action='in')}" method="post" class="form-inline">
+            <div class="form-group">
+                <label>User</label> <input type="text" name="username" class="form-control">
+            </div>
+            <div class="form-group">
+            <label>Password</label> <input type="password" name="password" class="form-control">
+            <input type="submit" value="Sign in" class="btn btn-default">
+            </div>
         </form>
     %endif
     
@@ -51,8 +54,9 @@ We add following methods to our User class in models.py::
 
 The final step is to update the view that handles authentication.
 
-First we need to add following import to views.py::
+First we need to add following import to views/default.py::
 
+    from pyramid.httpexceptions import HTTPFound
     from pyramid.security import remember, forget        
 
 Those functions will return headers used to set our AuthTkt cookie 

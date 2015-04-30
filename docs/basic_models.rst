@@ -5,10 +5,29 @@
 At this point we should create our models. In a nutshell models are representing 
 data and it's underlaying storage mechanisms in application. 
 
-We will use a relational database and  sqlalchemy ORM layer to access our data.
+We will use a relational database and sqlalchemy ORM layer to access our data.
 
-The default pyramid scaffold provides an example model class *MyModel* that 
+The default pyramid scaffold provides an example model class `MyModel` that
 we don't need - so we first need to remove whole of it.
+
+Since in real life applications data models tend to grow over time and contain lots of additional methods,
+instead of keeping of all models in a single file, lets create a new `models` package in our structure that will hold one
+model per file.
+
+Now we need to move the file models.py to our newly created directory and rename it to __init__.py instead to make a
+python package from our `models` directory.
+
+Our directory structure should look like this after this operation::
+
+    pyramid_blogr/
+    ├── __init__.py <- main file that will configure and return WSGI application
+    ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
+    │     └── __init__.py <- former models.py
+    ├── scripts/    <- util python scripts
+    ├── static/     <- usually css, js, images
+    ├── templates/  <- template files
+    ├── tests.py    <- tests
+    └── views.py    <- views aka business logic
 
 Our application will consist of two tables:
 
@@ -19,10 +38,15 @@ We should assume that our users might use some non-english characters, so we
 need to import Unicode datatype from sqlalchemy, we will also need DateTime 
 field to timestamp our blog entries.
 
+Lets first create `models/user.py` from our former models.py file lets remove all the now unused code from
+`models/__init__.py` and paste it into our newly created user file.
+
 ::
+
 
     import datetime #<- will be used to set default dates on models
     import sqlalchemy as sa #<- provides access to sqlalchemy constructs
+    from pyramid_blogr.models import Base, DBSession  #<- we need to import our sqlalchemy metadata for model classes to inherit from
     from sqlalchemy import (
         Column,
         Integer,
@@ -31,6 +55,37 @@ field to timestamp our blog entries.
         UnicodeText, #<- will provide unicode text field,
         DateTime     #<- time abstraction field,
         )
+
+
+Now repeat the step and insert the same code into `models/entry.py`
+
+After all operations our `models/__init__.py` should only contain::
+
+    from sqlalchemy.ext.declarative import declarative_base
+
+    from sqlalchemy.orm import (
+        scoped_session,
+        sessionmaker,
+    )
+
+    from zope.sqlalchemy import ZopeTransactionExtension
+
+    DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+    Base = declarative_base()
+
+And our project structure should look like this::
+
+    pyramid_blogr/
+    ├── __init__.py <- main file that will configure and return WSGI application
+    ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
+    │     ├── __init__.py <- former models.py
+    │     ├── entry.py
+    │     └── user.py
+    ├── scripts/    <- util python scripts
+    ├── static/     <- usually css, js, images
+    ├── templates/  <- template files
+    ├── tests.py    <- tests
+    └── views.py    <- views aka business logic
 
 Database session management
 ---------------------------
@@ -108,13 +163,17 @@ Adding model definitions
 
 We will need two declarations of models that will replace *MyModel* class ::
 
+After import part of `models/user.py` add following::
+
     class User(Base):
         __tablename__ = 'users'
         id = Column(Integer, primary_key=True)
         name = Column(Unicode(255), unique=True, nullable=False)
         password = Column(Unicode(255), nullable=False)
         last_logged = Column(DateTime, default=datetime.datetime.utcnow)
-        
+
+After import part of `models/entry.py` add following::
+
     class Entry(Base):
         __tablename__ = 'entries'
         id = Column(Integer, primary_key=True)
@@ -132,8 +191,12 @@ models.py.
 For this we need to open */pyramid_blogr/scripts/initializedb.py* - this is the 
 file that actually gets executed when we run *initialize_pyramid_blogr_db*.
 
-Since MyModel model is now gone we want to replace::
+First remove `MyModel` import from that file and add::
 
+    from ..models.user import User
+    from ..models.entry import Entry
+
+Since MyModel model is now gone we want to replace::
 
     with transaction.manager:
         model = MyModel(name='one', value=1)
@@ -161,8 +224,8 @@ The last step is to fix the imports from MyModel to User model.
     */pyramid_blogr/scripts/initializedb.py* **and** */pyramid_blogr/views.py*,
     otherwise your app will not start because of failed imports.
 
-Since we don't want any initial scaffold code in our view lets **remove whole 
-view code from view.py and only keep the imports for now**.    
+Same as with models, when your application will grow over time you will want to organize views into logical sections
+based on their functionality. Fow now remove the `views.py` completely.
             
 Our application should start again if we try running the server. In case you 
 have problems starting the application, below you can see complete source code 
