@@ -9,9 +9,9 @@ from sqlalchemy import (
     DateTime
     )
 
-from webhelpers.text import urlify
-from webhelpers.paginate import PageURL_WebOb, Page
-from webhelpers.date import time_ago_in_words
+from webhelpers2.text import urlify
+from webhelpers2.date import time_ago_in_words
+from paginate import Page
 
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -49,7 +49,7 @@ class Entry(Base):
     
     @classmethod
     def all(cls):
-        return DBSession.query(Entry).order_by(sa.desc(Entry.created))
+        return DBSession.query(Entry).order_by(sa.desc(Entry.created)).all()
     
     @classmethod
     def by_id(cls, id):
@@ -65,5 +65,5 @@ class Entry(Base):
     
     @classmethod
     def get_paginator(cls, request, page=1):
-        page_url = PageURL_WebOb(request)
-        return Page(Entry.all(), page, url=page_url, items_per_page=5)
+        return Page(Entry.all(), page, items_per_page=5,
+                    url_maker=lambda p: "%s?page=%s" % (request.application_url, p))
