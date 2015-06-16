@@ -98,10 +98,10 @@ Unfortunately on our first run the application will throw exception::
 
 This is because we switched from chameleon templating engine to mako.
 
-To fix this you need to open `pyramid_blogr/__init__.py` and change
+To fix this you need to open `pyramid_blogr/__init__.py` and change::
 
     config.include('pyramid_chameleon')
-    #to
+    # to
     config.include('pyramid_mako')
 
 On your next application restart should see something like this::
