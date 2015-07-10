@@ -17,6 +17,9 @@ This is how models/__init__.py should look like at this point::
     DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
     Base = declarative_base()
 
+    from .user import User
+    from .entry import Entry
+
               
 This is how models/entry.py should look like at this point::
         
@@ -79,10 +82,9 @@ This is how /scripts/initializedb.py should look like at this point::
     from ..models import (
         DBSession,
         Base,
+        User
         )
 
-    from ..models.user import User
-    from ..models.entry import Entry
 
     def usage(argv):
         cmd = os.path.basename(argv[0])

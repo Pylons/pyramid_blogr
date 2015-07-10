@@ -14,10 +14,9 @@ from pyramid.scripts.common import parse_vars
 from ..models import (
     DBSession,
     Base,
+    User
     )
 
-from ..models.user import User
-from ..models.entry import Entry
 
 def usage(argv):
     cmd = os.path.basename(argv[0])

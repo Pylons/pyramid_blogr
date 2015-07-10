@@ -182,6 +182,16 @@ After import part of `models/entry.py` add following::
         created = Column(DateTime, default=datetime.datetime.utcnow)
         edited = Column(DateTime, default=datetime.datetime.utcnow)
 
+
+Now its time to update our `models/__init__.py` to include our models - this is especially handy because it ensures
+that sqlalchemy mappers will pick up all our model classes and functions like `create_all` do what you expect them to do.
+
+Add this at the end of the file add these imports::
+
+    from .user import User
+    from .entry import Entry
+
+
 Update initialization script
 ----------------------------
 
@@ -191,10 +201,7 @@ models.py.
 For this we need to open */pyramid_blogr/scripts/initializedb.py* - this is the 
 file that actually gets executed when we run *initialize_pyramid_blogr_db*.
 
-First remove `MyModel` import from that file and add::
-
-    from ..models.user import User
-    from ..models.entry import Entry
+First remove `MyModel` import from that file and add `User` model instead.
 
 Since MyModel model is now gone we want to replace::
 
