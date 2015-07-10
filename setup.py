@@ -8,17 +8,19 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'pyramid',
+    'pyramid_mako', # replaces default chameleon templates
+    'pyramid_debugtoolbar',
+    'pyramid_tm',
     'SQLAlchemy',
     'transaction',
-    'pyramid_tm',
-    'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
-    'wtforms',
-    'webhelpers2',
-    'paginate',
+    'wtforms',  # form library
+    'webhelpers2', # various web building related helpers
+    'paginate', # pagination helpers
     'paginate_sqlalchemy'
-    ]
+]
+
 
 setup(name='pyramid_blogr',
       version='0.1',
