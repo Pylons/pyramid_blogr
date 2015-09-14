@@ -4,7 +4,7 @@ What you will know after you finish this tutorial
 
 The tutorial is really simple but should be enough of a head start to writing 
 applications using Pyramid Web Framework. By the end of it you should have a 
-basic understanding of templating, working with databases, using url routes to 
+basic understanding of templating, working with databases, using URL routes to 
 launch our business logic(views) and authentication, example of form library 
 usage and pagination of our blog entries.
 
@@ -32,6 +32,6 @@ Documentation links
 * **Webhelpers** : http://webhelpers.readthedocs.org/en/latest/
 * **WTForms** : http://wtforms.simplecodes.com
 
-The complete sourcecode for this application is available at:
+The complete source code for this application is available at:
 
 https://github.com/Pylons/pyramid_blogr
