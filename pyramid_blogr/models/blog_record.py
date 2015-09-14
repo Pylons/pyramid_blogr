@@ -24,6 +24,4 @@ class BlogRecord(Base):
 
     @property
     def created_in_words(self):
-        # Can't use time_ago_in_words(self.created) since self.created
-        # is UTC, but that function compares against local time
         return distance_of_time_in_words(self.created, datetime.datetime.utcnow())

@@ -88,7 +88,7 @@ Your project structure should look like this at this point::
 Now it is time to add imports and properties to **models/blog_record.py**::
 
     from webhelpers2.text import urlify #<- will generate slugs
-    from webhelpers2.date import time_ago_in_words #<- human friendly dates
+    from webhelpers2.date import distance_of_time_in_words #<- human friendly dates
 
 
 And to model itself::
@@ -104,7 +104,7 @@ be approximated to their closest counterparts.
 
     @property
     def created_in_words(self):
-        return time_ago_in_words(self.created)
+        return distance_of_time_in_words(self.created, datetime.datetime.utcnow())
 
 This property will return information when specific entry was created in a 
 friendly form like "2 days ago".
