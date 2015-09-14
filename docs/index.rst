@@ -29,7 +29,7 @@ Contents:
    authorization
    authentication
 
-The complete sourcecode for this application is available at:
+The complete source code for this application is available at:
 
 https://github.com/Pylons/pyramid_blogr
 
