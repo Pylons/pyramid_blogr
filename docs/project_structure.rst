@@ -11,7 +11,7 @@ First we need to install pyramid framework itself::
 
     pip install pyramid==1.5.7
 
-This will install pyramid itself with it's base dependencies, your python 
+This will install pyramid itself with it's base dependencies, your Python 
 environment (ideally VirtualEnv), will now contain some helpful commands 
 including:
 
@@ -29,7 +29,7 @@ We will end up with pyramid_blogr dir that should have following structure::
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
     ├── models.py   <- model definitions aka data sources (often RDBMS or noSQL)
-    ├── scripts/    <- util python scripts
+    ├── scripts/    <- util Python scripts
     ├── static/     <- usually css, js, images
     ├── templates/  <- template files
     ├── tests.py    <- tests
@@ -38,7 +38,7 @@ We will end up with pyramid_blogr dir that should have following structure::
 Adding dependencies to the project
 ----------------------------------
 
-Since pyramid tries it's best to be a non-opinionated solution we will have to 
+Since Pyramid tries it's best to be a non-opinionated solution we will have to 
 decide what libraries we want for form handling and template helpers.
 For this tutorial we will use great WTForms library and webhelpers packages.
 
@@ -67,7 +67,7 @@ path. In the root of our project where setup.py lives execute following line::
     ~/yourVenv/bin/pip install -e .
 
 This will install all the requirements for our application and will make it 
-importable in our python environment.
+importable in our Python environment.
 
 .. warning::
     Don't forget to add the . after -e switch
