@@ -47,18 +47,18 @@ and extend **requires** with additional packages, in the end it should look
 like this::
 
     requires = [
-        'pyramid',
+        'pyramid==1.5.7',
         'pyramid_mako', # replaces default chameleon templates
         'pyramid_debugtoolbar',
         'pyramid_tm',
-        'SQLAlchemy',
+        'SQLAlchemy==1.0.8',
         'transaction',
         'zope.sqlalchemy',
         'waitress',
-        'wtforms',  # form library
-        'webhelpers2', # various web building related helpers
-        'paginate', # pagination helpers
-        'paginate_sqlalchemy'
+        'wtforms==2.0.2',  # form library
+        'webhelpers2==2.0', # various web building related helpers
+        'paginate==0.5', # pagination helpers
+        'paginate_sqlalchemy==0.2.0'
         ]
         
 Now we can setup our application for development and add it to our environment 

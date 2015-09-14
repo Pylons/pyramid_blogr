@@ -1,13 +1,12 @@
 from pyramid.config import Configurator
-from sqlalchemy import engine_from_config
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
-from .security import EntryFactory
+from sqlalchemy import engine_from_config
 
-from .models import (
+from .models.meta import (
     DBSession,
     Base,
-    )
+)
 
 
 def main(global_config, **settings):
@@ -21,13 +20,13 @@ def main(global_config, **settings):
     config = Configurator(settings=settings,
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy
-    )
+                          )
     config.include('pyramid_mako')
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
     config.add_route('blog', '/blog/{id:\d+}/{slug}')
     config.add_route('blog_action', '/blog/{action}',
-                     factory='pyramid_blogr.security.EntryFactory')
+                     factory='pyramid_blogr.security.BlogRecordFactory')
     config.add_route('auth', '/sign/{action}')
     config.scan()
     return config.make_wsgi_app()

@@ -1,15 +1,13 @@
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
-
-from ..models import DBSession
-from ..models.user import User
-from ..models.entry import Entry
+from ..models.services.user import UserService
+from ..models.services.blog_record import BlogRecordService
 
 @view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
 def index_page(request):
     page = int(request.params.get('page', 1))
-    paginator = Entry.get_paginator(request, page)
+    paginator = BlogRecordService.get_paginator(request, page)
     return {'paginator': paginator}
 
 @view_config(route_name='auth', match_param='action=in', renderer='string',
@@ -18,7 +16,7 @@ def index_page(request):
 def sign_in_out(request):
     username = request.POST.get('username')
     if username:
-        user = User.by_name(username)
+        user = UserService.by_name(username)
         if user and user.verify_password(request.POST.get('password')):
             headers = remember(request, user.name)
         else:

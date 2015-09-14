@@ -12,7 +12,7 @@ edit every blog entry as long as he/she is signed in to our application.
 Pyramid provides some ready-made policies for this and mechanisms for writing 
 custom ones aswell.
 
-We will use the ones provided with framework:
+We will use the ones provided by the framework:
 
 * **AuthTktAuthenticationPolicy**
 
@@ -52,12 +52,12 @@ arbitrary class).
 It will say that *everyone logged* to our application can create and edit, 
 blog entries.
 
-In root of our application package lets create a new file called security.py 
+In root of our application package lets create a new file called `security.py`
 with following contents ::
 
     from pyramid.security import Allow, Everyone, Authenticated
 
-    class EntryFactory(object):
+    class BlogRecordFactory(object):
         __acl__ = [(Allow, Everyone, 'view'),
                    (Allow, Authenticated, 'create'),
                    (Allow, Authenticated, 'edit'), ]
@@ -74,11 +74,10 @@ Now it's time to tell pyramid about what policies we want to register with our
 app.
 
 
-Let's open our configuration related __init__.py and add following imports::
+Let's open our configuration related `__init__.py` and add following imports::
 
     from pyramid.authentication import AuthTktAuthenticationPolicy
     from pyramid.authorization import ACLAuthorizationPolicy
-    from .security import EntryFactory
 
 Now it's time to update our configuration, we need to create our policies, and 
 pass them to configurator::
@@ -97,7 +96,7 @@ The last thing we need to add is to assign our context factory to our routes,
 we want this to be the route responsible for entry creation/updates::
 
     config.add_route('blog_action', '/blog/{action}',
-                     factory='pyramid_blogr.security.EntryFactory')
+                     factory='pyramid_blogr.security.BlogRecordFactory')
 
 Now the finishing touch, we set "create" and "edit" permissions on our views.
 
@@ -114,7 +113,8 @@ For this we need to change our view_config decorators like this::
                  ...
              
 Now if you try to visit the links to create/update entries you will see that 
-they actually respond with 403 HTTP status.
+they actually respond with 403 HTTP status because pyramid detects that there there is no user object
+that has `edit` or `create` permissions.
 
 **Our views are secured!**
 

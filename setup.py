@@ -3,29 +3,30 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.rst')).read()
-CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
+with open(os.path.join(here, 'README.txt')) as f:
+    README = f.read()
+with open(os.path.join(here, 'CHANGES.txt')) as f:
+    CHANGES = f.read()
 
 requires = [
-    'pyramid',
+    'pyramid==1.5.7',
     'pyramid_mako', # replaces default chameleon templates
     'pyramid_debugtoolbar',
     'pyramid_tm',
-    'SQLAlchemy',
+    'SQLAlchemy==1.0.8',
     'transaction',
     'zope.sqlalchemy',
     'waitress',
-    'wtforms',  # form library
-    'webhelpers2', # various web building related helpers
-    'paginate', # pagination helpers
-    'paginate_sqlalchemy'
+    'wtforms==2.0.2',  # form library
+    'webhelpers2==2.0', # various web building related helpers
+    'paginate==0.5', # pagination helpers
+    'paginate_sqlalchemy==0.2.0'
 ]
 
-
 setup(name='pyramid_blogr',
-      version='0.1',
+      version='0.0',
       description='pyramid_blogr',
-      long_description=README + '\n\n' +  CHANGES,
+      long_description=README + '\n\n' + CHANGES,
       classifiers=[
         "Programming Language :: Python",
         "Framework :: Pyramid",
@@ -48,4 +49,3 @@ setup(name='pyramid_blogr',
       initialize_pyramid_blogr_db = pyramid_blogr.scripts.initializedb:main
       """,
       )
-

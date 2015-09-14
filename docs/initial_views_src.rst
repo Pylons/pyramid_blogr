@@ -17,6 +17,7 @@ Contents of views/default.py::
         return {}
 
 
+
 Contents of views/blog.py::
 
     from pyramid.view import view_config

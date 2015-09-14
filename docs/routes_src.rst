@@ -1,5 +1,5 @@
 ======================
-Source code for step 3 
+Source code for step 3
 ======================
 
 Source of the __init__.py file::
@@ -7,10 +7,10 @@ Source of the __init__.py file::
     from pyramid.config import Configurator
     from sqlalchemy import engine_from_config
 
-    from .models import (
+    from .models.meta import (
         DBSession,
         Base,
-        )
+    )
 
 
     def main(global_config, **settings):

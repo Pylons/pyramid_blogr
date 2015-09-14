@@ -16,7 +16,7 @@ all of our views are registerd with our app.
     You could do it explictly with **config.add_view()** method 
     but this approach is often more convenient. 
 
-First lets create a new directory called views and create 3 files, `views/__init__.py`,
+First lets create a new package called views and create 3 files, `views/__init__.py`,
 `views/default.py` and `views/blog.py`.
 
 Your project structure should look like this at this point::
@@ -24,8 +24,9 @@ Your project structure should look like this at this point::
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
     ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
-    │     ├── __init__.py <- former models.py
-    │     ├── entry.py
+    │     ├── __init__.py
+    │     ├── meta.py <- former models.py
+    │     ├── blog_record.py
     │     └── user.py
     ├── scripts/    <- util python scripts
     ├── static/     <- usually css, js, images

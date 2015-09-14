@@ -3,7 +3,7 @@ import transaction
 
 from pyramid import testing
 
-from .models import DBSession
+from .models.meta import DBSession
 
 
 class TestMyViewSuccessCondition(unittest.TestCase):
@@ -38,6 +38,10 @@ class TestMyViewFailureCondition(unittest.TestCase):
         self.config = testing.setUp()
         from sqlalchemy import create_engine
         engine = create_engine('sqlite://')
+        from .models import (
+            Base,
+            MyModel,
+            )
         DBSession.configure(bind=engine)
 
     def tearDown(self):

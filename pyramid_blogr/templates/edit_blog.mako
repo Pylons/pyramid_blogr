@@ -11,7 +11,7 @@
 
     <div class="form-group">
         <label for="title">${form.title.label}</label>
-            ${form.title(class_='form-control')}
+        ${form.title(class_='form-control')}
     </div>
 
     % for error in form.body.errors:

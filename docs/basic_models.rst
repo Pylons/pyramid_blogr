@@ -14,7 +14,7 @@ Since in real life applications data models tend to grow over time and contain l
 instead of keeping of all models in a single file, lets create a new `models` package in our structure that will hold one
 model per file.
 
-Now we need to move the file models.py to our newly created directory and rename it to __init__.py instead to make a
+Now we need to move the file models.py to our newly created directory and rename it to meta.py instead to make a
 python package from our `models` directory.
 
 Our directory structure should look like this after this operation::
@@ -22,7 +22,8 @@ Our directory structure should look like this after this operation::
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
     ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
-    │     └── __init__.py <- former models.py
+    │     ├-─ __init__.py
+    │     └── meta.py <- former models.py
     ├── scripts/    <- util python scripts
     ├── static/     <- usually css, js, images
     ├── templates/  <- template files
@@ -39,27 +40,25 @@ need to import Unicode datatype from sqlalchemy, we will also need DateTime
 field to timestamp our blog entries.
 
 Lets first create `models/user.py` from our former models.py file lets remove all the now unused code from
-`models/__init__.py` and paste it into our newly created user file.
+`models/meta.py` and paste it into our newly created user file.
 
 ::
 
 
     import datetime #<- will be used to set default dates on models
-    import sqlalchemy as sa #<- provides access to sqlalchemy constructs
-    from pyramid_blogr.models import Base, DBSession  #<- we need to import our sqlalchemy metadata for model classes to inherit from
+    from pyramid_blogr.models.meta import Base  #<- we need to import our sqlalchemy metadata for model classes to inherit from
     from sqlalchemy import (
         Column,
         Integer,
-        Text,
         Unicode,     #<- will provide unicode field,
         UnicodeText, #<- will provide unicode text field,
         DateTime     #<- time abstraction field,
         )
 
 
-Now repeat the step and insert the same code into `models/entry.py`
+Now repeat the step and insert the same code into `models/blog_record.py`
 
-After all operations our `models/__init__.py` should only contain::
+After all operations our `models/meta.py` should only contain::
 
     from sqlalchemy.ext.declarative import declarative_base
 
@@ -78,8 +77,9 @@ And our project structure should look like this::
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
     ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
-    │     ├── __init__.py <- former models.py
-    │     ├── entry.py
+    │     ├── __init__.py
+    │     ├── meta.py <- former models.py
+    │     ├── blog_record.py
     │     └── user.py
     ├── scripts/    <- util python scripts
     ├── static/     <- usually css, js, images
@@ -172,9 +172,9 @@ After import part of `models/user.py` add following::
         password = Column(Unicode(255), nullable=False)
         last_logged = Column(DateTime, default=datetime.datetime.utcnow)
 
-After import part of `models/entry.py` add following::
+After import part of `models/blog_record.py` add following::
 
-    class Entry(Base):
+    class BlogRecord(Base):
         __tablename__ = 'entries'
         id = Column(Integer, primary_key=True)
         title = Column(Unicode(255), unique=True, nullable=False)
@@ -189,7 +189,7 @@ that sqlalchemy mappers will pick up all our model classes and functions like `c
 Add this at the end of the file add these imports::
 
     from .user import User
-    from .entry import Entry
+    from .blog_record import BlogRecord
 
 
 Update initialization script
@@ -201,7 +201,10 @@ models.py.
 For this we need to open */pyramid_blogr/scripts/initializedb.py* - this is the 
 file that actually gets executed when we run *initialize_pyramid_blogr_db*.
 
-First remove `MyModel` import from that file and add `User` model instead.
+First remove `MyModel` import from that file and fix imports from modules package, also import `User` model::
+
+    from ..models.meta import DBSession, Base
+    from ..models import User
 
 Since MyModel model is now gone we want to replace::
 
@@ -223,12 +226,26 @@ with both login and unencrypted password equal to admin.
     passwords hashed with a strong one-way encryption function**. 
     You can use a package like **cryptacular** for this purpose.
 
-The last step is to fix the imports from MyModel to User model.
+The last step is to fix the imports from MyModel to User model and meta package in __init__.py.
+
+in `pyramid_blogr/__init__.py`::
+
+    from .models import (
+        DBSession,
+        Base,
+        )
+
+becomes::
+
+    from .models.meta import (
+        DBSession,
+        Base,
+        )
 
 .. warning ::
 
-    Remember to replace the imports of MyModel class in 
-    */pyramid_blogr/scripts/initializedb.py* **and** */pyramid_blogr/views.py*,
+    Remember to replace the imports of MyModel, DBSession classes in
+    */pyramid_blogr/scripts/initializedb.py* **and** */pyramid_blogr/tests.py*,
     otherwise your app will not start because of failed imports.
 
 Same as with models, when your application will grow over time you will want to organize views into logical sections

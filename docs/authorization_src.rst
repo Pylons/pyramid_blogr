@@ -5,15 +5,14 @@ Source code for step 7
 This is how __init__.py should look like at this point::
 
     from pyramid.config import Configurator
-    from sqlalchemy import engine_from_config
     from pyramid.authentication import AuthTktAuthenticationPolicy
     from pyramid.authorization import ACLAuthorizationPolicy
-    from .security import EntryFactory
+    from sqlalchemy import engine_from_config
 
-    from .models import (
+    from .models.meta import (
         DBSession,
         Base,
-        )
+    )
 
 
     def main(global_config, **settings):
@@ -27,54 +26,52 @@ This is how __init__.py should look like at this point::
         config = Configurator(settings=settings,
                               authentication_policy=authentication_policy,
                               authorization_policy=authorization_policy
-        )
+                              )
         config.include('pyramid_mako')
         config.add_static_view('static', 'static', cache_max_age=3600)
         config.add_route('home', '/')
         config.add_route('blog', '/blog/{id:\d+}/{slug}')
         config.add_route('blog_action', '/blog/{action}',
-                         factory='pyramid_blogr.security.EntryFactory')
+                         factory='pyramid_blogr.security.BlogRecordFactory')
         config.add_route('auth', '/sign/{action}')
         config.scan()
         return config.make_wsgi_app()
-
-
 
 This is how views/blog.py should look like at this point::
 
     from pyramid.view import view_config
     from pyramid.httpexceptions import HTTPNotFound, HTTPFound
-    from ..models import DBSession
-    from ..models.entry import Entry
+    from ..models.meta import DBSession
+    from ..models.blog_record import BlogRecord
+    from ..models.services.blog_record import BlogRecordService
     from ..forms import BlogCreateForm, BlogUpdateForm
 
     @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.mako')
     def blog_view(request):
-        id = int(request.matchdict.get('id', -1))
-        entry = Entry.by_id(id)
+        blog_id = int(request.matchdict.get('id', -1))
+        entry = BlogRecordService.by_id(blog_id)
         if not entry:
             return HTTPNotFound()
-        return {'entry':entry}
+        return {'entry': entry}
 
     @view_config(route_name='blog_action', match_param='action=create',
                  renderer='pyramid_blogr:templates/edit_blog.mako',
                  permission='create')
     def blog_create(request):
-        entry = Entry()
+        entry = BlogRecord()
         form = BlogCreateForm(request.POST)
         if request.method == 'POST' and form.validate():
             form.populate_obj(entry)
             DBSession.add(entry)
             return HTTPFound(location=request.route_url('home'))
-        return {'form':form, 'action':request.matchdict.get('action')}
-
+        return {'form': form, 'action': request.matchdict.get('action')}
 
     @view_config(route_name='blog_action', match_param='action=edit',
                  renderer='pyramid_blogr:templates/edit_blog.mako',
                  permission='edit')
     def blog_update(request):
-        id = int(request.params.get('id', -1))
-        entry = Entry.by_id(id)
+        blog_id = int(request.params.get('id', -1))
+        entry = BlogRecordService.by_id(blog_id)
         if not entry:
             return HTTPNotFound()
         form = BlogUpdateForm(request.POST, entry)
@@ -82,4 +79,6 @@ This is how views/blog.py should look like at this point::
             form.populate_obj(entry)
             return HTTPFound(location=request.route_url('blog', id=entry.id,
                                                         slug=entry.slug))
-        return {'form':form, 'action':request.matchdict.get('action')}
+        return {'form': form, 'action': request.matchdict.get('action')}
+
+

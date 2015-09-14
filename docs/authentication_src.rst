@@ -8,14 +8,16 @@ This is how views/default.py should look like at this point::
     from pyramid.httpexceptions import HTTPFound
     from pyramid.security import remember, forget
 
-    from ..models import DBSession
+    from ..models.meta import DBSession
     from ..models.user import User
-    from ..models.entry import Entry
+    from ..models.blog_record import BlogRecord
+    from ..models.services.blog_record import BlogRecordService
+    from ..models.services.user import UserService
 
     @view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
     def index_page(request):
         page = int(request.params.get('page', 1))
-        paginator = Entry.get_paginator(request, page)
+        paginator = BlogRecordService.get_paginator(request, page)
         return {'paginator': paginator}
 
     @view_config(route_name='auth', match_param='action=in', renderer='string',
@@ -24,7 +26,7 @@ This is how views/default.py should look like at this point::
     def sign_in_out(request):
         username = request.POST.get('username')
         if username:
-            user = User.by_name(username)
+            user = UserService.by_name(username)
             if user and user.verify_password(request.POST.get('password')):
                 headers = remember(request, user.name)
             else:
@@ -35,41 +37,43 @@ This is how views/default.py should look like at this point::
                          headers=headers)
 
 
+
 This is how views/blog.py should look like at this point::
 
     from pyramid.view import view_config
     from pyramid.httpexceptions import HTTPNotFound, HTTPFound
-    from ..models import DBSession
-    from ..models.entry import Entry
+    from ..models.meta import DBSession
+    from ..models.blog_record import BlogRecord
+    from ..models.services.blog_record import BlogRecordService
     from ..forms import BlogCreateForm, BlogUpdateForm
+
 
     @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.mako')
     def blog_view(request):
-        id = int(request.matchdict.get('id', -1))
-        entry = Entry.by_id(id)
+        blog_id = int(request.matchdict.get('id', -1))
+        entry = BlogRecordService.by_id(blog_id)
         if not entry:
             return HTTPNotFound()
-        return {'entry':entry}
+        return {'entry': entry}
 
     @view_config(route_name='blog_action', match_param='action=create',
                  renderer='pyramid_blogr:templates/edit_blog.mako',
                  permission='create')
     def blog_create(request):
-        entry = Entry()
+        entry = BlogRecord()
         form = BlogCreateForm(request.POST)
         if request.method == 'POST' and form.validate():
             form.populate_obj(entry)
             DBSession.add(entry)
             return HTTPFound(location=request.route_url('home'))
-        return {'form':form, 'action':request.matchdict.get('action')}
-
+        return {'form': form, 'action': request.matchdict.get('action')}
 
     @view_config(route_name='blog_action', match_param='action=edit',
                  renderer='pyramid_blogr:templates/edit_blog.mako',
                  permission='edit')
     def blog_update(request):
-        id = int(request.params.get('id', -1))
-        entry = Entry.by_id(id)
+        blog_id = int(request.params.get('id', -1))
+        entry = BlogRecordService.by_id(blog_id)
         if not entry:
             return HTTPNotFound()
         form = BlogUpdateForm(request.POST, entry)
@@ -77,14 +81,14 @@ This is how views/blog.py should look like at this point::
             form.populate_obj(entry)
             return HTTPFound(location=request.route_url('blog', id=entry.id,
                                                         slug=entry.slug))
-        return {'form':form, 'action':request.matchdict.get('action')}
+        return {'form': form, 'action': request.matchdict.get('action')}
 
                      
 This is how models/user.py should look like at this point::
-    
+
     import datetime #<- will be used to set default dates on models
     import sqlalchemy as sa #<- provides access to sqlalchemy constructs
-    from pyramid_blogr.models import Base, DBSession #<- we need to import our sqlalchemy metadata for model classes to inherit from
+    from pyramid_blogr.models.meta import Base, DBSession  #<- we need to import our sqlalchemy metadata for model classes to inherit from
     from sqlalchemy import (
         Column,
         Integer,
@@ -96,17 +100,14 @@ This is how models/user.py should look like at this point::
 
     class User(Base):
         __tablename__ = 'users'
-        id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
         name = Column(Unicode(255), unique=True, nullable=False)
         password = Column(Unicode(255), nullable=False)
         last_logged = Column(DateTime, default=datetime.datetime.utcnow)
 
-        @classmethod
-        def by_name(cls, name):
-            return DBSession.query(User).filter(User.name == name).first()
-
         def verify_password(self, password):
             return self.password == password
+
 
 This is how /templates/index.mako should look like at this point::
         

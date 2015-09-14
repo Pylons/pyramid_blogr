@@ -12,21 +12,20 @@ will be used to generate form HTML and validation of form fields.
 First in root of our application lets create file *forms.py* with following 
 contents::
 
-    from wtforms import Form, BooleanField, TextField, TextAreaField, validators
+    from wtforms import Form, StringField, TextAreaField, validators
     from wtforms import HiddenField
-    
+
     strip_filter = lambda x: x.strip() if x else None
-    
+
     class BlogCreateForm(Form):
-        title = TextField('Entry title', [validators.Length(min=1, max=255)],
+        title = StringField('Title', [validators.Length(min=1, max=255)],
                           filters=[strip_filter])
-        body = TextAreaField('Entry body', [validators.Length(min=1)],
+        body = TextAreaField('Contents', [validators.Length(min=1)],
                              filters=[strip_filter])
-        
+
     class BlogUpdateForm(BlogCreateForm):
         id = HiddenField()
 
-    
 We create a simple filter that will be used to remove all the whitespace 
 from the beginning and end of our input.
 
@@ -56,14 +55,14 @@ Next we implement actual view callable that will handle new entries for us::
 
     @view_config(route_name='blog_action', match_param='action=create',
                  renderer='pyramid_blogr:templates/edit_blog.mako')
-    def blog_create(request): 
-        entry = Entry()
+    def blog_create(request):
+        entry = BlogRecord()
         form = BlogCreateForm(request.POST)
         if request.method == 'POST' and form.validate():
             form.populate_obj(entry)
             DBSession.add(entry)
             return HTTPFound(location=request.route_url('home'))
-        return {'form':form, 'action':request.matchdict.get('action')}
+        return {'form': form, 'action': request.matchdict.get('action')}
 
 What it does step by step:
 
@@ -85,8 +84,8 @@ The following view will handle updates to existing blog entries::
     @view_config(route_name='blog_action', match_param='action=edit',
                  renderer='pyramid_blogr:templates/edit_blog.mako')
     def blog_update(request):
-        id = int(request.params.get('id', -1))
-        entry = Entry.by_id(id)
+        blog_id = int(request.params.get('id', -1))
+        entry = BlogRecordService.by_id(blog_id)
         if not entry:
             return HTTPNotFound()
         form = BlogUpdateForm(request.POST, entry)
@@ -94,7 +93,7 @@ The following view will handle updates to existing blog entries::
             form.populate_obj(entry)
             return HTTPFound(location=request.route_url('blog', id=entry.id,
                                                         slug=entry.slug))
-        return {'form':form, 'action':request.matchdict.get('action')}
+        return {'form': form, 'action': request.matchdict.get('action')}
 
 What it does step by step:
 
@@ -153,6 +152,9 @@ field "id" that holds the id of entry that is being updated.
 
 If the form doesn't validate field errors properties contain lists of errors for 
 us to present to user.
+
+If you visit http://localhost:6543/ you will notice that you can already create and edit blog entries.
+Now it is time to work towards securing them.
 
 .. hint::
     Because WTForms form instances are iterable you can easly write a template, 

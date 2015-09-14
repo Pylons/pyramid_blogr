@@ -9,6 +9,6 @@
 
 <p><a href="${request.route_url('home')}">Go Back</a> ::
     <a href="${request.route_url('blog_action', action='edit',
-    _query={'id':entry.id})}">Edit Entry</a>
+    _query={'id':entry.id})}">Edit entry</a>
 
 </p>

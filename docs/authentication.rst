@@ -38,14 +38,21 @@ Lets update our model with two methods, "verify_password" to check user input
 with password associated with user instance and "by_name" that will fetch 
 our user from database based on login.
 
-We add following methods to our User class in models.py::
+We add following method to our User class in models.py::
 
-    @classmethod
-    def by_name(cls, name):
-        return DBSession.query(User).filter(User.name == name).first()
-    
     def verify_password(self, password):
         return self.password == password
+
+We also need to create UserService class in models/services/user.py::
+
+    from ..meta import DBSession
+    from ..user import User
+
+    class UserService(object):
+
+        @classmethod
+        def by_name(cls, name):
+            return DBSession.query(User).filter(User.name == name).first()
 
 .. warning::
     In a real application verify_password should be using some strong way 
@@ -57,7 +64,8 @@ The final step is to update the view that handles authentication.
 First we need to add following import to views/default.py::
 
     from pyramid.httpexceptions import HTTPFound
-    from pyramid.security import remember, forget        
+    from pyramid.security import remember, forget
+    from ..models.services.user import UserService
 
 Those functions will return headers used to set our AuthTkt cookie 
 (from AuthTktAuthenticationPolicy) for users browser, "remember" is used to 
@@ -71,7 +79,7 @@ Now we have everything ready to implement our actual view::
     def sign_in_out(request):
         username = request.POST.get('username')
         if username:
-            user = User.by_name(username)
+            user = UserService.by_name(username)
             if user and user.verify_password(request.POST.get('password')):
                 headers = remember(request, user.name)
             else:
@@ -91,7 +99,7 @@ the cookie (if any) is issued.
 **Voilà!!!** 
 
 Congratulations, this tutorial is now complete, you can now sign in and out to 
-add/edit blog entries. 
+add/edit blog entries using login `admin` with password `admin` (this user was added to database during `initialize_db step`).
 
 Now is the time to go back to documentation to read on the details of 
 functions/packages used in this example. I've barely scratched the surface of 
