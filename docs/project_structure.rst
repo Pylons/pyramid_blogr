@@ -3,7 +3,7 @@
 =========================================
 
 .. hint ::
-    At the time of writingl, 1.5.7 was the mos recent stable version 
+    At the time of writing, 1.5.7 was the most recent stable version 
     of Pyramid, you can use newer version of Pyramid but there will be some slight
     differences in default project templates.
 
