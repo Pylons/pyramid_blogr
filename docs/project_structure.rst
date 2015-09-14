@@ -3,15 +3,15 @@
 =========================================
 
 .. hint ::
-    At the time of writing of this tutorial this was the mos recent stable version 
-    of pyramid, you can use newer version of pyramid but there will be some slight
+    At the time of writing, 1.5.7 was the most recent stable version 
+    of Pyramid, you can use newer version of Pyramid but there will be some slight
     differences in default project templates.
 
 First we need to install pyramid framework itself::
 
     pip install pyramid==1.5.7
 
-This will install pyramid itself with it's base dependencies, your python 
+This will install Pyramid and its dependencies. Your python 
 environment (ideally VirtualEnv), will now contain some helpful commands 
 including:
 
@@ -38,7 +38,7 @@ We will end up with pyramid_blogr dir that should have following structure::
 Adding dependencies to the project
 ----------------------------------
 
-Since pyramid tries it's best to be a non-opinionated solution we will have to 
+Since Pyramid tries its best to be a non-opinionated solution we will have to 
 decide what libraries we want for form handling and template helpers.
 For this tutorial we will use great WTForms library and webhelpers packages.
 
