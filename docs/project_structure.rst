@@ -3,20 +3,20 @@
 =========================================
 
 .. hint ::
-    At the time of writing of this tutorial this was the mos recent stable version 
-    of pyramid, you can use newer version of pyramid but there will be some slight
+    At the time of writingl, 1.5.7 was the mos recent stable version 
+    of Pyramid, you can use newer version of Pyramid but there will be some slight
     differences in default project templates.
 
-First we need to install pyramid framework itself::
+First we need to install Pyramid framework itself::
 
     pip install pyramid==1.5.7
 
-This will install pyramid itself with it's base dependencies, your python 
+This will install Pyramid itself with its base dependencies, your Python 
 environment (ideally VirtualEnv), will now contain some helpful commands 
 including:
 
     * **pcreate** used to create fresh project and directory structures from 
-      pyramid scaffolds(project templates) that pyramid ships with
+      Pyramid scaffolds(project templates) that Pyramid ships with
     * **pserve** will be used to start our WSGI server
 
 The next step is to create our project using alchemy scaffold - that will 
@@ -29,7 +29,7 @@ We will end up with pyramid_blogr dir that should have following structure::
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
     ├── models.py   <- model definitions aka data sources (often RDBMS or noSQL)
-    ├── scripts/    <- util python scripts
+    ├── scripts/    <- util Python scripts
     ├── static/     <- usually css, js, images
     ├── templates/  <- template files
     ├── tests.py    <- tests
@@ -38,7 +38,7 @@ We will end up with pyramid_blogr dir that should have following structure::
 Adding dependencies to the project
 ----------------------------------
 
-Since pyramid tries it's best to be a non-opinionated solution we will have to 
+Since Pyramid tries its best to be a non-opinionated solution we will have to 
 decide what libraries we want for form handling and template helpers.
 For this tutorial we will use great WTForms library and webhelpers packages.
 
@@ -67,7 +67,7 @@ path. In the root of our project where setup.py lives execute following line::
     ~/yourVenv/bin/pip install -e .
 
 This will install all the requirements for our application and will make it 
-importable in our python environment.
+importable in our Python environment.
 
 .. warning::
     Don't forget to add the . after -e switch
@@ -89,7 +89,7 @@ This will launch an instance of a WSGI (waitress by default) server that will ru
 both your application code and static files.
 **development.ini file is used to provide all the configuration details**, 
 the *--reload* parameter tells the server to restart our application every 
-time it's code changes, this is a great setting for fast development and 
+time its code changes, this is a great setting for fast development and 
 testing live changes to our app. 
 
 Unfortunately on our first run the application will throw exception::
