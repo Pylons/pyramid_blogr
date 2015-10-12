@@ -145,7 +145,7 @@ If you tried to log in with `admin/admin` credentials you may notice that the ap
 so we should allow our application to migrate to secure hashes (usually strong sha512_crypt if we are using the
 quickstart class).
 
-We can easly fix this by altering our `verify_password` method:
+We can easly fix this by altering our `verify_password` method::
 
     def verify_password(self, password):
         # is it cleartext?
