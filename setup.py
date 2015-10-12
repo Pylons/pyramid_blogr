@@ -24,6 +24,13 @@ requires = [
     'passlib'
 ]
 
+docs_extras = [
+    'Sphinx >= 1.3.1', # Read The Docs minimum version
+    'docutils',
+    'repoze.sphinx.autointerface',
+    'pylons-sphinx-themes',
+]
+
 setup(name='pyramid_blogr',
       version='0.0',
       description='pyramid_blogr',

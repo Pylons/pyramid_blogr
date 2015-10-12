@@ -201,7 +201,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('c', 'pyramid_blogr.tex', u'pyramid\\_blogr Documentation',
+  ('index', 'pyramid_blogr.tex', u'pyramid\\_blogr Documentation',
    u'Marcin Lulek', 'manual'),
 ]
 
@@ -231,7 +231,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('c', 'pyramid_blogr', u'pyramid_blogr Documentation',
+    ('index', 'pyramid_blogr', u'pyramid_blogr Documentation',
      [u'Marcin Lulek'], 1)
 ]
 
@@ -245,7 +245,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('c', 'pyramid_blogr', u'pyramid_blogr Documentation',
+  ('index', 'pyramid_blogr', u'pyramid_blogr Documentation',
    u'Marcin Lulek', 'pyramid_blogr', 'One line description of project.',
    'Miscellaneous'),
 ]
