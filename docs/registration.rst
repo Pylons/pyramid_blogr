@@ -139,3 +139,21 @@ The last step is to alter our `views/default.py` to set password like this::
 
 
 Now our passwords are properly hashed and can be securely stored.
+
+If you tried to log in with `admin/admin` credentials you may notice that the application threw exception
+`ValueError: hash could not be identified` because our old clear text passwords are not identified,
+so we should allow our application to migrate to secure hashes (usually strong sha512_crypt if we are using the
+quickstart class).
+
+We can easly fix this by altering our `verify_password` method:
+
+    def verify_password(self, password):
+        # is it cleartext?
+        if password == self.password:
+            self.set_password(password)
+
+        return blogger_pwd_context.verify(password, self.password)
+
+Keep in mind that for proper migration of valid hash schemes passlib provides mechanism you can use to quickly upgrade
+ from one scheme to another.
+
