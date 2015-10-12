@@ -224,7 +224,7 @@ with both login and unencrypted password equal to admin.
 .. warning ::
     This is just a tutorial example and **production code should utilize 
     passwords hashed with a strong one-way encryption function**. 
-    You can use a package like **cryptacular** for this purpose.
+    You can use a package like **passlib** or **cryptacular** for this purpose.
 
 The last step is to fix the imports from MyModel to User model and meta package in __init__.py.
 
