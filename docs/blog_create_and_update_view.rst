@@ -159,9 +159,7 @@ Now it is time to work towards securing them.
 .. hint::
     Because WTForms form instances are iterable you can easly write a template, 
     function that will iterate over their fields and auto generate dynamic html 
-    for each of them.  
+    for each of them.
 
 
-.. toctree::
-
-   blog_create_and_update_view_src.rst
+Next :doc:`authorization`

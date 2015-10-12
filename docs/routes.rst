@@ -122,6 +122,4 @@ Lets add our routes to configurator after "home" route::
     
 Now we are ready to develop actual views
 
-.. toctree::
-
-   routes_src
+Next  :doc:`initial_views`

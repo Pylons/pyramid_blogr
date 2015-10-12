@@ -105,6 +105,5 @@ Now is the time to go back to documentation to read on the details of
 functions/packages used in this example. I've barely scratched the surface of 
 what is possible with Pyramid.
 
-.. toctree::
+Next :doc:`registration`
 
-   authentication_src

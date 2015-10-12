@@ -118,6 +118,4 @@ that has `edit` or `create` permissions.
 
 **Our views are secured!**
 
-.. toctree::
-
-   authorization_src
+Next :doc:`authentication`

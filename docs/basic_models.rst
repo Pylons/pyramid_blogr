@@ -261,6 +261,4 @@ command from your environment, it may look like this::
 ~/yourVenv/bin/initialize_pyramid_blogr_db development.ini
 
 
-.. toctree::
-
-   basic_models_src
+Next  :doc:`routes`

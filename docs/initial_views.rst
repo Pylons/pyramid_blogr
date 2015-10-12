@@ -135,6 +135,5 @@ this route will not be reachable with GET requests.
 
 At this point we can start implementing our view code.
 
-.. toctree::
+Next :doc:`blog_models_and_views`
 
-   initial_views_src

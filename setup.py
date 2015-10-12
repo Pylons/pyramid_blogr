@@ -20,7 +20,8 @@ requires = [
     'wtforms==2.0.2',  # form library
     'webhelpers2==2.0', # various web building related helpers
     'paginate==0.5', # pagination helpers
-    'paginate_sqlalchemy==0.2.0'
+    'paginate_sqlalchemy==0.2.0',
+    'passlib'
 ]
 
 setup(name='pyramid_blogr',

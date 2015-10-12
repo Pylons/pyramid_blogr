@@ -28,6 +28,7 @@ Contents:
    blog_create_and_update_view
    authorization
    authentication
+   registration
 
 The complete source code for this application is available at:
 

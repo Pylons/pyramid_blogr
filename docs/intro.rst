@@ -23,6 +23,8 @@ Pyramid_blogr makes some initial assumptions:
 This tutorial was originally created by **Marcin Lulek**, developer, freelancer 
 and founder of https://appenlight.com.
 
+:doc:`Start the tutorial <project_structure>`
+
 Documentation links
 -------------------
 

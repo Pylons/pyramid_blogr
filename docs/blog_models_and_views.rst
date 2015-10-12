@@ -351,6 +351,4 @@ that will be used to append GET(query) parameters, in our case it will be ?id=X.
 
 If you start the application now you will get an empty welcome page stating that "No blog entries are found"
 
-.. toctree::
-
-   blog_models_and_views_src
+Next :doc:`blog_create_and_update_view`

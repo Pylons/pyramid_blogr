@@ -119,3 +119,5 @@ Unfortunately you will see something like this instead of a webpage ;-) ::
 
 This is where the **initialize_pyramid_blogr_db** command comes into play, but 
 before we run it we need to create our application models.
+
+Next :doc:`basic_models`
