@@ -50,6 +50,9 @@ setup(name='pyramid_blogr',
       zip_safe=False,
       test_suite='pyramid_blogr',
       install_requires=requires,
+      extras_require = {
+          'docs':docs_extras,
+      },
       entry_points="""\
       [paste.app_factory]
       main = pyramid_blogr:main
