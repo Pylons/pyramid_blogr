@@ -6,11 +6,15 @@
 Welcome to pyramid_blogr's documentation!
 =========================================
 
-Pyramid_blogr was originally inspired by Flaskr tutorial and is aimed to introduce readers to basic concepts of
-Pyramid Web Framework and web application development.
+Pyramid_blogr was originally inspired by `Flaskr tutorial
+<http://flask.pocoo.org/docs/0.10/tutorial/introduction/>`_ and is aimed to
+introduce readers to basic concepts of the `Pyramid Web Framework
+<docs.pylonsproject.org/projects/pyramid/en/latest/>`_ and web application
+development.
 
-.. hint::
-    This tutorial is meant for **Python 2.x** and **Python 3.3+** versions of the language.
+.. note::
+    This tutorial is meant for **Python 2.6+** and **Python 3.3+** versions of
+    the language.
 
 
 Contents:
