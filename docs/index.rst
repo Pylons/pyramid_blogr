@@ -17,7 +17,8 @@ development.
     the language.
 
 
-Contents:
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
@@ -38,7 +39,7 @@ The complete source code for this application is available at:
 https://github.com/Pylons/pyramid_blogr
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
