@@ -2,38 +2,38 @@
 What you will know after you finish this tutorial
 =================================================
 
-The tutorial is really simple but should be enough of a head start to writing 
-applications using Pyramid Web Framework. By the end of it you should have a 
-basic understanding of templating, working with databases, using URL routes to 
-launch our business logic(views) and authentication, example of form library 
-usage and pagination of our blog entries.
+This tutorial is really simple, but it should give you enough of a head start
+to writing applications using the Pyramid Web Framework. By the end of it, you
+should have a basic understanding of templating, working with databases, using
+URL routes to launch business logic (views), authentication, authorization,
+using a form library, and usage and pagination of our blog entries.
 
 Pyramid_blogr makes some initial assumptions:
 
-* Will use **alchemy** scaffold with SQLAlchemy as its ORM layer
-* **Mako** templates will be our choice for templating engine
-* **URL dispatch** will be the default way for our view resolution
-* A single user in database will be created in setup phase
-* Will perform a simple authentication of the user
-* Authenticated user will be able to make blog entries
-* The entries will be listed from newest to oldest one
-* We will use **webhelpers** package for pagination
-* **WTForms** form library will provide form validation
+* We will use Pyramid's **alchemy** scaffold with SQLAlchemy as its ORM layer.
+* **Mako** templates will be our choice for templating engine.
+* **URL dispatch** will be the default way for our view resolution.
+* A single user in the database will be created during the setup phase.
+* We will perform simple authentication of the user.
+* The authenticated user will be authorized to make blog entries.
+* The blog entries will be listed from newest to oldest.
+* We will use the **webhelpers** package for pagination.
+* The **WTForms** form library will provide form validation.
 
 This tutorial was originally created by **Marcin Lulek**, developer, freelancer 
-and founder of https://appenlight.com.
+and founder of `app enlight <https://appenlight.com>`_.
 
-:doc:`Start the tutorial <project_structure>`
+:doc:`Start the tutorial <project_structure>`.
 
 Documentation links
 -------------------
 
-* **Pyramid** : http://docs.pylonsproject.org/projects/pyramid/en/1.3-branch/
-* **Mako templates** : http://www.makotemplates.org/
-* **SQLAlchemy** : http://www.sqlalchemy.org/
-* **Webhelpers** : http://webhelpers.readthedocs.org/en/latest/
-* **WTForms** : http://wtforms.simplecodes.com
+* `Pyramid <http://docs.pylonsproject.org/projects/pyramid/en/latest/>`_
+* `Mako templates <http://www.makotemplates.org/>`_
+* `SQLAlchemy <http://www.sqlalchemy.org/>`_
+* `Webhelpers <http://webhelpers.readthedocs.org/en/latest/>`_
+* `WTForms <http://wtforms.simplecodes.com>`_
 
-The complete source code for this application is available at:
+The complete source code for this application is available on GitHub at:
 
 https://github.com/Pylons/pyramid_blogr
