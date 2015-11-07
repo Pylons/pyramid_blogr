@@ -2,7 +2,7 @@
 1. Create your tutorial project structure
 =========================================
 
-.. hint ::
+.. note ::
     At the time of writing, 1.5.7 was the most recent stable version 
     of Pyramid, you can use newer version of Pyramid but there will be some slight
     differences in default project templates.
