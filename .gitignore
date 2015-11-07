@@ -20,11 +20,15 @@ pip-log.txt
 .coverage
 .tox
 
-#Translations
+# Translations
 *.mo
 
-#Mr Developer
+# Mr Developer
 .mr.developer.cfg
 /.project
 /.pydevproject
 /pyramid_blogr.sqlite
+
+# pyvenv
+pyvenv.cfg
+lib
