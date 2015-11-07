@@ -32,3 +32,4 @@ pip-log.txt
 # pyvenv
 pyvenv.cfg
 lib
+pip-selfcheck.json
