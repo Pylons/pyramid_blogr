@@ -14,6 +14,7 @@
 
 import sys
 import os
+import datetime
 import pylons_sphinx_themes
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -61,7 +62,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pyramid_blogr'
-copyright = u'2015, Marcin Lulek'
+thisyear = datetime.datetime.now().year
+copyright = u'2012-%s, Marcin Lulek' %thisyear
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -80,7 +82,7 @@ release = '1'
 # non-false value, then it is used:
 #today = ''
 # Else, today_fmt is used as the format for a strftime call.
-#today_fmt = '%B %d, %Y'
+today_fmt = '%B %d, %Y'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -154,7 +156,7 @@ html_theme_path = pylons_sphinx_themes.get_html_themes_path()
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-#html_last_updated_fmt = '%b %d, %Y'
+html_last_updated_fmt = '%b %d, %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
