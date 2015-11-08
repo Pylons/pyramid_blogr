@@ -1,3 +1,5 @@
+.. _introduction:
+
 =================================================
 What you will know after you finish this tutorial
 =================================================
@@ -26,7 +28,7 @@ and founder of `app enlight <https://appenlight.com>`_.
 :doc:`Start the tutorial <project_structure>`.
 
 Documentation links
--------------------
+===================
 
 * :ref:`Pyramid <pyramid:index>`
 * `Mako templates <http://docs.makotemplates.org/en/latest/>`_
