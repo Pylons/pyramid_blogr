@@ -149,4 +149,5 @@ Unfortunately you will see something like the following instead of a webpage.
 This is where the ``initialize_pyramid_blogr_db`` command comes into play; but
 before we run it, we need to create our application models.
 
-Next, :doc:`basic_models`.
+Stop the WSGI server with ``CTRL-C``, then proceed to the next section in the
+tutorial, :doc:`basic_models`.
