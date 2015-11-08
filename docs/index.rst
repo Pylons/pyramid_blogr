@@ -3,8 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pyramid_blogr's documentation!
-=========================================
+.. _index:
+
+======================
+pyramid_blogr tutorial
+======================
 
 Pyramid_blogr was originally inspired by `Flaskr tutorial
 <http://flask.pocoo.org/docs/0.10/tutorial/introduction/>`_ and is aimed to
@@ -13,17 +16,18 @@ introduce readers to basic concepts of the `Pyramid Web Framework
 development.
 
 .. note::
-    This tutorial is meant for **Python 2.6+** and **Python 3.3+** versions of
+    This tutorial is meant for **Python 2.7** and **Python 3.3+** versions of
     the language.
 
 
 Contents
---------
+========
 
 .. toctree::
    :maxdepth: 2
 
    intro
+   requirements
    project_structure
    basic_models
    routes
@@ -39,7 +43,7 @@ The complete source code for this application is available at:
 https://github.com/Pylons/pyramid_blogr
 
 Indices and tables
-------------------
+==================
 
 * :ref:`genindex`
 * :ref:`modindex`

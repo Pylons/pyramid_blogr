@@ -2,24 +2,23 @@
 1. Create your tutorial project structure
 =========================================
 
-.. note ::
-    At the time of writing, 1.5.7 was the most recent stable version 
-    of Pyramid, you can use newer version of Pyramid but there will be some slight
-    differences in default project templates.
+.. note::
+    At the time of writing, 1.5.7 was the most recent stable version of
+    Pyramid.  You can use newer versions of Pyramid, but there may be some
+    slight differences in default project templates.
 
-First we need to install Pyramid framework itself::
+First we need to install Pyramid itself::
 
     pip install pyramid==1.5.7
 
-This will install Pyramid itself with its base dependencies, your Python 
-environment (ideally VirtualEnv), will now contain some helpful commands 
-including:
+This will install Pyramid and its base dependencies.  Your Python environment
+(ideally VirtualEnv) will now contain some helpful commands including:
 
-    * **pcreate** used to create fresh project and directory structures from 
-      Pyramid scaffolds(project templates) that Pyramid ships with
-    * **pserve** will be used to start our WSGI server
+    * ``pcreate`` - Used to create a new project and directory structures from
+      Pyramid scaffolds (project templates) shipped with Pyramid.
+    * ``pserve`` - Used to start a WSGI server.
 
-The next step is to create our project using alchemy scaffold - that will 
+The next step is to create our project using the alchemy scaffold, which will
 provide SQLAlchemy as our default ORM layer::
 
     ~/yourVenv/bin/pcreate -s alchemy pyramid_blogr
