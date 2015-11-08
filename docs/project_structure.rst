@@ -1,31 +1,33 @@
 .. _blogr_project_structure:
 
-=========================================
-1. Create your tutorial project structure
-=========================================
+==============================================
+1. Create your pyramid_blogr project structure
+==============================================
 
 .. note::
-    At the time of writing, 1.5.7 was the most recent stable version of
-    Pyramid.  You can use newer versions of Pyramid, but there may be some
-    slight differences in default project templates.
 
-First we need to install Pyramid itself::
+  At the time of writing, 1.5.7 was the most recent stable version of Pyramid.
+  You can use newer versions of Pyramid, but there may be some slight
+  differences in default project templates.
 
-    pip install pyramid==1.5.7
+When we installed Pyramid, several scripts were installed in your virtual
+environment including:
 
-This will install Pyramid and its base dependencies.  Your Python environment
-(ideally VirtualEnv) will now contain some helpful commands including:
+* ``pcreate`` - Used to create a new project and directory structures from
+  Pyramid scaffolds (project templates) shipped with Pyramid.
+* ``pserve`` - Used to start a WSGI server.
 
-    * ``pcreate`` - Used to create a new project and directory structures from
-      Pyramid scaffolds (project templates) shipped with Pyramid.
-    * ``pserve`` - Used to start a WSGI server.
+Using the ``pcreate`` script, we will create our project using the alchemy
+scaffold, which will provide SQLAlchemy as our default ORM layer.
 
-The next step is to create our project using the alchemy scaffold, which will
-provide SQLAlchemy as our default ORM layer::
+.. code-block:: bash
 
-    ~/yourVenv/bin/pcreate -s alchemy pyramid_blogr
+    $ $VENV/bin/pcreate -s alchemy pyramid_blogr
 
-We will end up with pyramid_blogr dir that should have following structure::
+We will end up with the directory ``pyramid_blogr`` which should have the
+structure as explained below.
+
+.. code-block:: text
 
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
@@ -36,16 +38,21 @@ We will end up with pyramid_blogr dir that should have following structure::
     ├── tests.py    <- tests
     └── views.py    <- views aka business logic 
 
+
+.. _adding_dependencies:
+
 Adding dependencies to the project
-----------------------------------
+==================================
 
-Since Pyramid tries its best to be a non-opinionated solution we will have to 
-decide what libraries we want for form handling and template helpers.
-For this tutorial we will use great WTForms library and webhelpers packages.
+Since Pyramid tries its best to be a non-opinionated solution, we will have to
+decide which libraries we want for form handling and template helpers. For this
+tutorial, we will use the WTForms library and webhelpers package.
 
-To make them dependencies of our application we need to open setup.py file 
-and extend **requires** with additional packages, in the end it should look 
-like this::
+To make them dependencies of our application, we need to open the ``setup.py``
+file and extend the ``requires`` section with additional packages. In the end,
+it should look like the following.
+
+.. code-block:: ini
 
     requires = [
         'pyramid==1.5.7',
@@ -63,62 +70,83 @@ like this::
         ]
         
 Now we can setup our application for development and add it to our environment 
-path. In the root of our project where setup.py lives execute following line::
+path. Change directory to the root of our project where ``setup.py`` lives, and
+install the dependencies in ``setup.py`` with the following commands.
 
-    ~/yourVenv/bin/pip install -e .
+.. code-block:: bash
 
-This will install all the requirements for our application and will make it 
-importable in our Python environment.
+    $ cd pyramid_blogr
+    $ $VENV/bin/pip install -e .
 
 .. warning::
-    Don't forget to add the . after -e switch
 
-Another side effect of this command is that our environment gained another 
-command called **initialize_pyramid_blogr_db**, we will use it to 
-create/populate the database from the models we will create in a moment, 
-this script will also create the default user for our application.
+    Don't forget to add the period (``.``) after the ``-e`` switch.
+
+This will install all the requirements for our application, making it
+importable into our Python environment.
+
+Another side effect of this command is that our environment gained another
+command called **initialize_pyramid_blogr_db**, we will use it to create and
+populate the database from the models we will create in a moment. This script
+will also create the default user for our application.
+
+.. _running-our-application:
 
 Running our application
 -----------------------
 
-To visit our application we need to use a WSGI server that will start serving 
-the content to the browser with following command:: 
+To visit our application, we need to use a WSGI server that will start serving
+the content to the browser with following command.
 
-    ~/yourVenv/bin/pserve --reload development.ini
+.. code-block:: bash
 
-This will launch an instance of a WSGI (waitress by default) server that will run 
-both your application code and static files.
-**development.ini file is used to provide all the configuration details**, 
-the *--reload* parameter tells the server to restart our application every 
-time its code changes, this is a great setting for fast development and 
-testing live changes to our app. 
+    $ $VENV/bin/pserve --reload development.ini
 
-Unfortunately on our first run the application will throw exception::
+This will launch an instance of a WSGI server (waitress by default) that will
+run both your application code and static files. The file ``development.ini``
+is used to provide all the configuration details. The ``--reload`` parameter
+tells the server to restart our application every time its code changes. This
+is a very useful setting for fast development and testing changes to our app
+with live reloading.
+
+Unfortunately on our first run the application will throw an exception.
+
+.. code-block:: python
 
     ImportError: No module named 'pyramid_chameleon'
 
-This is because we switched from chameleon templating engine to mako.
+This is because we switched from the chameleon templating engine to mako.
 
-To fix this you need to open `pyramid_blogr/__init__.py` and change::
+To fix this you need to open ``pyramid_blogr/__init__.py`` and change one line
+as follows.
+
+.. code-block:: python
 
     config.include('pyramid_chameleon')
     # to
     config.include('pyramid_mako')
 
-On your next application restart should see something like this::
+Try the command to start the server again, and you should see something like
+the following.
+
+.. code-block:: bash
+
+    $ $VENV/bin/pserve --reload development.ini
 
     Starting subprocess with file monitor
     Starting server in PID 8517.
     serving on http://0.0.0.0:6543
 
-You can open your favorite browser and go to http://localhost:6543/ to see how 
-our application looks like.
+You can open a web browser and visit the URL http://localhost:6543/ to see how
+our application looks.
 
-Unfortunately you will see something like this instead of a webpage ;-) ::
+Unfortunately you will see something like the following instead of a webpage.
+
+.. code-block:: text
 
     Pyramid is having a problem using your SQL database.  The problem...
 
-This is where the **initialize_pyramid_blogr_db** command comes into play, but 
-before we run it we need to create our application models.
+This is where the ``initialize_pyramid_blogr_db`` command comes into play; but
+before we run it, we need to create our application models.
 
-Next :doc:`basic_models`
+Next, :doc:`basic_models`.
