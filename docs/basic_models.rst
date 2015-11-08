@@ -1,3 +1,5 @@
+.. _blogr_basic_models:
+
 =========================
 2. Create database models
 =========================
@@ -164,7 +166,7 @@ Adding model definitions
     It's perfectly normal, so don't worry about this. 
 
 We will need two declarations of models that will replace the *MyModel* class that was created when we scaffolded
-our project::
+our project.
 
 After the import part of `models/user.py` add the following::
 

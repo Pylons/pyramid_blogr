@@ -1,3 +1,5 @@
+.. _blogr_registration:
+
 ===============
 9. Registration
 ===============
@@ -29,15 +31,17 @@ Our second step will be adding a new route that handles user registration in our
 
 We should add link to the registration page in our `index.mako` template so we can easly navigate to it.
 
-% if request.authenticated_userid:
-    Welcome <strong>${request.authenticated_userid}</strong> ::
-    <a href="${request.route_url('auth',action='out')}">Sign Out</a>
-%else:
-    <form action="${request.route_url('auth',action='in')}" method="post" class="form-inline">
-     ...
-    </form>
-    <a href="${request.route_url('register')}">Register here</a>
-%endif
+.. code-block:: mako
+
+    % if request.authenticated_userid:
+        Welcome <strong>${request.authenticated_userid}</strong> ::
+        <a href="${request.route_url('auth',action='out')}">Sign Out</a>
+    %else:
+        <form action="${request.route_url('auth',action='in')}" method="post" class="form-inline">
+         ...
+        </form>
+        <a href="${request.route_url('register')}">Register here</a>
+    %endif
 
 So at this point we have the form object and routing set up, we are missing related view, model and template code.
 Let us move forward with the view code in `views/default.py`.
