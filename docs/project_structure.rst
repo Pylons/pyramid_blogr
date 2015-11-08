@@ -1,3 +1,5 @@
+.. _blogr_project_structure:
+
 =========================================
 1. Create your tutorial project structure
 =========================================
