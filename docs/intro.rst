@@ -28,11 +28,12 @@ and founder of `app enlight <https://appenlight.com>`_.
 Documentation links
 -------------------
 
-* `Pyramid <http://docs.pylonsproject.org/projects/pyramid/en/latest/>`_
-* `Mako templates <http://www.makotemplates.org/>`_
-* `SQLAlchemy <http://www.sqlalchemy.org/>`_
+* :ref:`Pyramid <pyramid:index>`
+* `Mako templates <http://docs.makotemplates.org/en/latest/>`_
+* `pyramid_mako <http://docs.pylonsproject.org/projects/pyramid-mako/en/latest/>`_
+* `SQLAlchemy <http://docs.sqlalchemy.org/en/>`_
 * `Webhelpers <http://webhelpers.readthedocs.org/en/latest/>`_
-* `WTForms <http://wtforms.simplecodes.com>`_
+* :ref:`WTForms <wtforms:doc-index>`
 
 The complete source code for this application is available on GitHub at:
 
