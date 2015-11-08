@@ -95,13 +95,29 @@ proceed through the tutorial:
         └── blogr_tutorial/
             ├── env/
             └── pyramid_blogr/
-                ├── __init__.py
-                ├── models.py
-                ├── scripts/
-                ├── static/
-                ├── templates/
-                ├── tests.py
-                └── views.py
+                ├── CHANGES.txt
+                ├── MANIFEST.in
+                ├── README.txt
+                ├── development.ini
+                ├── production.ini
+                ├── pyramid_blogr/
+                │   ├── __init__.py
+                │   ├── __pycache__
+                │   ├── models.py
+                │   ├── scripts/
+                │   │   ├── __init__.py
+                │   │   ├── __pycache__
+                │   │   └── initializedb.py
+                │   ├── static/
+                │   │   ├── pyramid-16x16.png
+                │   │   ├── pyramid.png
+                │   │   ├── theme.css
+                │   │   └── theme.min.css
+                │   ├── templates/
+                │   │   └── mytemplate.pt
+                │   ├── tests.py
+                │   └── views.py
+                └── setup.py
 
 For Linux, the commands to do so are as follows:
 
