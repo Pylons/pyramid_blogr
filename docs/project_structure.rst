@@ -93,7 +93,7 @@ will also create the default user for our application.
 .. _running-our-application:
 
 Running our application
------------------------
+=======================
 
 To visit our application, we need to use a WSGI server that will start serving
 the content to the browser with following command.
