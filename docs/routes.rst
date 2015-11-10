@@ -20,14 +20,14 @@ To sign in users::
 
     /sign/in
 
-So when user visits http://somedomain.foo/sign/in - the view callable responsible 
+So when a user visits http://somedomain.foo/sign/in - the view callable responsible 
 for signing in the user based on POST vars will be executed.
 
 To sign out users::
     
     /sign/out
 
-Index page (it is already defined via default scaffold under name "home")::
+Index page (it is already defined via default the scaffold we used earlier under the name "home")::
 
     /
 
@@ -44,7 +44,7 @@ the pattern determines that this part is dynamic, so our URL could look like::
  
 This single route could map to different views. 
  
-Finally a route used to for our blog entries::
+Finally a route used to view our blog entries::
 
     /blog/{id:\d+}/{slug} 
     
@@ -70,7 +70,7 @@ will perform initial application configuration on runtime.
 The main function will accept parsed ini file that we passed to our pserve 
 command.
 
-Lets quickly go over what this file does by default.
+Let's quickly go over what this file does by default.
 ::
 
     engine = engine_from_config(settings, 'sqlalchemy.')
@@ -109,7 +109,7 @@ decorators and includes to add them to our config object.
 
     return config.make_wsgi_app()
 
-Instance of WSGI app is returned to the server.
+An instance of a WSGI app is returned to the server.
 
 Adding routes to application configuration
 ------------------------------------------
