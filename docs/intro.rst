@@ -13,7 +13,7 @@ using a form library, and usage and pagination of our blog entries.
 Pyramid_blogr makes some initial assumptions:
 
 * We will use Pyramid's **alchemy** scaffold with SQLAlchemy as its ORM layer.
-* **Mako** templates will be our choice for templating engine.
+* **Jinja2** templates will be our choice for templating engine.
 * **URL dispatch** will be the default way for our view resolution.
 * A single user in the database will be created during the setup phase.
 * We will perform simple authentication of the user.
@@ -31,8 +31,8 @@ Documentation links
 ===================
 
 * :ref:`Pyramid <pyramid:index>`
-* `Mako templates <http://docs.makotemplates.org/en/latest/>`_
-* `pyramid_mako <http://docs.pylonsproject.org/projects/pyramid-mako/en/latest/>`_
+* `Jinja2 templates <http://jinja.pocoo.org/>`_
+* `pyramid_jinja2 <http://docs.pylonsproject.org/projects/pyramid-jinja2/en/latest/>`_
 * `SQLAlchemy <http://docs.sqlalchemy.org/en/>`_
 * `Webhelpers <http://webhelpers.readthedocs.org/en/latest/>`_
 * :ref:`WTForms <wtforms:doc-index>`
