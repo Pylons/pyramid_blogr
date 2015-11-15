@@ -8,7 +8,7 @@ from ..models.user import User
 from ..models.meta import DBSession
 
 
-@view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
+@view_config(route_name='home', renderer='pyramid_blogr:templates/index.jinja2')
 def index_page(request):
     page = int(request.params.get('page', 1))
     paginator = BlogRecordService.get_paginator(request, page)
@@ -32,7 +32,7 @@ def sign_in_out(request):
                      headers=headers)
 
 
-@view_config(route_name='register', renderer='pyramid_blogr:templates/register.mako')
+@view_config(route_name='register', renderer='pyramid_blogr:templates/register.jinja2')
 def register(request):
     form = RegistrationForm(request.POST)
     if request.method == 'POST' and form.validate():

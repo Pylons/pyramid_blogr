@@ -29,9 +29,9 @@ Our second step will be adding a new route that handles user registration in our
     config.scan()
     ...
 
-We should add link to the registration page in our `index.mako` template so we can easly navigate to it.
+We should add link to the registration page in our `index.jinja2` template so we can easly navigate to it.
 
-.. code-block:: mako
+.. code-block:: jinja2
 
     % if request.authenticated_userid:
         Welcome <strong>${request.authenticated_userid}</strong> ::
@@ -40,7 +40,7 @@ We should add link to the registration page in our `index.mako` template so we c
         <form action="${request.route_url('auth',action='in')}" method="post" class="form-inline">
          ...
         </form>
-        <a href="${request.route_url('register')}">Register here</a>
+        <a href="{{request.route_url('register')}}">Register here</a>
     %endif
 
 So at this point we have the form object and routing set up, we are missing related view, model and template code.
@@ -56,7 +56,7 @@ First we need to import our form definition user model at the top of the file::
 
 And we can start implementing our view logic::
 
-    @view_config(route_name='register', renderer='pyramid_blogr:templates/register.mako')
+    @view_config(route_name='register', renderer='pyramid_blogr:templates/register.jinja2')
     def register(request):
         form = RegistrationForm(request.POST)
         if request.method == 'POST' and form.validate():
@@ -67,30 +67,31 @@ And we can start implementing our view logic::
             return HTTPFound(location=request.route_url('home'))
         return {'form': form}
 
-Next, let us start by creating a new registration template called `register.mako` with following contents::
+Next, let us start by creating a new registration template called `register.jinja2` with following contents::
 
-    <%inherit file="pyramid_blogr:templates/layout.mako"/>
+    {% extends "pyramid_blogr:templates/layout.jinja2" %}
 
+    {% block content %}
     <h1>Register</h1>
 
-    <form action="${request.route_url('register')}" method="post" class="form">
+    <form action="{{request.route_url('register')}}" method="post" class="form">
 
-        % for error in form.username.errors:
-            <div class="error">${ error }</div>
-        % endfor
+        {% for error in form.username.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
 
         <div class="form-group">
-            <label for="title">${form.username.label}</label>
-            ${form.username(class_='form-control')}
+            <label for="title">{{form.username.label}}</label>
+            {{form.username(class_='form-control')}}
         </div>
 
-        % for error in form.password.errors:
-            <div class="error">${error}</div>
-        % endfor
+        {% for error in form.password.errors %}
+        <div class="error">{{error}}</div>
+        {% endfor %}
 
         <div class="form-group">
-            <label for="body">${form.password.label}</label>
-            ${form.password(class_='form-control')}
+            <label for="body">{{form.password.label}}</label>
+            {{form.password(class_='form-control')}}
         </div>
         <div class="form-group">
             <label></label>
@@ -99,7 +100,8 @@ Next, let us start by creating a new registration template called `register.mako
 
 
     </form>
-    <p><a href="${request.route_url('home')}">Go Back</a></p>
+    <p><a href="{{request.route_url('home')}}">Go Back</a></p>
+    {% endblock %}
 
 Our users can now register themselves and are stored within database using unencrypted passwords (which is
 a really bad idea).
@@ -158,6 +160,6 @@ We can easly fix this by altering our `verify_password` method::
 
         return blogger_pwd_context.verify(password, self.password)
 
-Keep in mind that for proper migration of valid hash schemes passlib provides mechanism you can use to quickly upgrade
- from one scheme to another.
+Keep in mind that for proper migration of valid hash schemes passlib provides
+mechanism you can use to quickly upgrade from one scheme to another.
 

@@ -5,7 +5,7 @@ from ..models.blog_record import BlogRecord
 from ..models.services.blog_record import BlogRecordService
 from ..forms import BlogCreateForm, BlogUpdateForm
 
-@view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.mako')
+@view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.jinja2')
 def blog_view(request):
     blog_id = int(request.matchdict.get('id', -1))
     entry = BlogRecordService.by_id(blog_id)
@@ -14,7 +14,7 @@ def blog_view(request):
     return {'entry': entry}
 
 @view_config(route_name='blog_action', match_param='action=create',
-             renderer='pyramid_blogr:templates/edit_blog.mako',
+             renderer='pyramid_blogr:templates/edit_blog.jinja2',
              permission='create')
 def blog_create(request):
     entry = BlogRecord()
@@ -26,7 +26,7 @@ def blog_create(request):
     return {'form': form, 'action': request.matchdict.get('action')}
 
 @view_config(route_name='blog_action', match_param='action=edit',
-             renderer='pyramid_blogr:templates/edit_blog.mako',
+             renderer='pyramid_blogr:templates/edit_blog.jinja2',
              permission='edit')
 def blog_update(request):
     blog_id = int(request.params.get('id', -1))

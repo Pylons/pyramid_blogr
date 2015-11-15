@@ -1,0 +1,33 @@
+{% extends "pyramid_blogr:templates/layout.jinja2" %}
+
+{% block content %}
+<h1>Register</h1>
+
+<form action="{{request.route_url('register')}}" method="post" class="form">
+
+    {% for error in form.username.errors %}
+    <div class="error">{{ error }}</div>
+    {% endfor %}
+
+    <div class="form-group">
+        <label for="title">{{form.username.label}}</label>
+        {{form.username(class_='form-control')}}
+    </div>
+
+    {% for error in form.password.errors %}
+    <div class="error">{{error}}</div>
+    {% endfor %}
+
+    <div class="form-group">
+        <label for="body">{{form.password.label}}</label>
+        {{form.password(class_='form-control')}}
+    </div>
+    <div class="form-group">
+        <label></label>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+
+
+</form>
+<p><a href="{{request.route_url('home')}}">Go Back</a></p>
+{% endblock %}

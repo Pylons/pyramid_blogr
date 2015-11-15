@@ -54,7 +54,7 @@ Lets start by importing our freshly created form schemas to views/blog.py::
 Next we implement actual view callable that will handle new entries for us::
 
     @view_config(route_name='blog_action', match_param='action=create',
-                 renderer='pyramid_blogr:templates/edit_blog.mako')
+                 renderer='pyramid_blogr:templates/edit_blog.jinja2')
     def blog_create(request):
         entry = BlogRecord()
         form = BlogCreateForm(request.POST)
@@ -82,7 +82,7 @@ Create update entry view
 The following view will handle updates to existing blog entries::
 
     @view_config(route_name='blog_action', match_param='action=edit',
-                 renderer='pyramid_blogr:templates/edit_blog.mako')
+                 renderer='pyramid_blogr:templates/edit_blog.jinja2')
     def blog_update(request):
         blog_id = int(request.params.get('id', -1))
         entry = BlogRecordService.by_id(blog_id)
@@ -110,31 +110,32 @@ What it does step by step:
 * redirect to blog page is performed
 
 The final step is to add a view that will present users with form to create and 
-edit entries, lets call it *edit_blog.mako* ::
+edit entries, lets call it *edit_blog.jinja2* ::
 
-    <%inherit file="pyramid_blogr:templates/layout.mako"/>
+    {% extends "pyramid_blogr:templates/layout.jinja2" %}
 
-    <form action="${request.route_url('blog_action',action=action)}" method="post" class="form">
-        %if action =='edit':
+    {% block content %}
+    <form action="{{request.route_url('blog_action',action=action)}}" method="post" class="form">
+        {% if action =='edit' %}
             ${form.id()}
-        %endif
+        {% endif %}
 
-        % for error in form.title.errors:
-            <div class="error">${ error }</div>
-        % endfor
+        {% for error in form.title.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
 
         <div class="form-group">
-            <label for="title">${form.title.label}</label>
-                ${form.title(class_='form-control')}
+            <label for="title">{{ form.title.label }}</label>
+            {{ form.title(class_='form-control') }}
         </div>
 
-        % for error in form.body.errors:
-            <div class="error">${error}</div>
-        % endfor
+        {% for error in form.body.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
 
         <div class="form-group">
-            <label for="body">${form.body.label}</label>
-            ${form.body(class_='form-control')}
+            <label for="body">{{ form.body.label }}</label>
+            {{ form.body(class_='form-control') }}
         </div>
         <div class="form-group">
             <label></label>
@@ -143,7 +144,8 @@ edit entries, lets call it *edit_blog.mako* ::
 
 
     </form>
-    <p><a href="${request.route_url('home')}">Go Back</a></p>
+    <p><a href="{{ request.route_url('home') }}">Go Back</a></p>
+    {% endblock %}
 
 
 Our template knows if we are creating new row or updating existing one based on 
@@ -156,7 +158,7 @@ us to present to user.
 If you visit http://localhost:6543/ you will notice that you can already create and edit blog entries.
 Now it is time to work towards securing them.
 
-.. hint::
+.. note::
     Because WTForms form instances are iterable you can easly write a template, 
     function that will iterate over their fields and auto generate dynamic html 
     for each of them.

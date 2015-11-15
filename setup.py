@@ -10,7 +10,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 
 requires = [
     'pyramid==1.5.7',
-    'pyramid_mako', # replaces default chameleon templates
+    'pyramid_jinja2', # replaces default chameleon templates
     'pyramid_debugtoolbar',
     'pyramid_tm',
     'SQLAlchemy==1.0.8',

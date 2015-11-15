@@ -12,7 +12,7 @@ specific view resolution mechanisms.
 It's is being picked up when config.scan() gets run from our __init__.py, 
 all of our views are registerd with our app.
 
-.. hint::
+.. note::
     You could do it explictly with **config.add_view()** method 
     but this approach is often more convenient. 
 
@@ -44,7 +44,7 @@ In `views/default.py` add::
 
     from pyramid.view import view_config
 
-    @view_config(route_name='home', renderer='pyramid_blogr:templates/index.mako')
+    @view_config(route_name='home', renderer='pyramid_blogr:templates/index.jinja2')
     def index_page(request):
         return {}
     
@@ -56,12 +56,12 @@ returns into response suitable for the client.
 The template location is specified using *asset location* format which is in 
 form of *package_name:path_to_template*.
 
-.. hint::
+.. note::
     It also easy to add your own custom renderer, or use a drop in package like 
     `pyramid_jinja2`.
     
     The renderer is picked up automaticly by specifying file extension 
-    like: *asset.mako*/*asset.jinja2* or when your provide name for 
+    like: *asset.jinja2*/*asset.jinja2* or when your provide name for
     string/json renderer.   
     
     Pyramid by provides few renderers including:
@@ -75,11 +75,11 @@ In `views/blog.py` add::
 
     from pyramid.view import view_config
 
-    @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.mako')
+    @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.jinja2')
     def blog_view(request):
         return {}
         
-Registers blog_view with a route named "blog" using view_blog.mako template as 
+Registers blog_view with a route named "blog" using view_blog.jinja2 template as
 response.
 
 The next views we should create are views that will handle creation and updates 
@@ -88,7 +88,7 @@ to our blog entries.
 ::
 
     @view_config(route_name='blog_action', match_param='action=create',
-                 renderer='pyramid_blogr:templates/edit_blog.mako')
+                 renderer='pyramid_blogr:templates/edit_blog.jinja2')
     def blog_create(request):
         return {}
 
@@ -103,12 +103,12 @@ And then we have the view for */blog/edit* URL.
 ::
 
     @view_config(route_name='blog_action', match_param='action=edit',
-                 renderer='pyramid_blogr:templates/edit_blog.mako')
+                 renderer='pyramid_blogr:templates/edit_blog.jinja2')
     def blog_update(request):
         return {}
 
 
-.. hint::
+.. note::
     Every view can be decorated unlimited times with different parameters passed 
     to @view_config, . 
 

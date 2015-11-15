@@ -56,7 +56,7 @@ it should look like the following.
 
     requires = [
         'pyramid==1.5.7',
-        'pyramid_mako', # replaces default chameleon templates
+        'pyramid_jinja2', # replaces default chameleon templates
         'pyramid_debugtoolbar',
         'pyramid_tm',
         'SQLAlchemy==1.0.8',
@@ -124,7 +124,7 @@ as follows.
 
     config.include('pyramid_chameleon')
     # to
-    config.include('pyramid_mako')
+    config.include('pyramid_jinja2')
 
 Try the command to start the server again, and you should see something like
 the following.

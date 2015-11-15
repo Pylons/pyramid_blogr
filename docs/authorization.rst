@@ -103,12 +103,12 @@ Now the finishing touch, we set "create" and "edit" permissions on our views.
 For this we need to change our view_config decorators like this::
 
     @view_config(route_name='blog_action', match_param='action=create',
-                 renderer='pyramid_blogr:templates/edit_blog.mako',
+                 renderer='pyramid_blogr:templates/edit_blog.jinja2',
                  permission='create')
                  ...
                  
     @view_config(route_name='blog_action', match_param='action=edit',
-                 renderer='pyramid_blogr:templates/edit_blog.mako',
+                 renderer='pyramid_blogr:templates/edit_blog.jinja2',
                  permission='edit')
                  ...
              

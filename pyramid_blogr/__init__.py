@@ -21,7 +21,7 @@ def main(global_config, **settings):
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy
                           )
-    config.include('pyramid_mako')
+    config.include('pyramid_jinja2')
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
     config.add_route('blog', '/blog/{id:\d+}/{slug}')

@@ -5,28 +5,28 @@
 Great, we secured our views, but now no one can add new entries to our 
 application, so the finishing touch is to implement our authentication views.
 
-First we need to add a login form to our existing **index.mako** template::
+First we need to add a login form to our existing **index.jinja2** template::
 
-    <%inherit file="pyramid_blogr:templates/layout.mako"/>
+    {% extends "pyramid_blogr:templates/layout.jinja2" %}
 
-    ...
+    {% block content %}
 
-    % if request.authenticated_userid:
-        Welcome <strong>${request.authenticated_userid}</strong> ::
-        <a href="${request.route_url('auth',action='out')}">Sign Out</a>
-    %else:
-        <form action="${request.route_url('auth',action='in')}" method="post" class="form-inline">
+        {% if request.authenticated_userid %}
+        Welcome <strong>{{request.authenticated_userid}}</strong> ::
+        <a href="{{request.route_url('auth',action='out')}}">Sign Out</a>
+        {% else %}
+        <form action="{{request.route_url('auth',action='in')}}" method="post" class="form-inline">
             <div class="form-group">
                 <label>User</label> <input type="text" name="username" class="form-control">
             </div>
             <div class="form-group">
-            <label>Password</label> <input type="password" name="password" class="form-control">
-            <input type="submit" value="Sign in" class="btn btn-default">
+                <label>Password</label> <input type="password" name="password" class="form-control">
+                <input type="submit" value="Sign in" class="btn btn-default">
             </div>
         </form>
-    %endif
-    
-    % if paginator.items:
+        {% endif %}
+
+        {% if paginator.items %}
         ...
 
 Now the template first check if we are logged in, if we are it greets the user, 
