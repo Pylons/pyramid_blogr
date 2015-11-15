@@ -11,7 +11,7 @@ We will use a relational database and SQLAlchemy's ORM layer to access our
 data.
 
 The ``alchemy`` scaffold in Pyramid provides an example model class ``MyModel``
-that we don't need, so first we need to remove it.
+that we don't need, so first we need to remove it (also the Index instance).
 
 In real life applications, data models tend to grow over time and contain lots
 of additional methods. Instead of keeping all of our models in a single file,

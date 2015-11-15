@@ -29,9 +29,7 @@ Our second step will be adding a new route that handles user registration in our
     config.scan()
     ...
 
-We should add link to the registration page in our `index.jinja2` template so we can easly navigate to it.
-
-.. code-block:: jinja2
+We should add link to the registration page in our `index.jinja2` template so we can easly navigate to it::
 
     % if request.authenticated_userid:
         Welcome <strong>${request.authenticated_userid}</strong> ::
