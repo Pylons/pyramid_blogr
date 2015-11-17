@@ -78,7 +78,7 @@ We should also remove the now unused import code.
 
 Our ``models/meta.py`` should now only contain the following.
 
-.. literalinclude:: ../pyramid_blogr/models/meta.py
+.. literalinclude:: src/basic_models/models/meta.py
     :linenos:
 
 
@@ -375,45 +375,45 @@ error message.
 In case you have problems starting the application, you can see complete source
 code of the files we modifed below.
 
-.. code-block:: bash
-
-    $ $VENV/bin/initialize_pyramid_blogr_db development.ini
-
 ``models/__init__.py``
 
-.. literalinclude:: ../pyramid_blogr/models/__init__.py
+.. literalinclude:: src/basic_models/models/__init__.py
     :linenos:
 
 ``models/meta.py``
 
-.. literalinclude:: ../pyramid_blogr/models/meta.py
+.. literalinclude:: src/basic_models/models/meta.py
     :linenos:
 
 ``models/user.py``
 
-.. literalinclude:: ../pyramid_blogr/models/user.py
+.. literalinclude:: src/basic_models/models/user.py
     :linenos:
 
 ``models/blog_record.py``
 
-.. literalinclude:: ../pyramid_blogr/models/blog_record.py
+.. literalinclude:: src/basic_models/models/blog_record.py
     :linenos:
 
 ``scripts/initializedb.py``
 
-.. literalinclude:: ../pyramid_blogr/scripts/initializedb.py
+.. literalinclude:: src/basic_models/scripts/initializedb.py
     :linenos:
 
 ``__init__.py``
 
-.. literalinclude:: ../pyramid_blogr/__init__.py
+.. literalinclude:: src/basic_models/__init__.py
     :linenos:
 
 ``tests.py``
 
-.. literalinclude:: ../pyramid_blogr/tests.py
+.. literalinclude:: src/basic_models/tests.py
 
 If our application starts correctly, you should run the
 ``initialize_pyramid_blogr_db`` command to update the database.
+
+.. code-block:: bash
+
+    $ $VENV/bin/initialize_pyramid_blogr_db development.ini
 
 Next :doc:`routes`.
