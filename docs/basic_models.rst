@@ -10,19 +10,29 @@ and its underlying storage mechanisms in an application.
 We will use a relational database and SQLAlchemy's ORM layer to access our
 data.
 
-The ``alchemy`` scaffold in Pyramid provides an example model class ``MyModel``
-that we don't need, so first we need to remove it (also the Index instance).
+
+Using packages instead of single files
+======================================
 
 In real life applications, data models tend to grow over time and contain lots
 of additional methods. Instead of keeping all of our models in a single file,
-let's create a new `models` package in our structure that will hold one model
+let's create a new ``models`` package in our structure that will hold one model
 per file.
 
-Now we need to move the file ``models.py`` to our newly created directory.
+.. code-block:: bash
+
+    $ mkdir pyramid_blogr/models
+    $ touch pyramid_blogr/models/__init__.py
+
+Now we need to move the file ``models.py`` in to our newly created directory.
 Let's rename it ``meta.py`` to make a Python package from our ``models``
 directory.
 
-Our directory structure should look like this after the operation:
+.. code-block:: bash
+
+    $ mv pyramid_blogr/models.py pyramid_blogr/models/meta.py
+
+Our directory structure should look like this after issuing the above commands.
 
 .. code-block:: text
 
@@ -37,6 +47,44 @@ Our directory structure should look like this after the operation:
     ├── tests.py    <- tests
     └── views.py    <- views aka business logic
 
+
+Edit ``models/meta.py``
+-----------------------
+
+The ``alchemy`` scaffold in Pyramid provides an example model class ``MyModel``
+that we don't need, as well as code that creates an index, so let's remove the
+following lines from ``meta.py``.
+
+.. code-block:: python
+
+    class MyModel(Base):
+        __tablename__ = 'models'
+        id = Column(Integer, primary_key=True)
+        name = Column(Text)
+        value = Column(Integer)
+
+    Index('my_index', MyModel.name, unique=True, mysql_length=255)
+
+We should also remove the now unused import code.
+
+.. code-block:: python
+
+    from sqlalchemy import (
+        Column,
+        Index,
+        Integer,
+        Text,
+        )
+
+Our ``models/meta.py`` should now only contain the following.
+
+.. literalinclude:: ../pyramid_blogr/models/meta.py
+    :linenos:
+
+
+Create and edit ``models/user.py``
+----------------------------------
+
 Our application will consist of two tables:
 
     * **users** - stores all users for our application
@@ -46,9 +94,13 @@ We should assume that our users might use some Unicode characters, so we need
 to import the Unicode datatype from SQLAlchemy. We will also need a DateTime
 field to timestamp our blog entries.
 
-Let's first create ``models/user.py``. Let's remove the now unused import code
-from ``models/meta.py`` and paste it into our newly created user file. While we
-are doing this, let's add a few more imports to our `user.py` file.
+Let's first create ``models/user.py``.
+
+.. code-block:: bash
+
+    $ touch pyramid_blogr/models/user.py
+
+Add the following code to ``models/user.py``.
 
 .. code-block:: python
 
@@ -59,28 +111,17 @@ are doing this, let's add a few more imports to our `user.py` file.
         Integer,
         Unicode,     #<- will provide Unicode field
         UnicodeText, #<- will provide Unicode text field
-        DateTime     #<- time abstraction field
+        DateTime,    #<- time abstraction field
         )
 
-Now repeat this step and insert the same code into ``models/blog_record.py``.
+Make a copy of ``models/user.py`` as ``models/blog_record.py``. We will need
+these imports in both modules.
 
-After all operations our ``models/meta.py`` should only contain the following.
+.. code-block:: bash
 
-.. code-block:: python
+    $ cp pyramid_blogr/models/user.py pyramid_blogr/models/blog_record.py
 
-    from sqlalchemy.ext.declarative import declarative_base
-
-    from sqlalchemy.orm import (
-        scoped_session,
-        sessionmaker,
-    )
-
-    from zope.sqlalchemy import ZopeTransactionExtension
-
-    DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
-    Base = declarative_base()
-
-And our project structure should look like this.
+Now our project structure should look like this.
 
 .. code-block:: text
 
@@ -88,8 +129,8 @@ And our project structure should look like this.
     ├── __init__.py <- main file that will configure and return WSGI application
     ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
     │     ├── __init__.py
-    │     ├── meta.py <- former models.py
     │     ├── blog_record.py
+    │     ├── meta.py <- former models.py
     │     └── user.py
     ├── scripts/    <- util python scripts
     ├── static/     <- usually css, js, images
@@ -97,13 +138,14 @@ And our project structure should look like this.
     ├── tests.py    <- tests
     └── views.py    <- views aka business logic
 
+
 Database session management
 ===========================
 
 .. note::
 
     To learn how to use SQLAlchemy, please consult its `Object Relational
-    Tutorial <http://docs.sqlalchemy.org/en/latest/orm/tutorial.html>`_
+    Tutorial <http://docs.sqlalchemy.org/en/latest/orm/tutorial.html>`_.
 
 If you are new to SQLAlchemy or ORM's, you are probably wondering what this
 code does.
@@ -121,8 +163,9 @@ It will also open and close database connections for us transparently when
 needed.
 
 The ``extension=ZopeTransactionExtension()`` is passed as a parameter to
-``sessionmaker()`` in order to use the registered zope transaction extension.
+``sessionmaker()`` in order to use the registered Zope transaction extension.
 This will work with Pyramid's transaction manager, ``pyramid_tm``.
+
 
 What does transaction manager do?
 ---------------------------------
@@ -134,7 +177,8 @@ What does transaction manager do?
     It's not.
 
 OK, so while it might sound complicated, in practice it's very simple and saves
-a developer a lot of headaches managing transactions inside an application.
+a developer a lot of headaches with managing transactions inside an
+application.
 
 Here's how the transaction manager process works:
 
@@ -143,10 +187,11 @@ Here's how the transaction manager process works:
   updated in our datastore.
 
   * If everything went fine, we don't need to commit our transaction explictly;
-    transaction manager will do this for us.
-  * If some unhandled exception occured, at this point we usually want to roll
-    back all the changes and queries that were sent to our datastore;
-    transaction manager will handle this for us.
+    the transaction manager will do this for us.
+  * If some unhandled exception occurred, we usually want to roll back all the
+    changes and queries that were sent to our datastore; the transaction
+    manager will handle this for us.
+
 
 What are the implications of this?
 ----------------------------------
@@ -157,7 +202,7 @@ Nephthys a nice welcome email and maybe an activation link, but during
 registration flow, something unexpected happens and the code errors out.
 
 It is very common in this situation that the user would get a welcome email,
-but in reality her profile was never persisted in the database. With packages
+but in reality their profile was never persisted in the database. With packages
 like **pyramid_mailer** it is perfectly possible to delay email sending until
 **after** the user's information is successfully saved in the database.
 
@@ -174,14 +219,14 @@ Adding model definitions
 
 .. note::
 
-    This will make the app error out and prevent it from starting until we
-    reach the last point of the current step and fix imports in other files.
+    This will make the application error out and prevent it from starting until
+    we reach the last point of the current step and fix imports in other files.
     It's perfectly normal, so don't worry about immediate errors.
 
-We will need two declarations of models that will replace the *MyModel* class
+We will need two declarations of models that will replace the ``MyModel`` class
 that was created when we scaffolded our project.
 
-After the import part of `models/user.py` add the following.
+After the import part in ``models/user.py`` add the following.
 
 .. code-block:: python
 
@@ -192,7 +237,7 @@ After the import part of `models/user.py` add the following.
         password = Column(Unicode(255), nullable=False)
         last_logged = Column(DateTime, default=datetime.datetime.utcnow)
 
-After the import part of `models/blog_record.py` add the following.
+After the import part in ``models/blog_record.py`` add the following.
 
 .. code-block:: python
 
@@ -204,13 +249,12 @@ After the import part of `models/blog_record.py` add the following.
         created = Column(DateTime, default=datetime.datetime.utcnow)
         edited = Column(DateTime, default=datetime.datetime.utcnow)
 
-
 Now it's time to update our ``models/__init__.py`` to include our models. This
 is especially handy because it ensures that SQLAlchemy mappers will pick up all
-of our model classes and functions, like ``create_all``, will do what you
-expect them to do.
+of our model classes and functions, like ``create_all``, and that the models
+will do what you expect.
 
-Add these imports to the end of the file.
+Add these imports to the file.
 
 .. code-block:: python
 
@@ -218,18 +262,17 @@ Add these imports to the end of the file.
     from .blog_record import BlogRecord
 
 
-Update initialization script
-============================
+Update database initialization script
+=====================================
 
 It's time to update our database initialization script to mirror the changes in
-``models.py``.
+our ``models`` package.
 
-For this we need to open ``/pyramid_blogr/scripts/initializedb.py``.  This is
-the file that actually gets executed when we run
-``initialize_pyramid_blogr_db``.
+Open ``scripts/initializedb.py``.  This is the file that actually gets executed
+when we run ``initialize_pyramid_blogr_db``.
 
-First remove the ``MyModel`` import from that file, and fix imports from the
-modules package.  Also import the ``User`` model.
+We will remove the ``MyModel`` import and fix imports from the ``models``
+package.  We will also import the ``User`` model.
 
 .. code-block:: python
 
@@ -259,12 +302,14 @@ with both login and unencrypted password equal to ``admin``.
 
     This is just a tutorial example and **production code should utilize
     passwords hashed with a strong one-way encryption function**.  You can use
-    a package like **passlib** or **cryptacular** for this purpose.
+    a package like `passlib <http://pythonhosted.org/passlib/>`_ or
+    `cryptacular <https://bitbucket.org/dholth/cryptacular/>`_ for this
+    purpose.
 
-The last step is to fix the imports from ``MyModel`` to ``User`` model, and
-the ``meta`` package in ``__init__.py``.
+The last step is to fix the imports in ``pyramid_blogr/__init__.py`` (at the
+root of our project) to use the ``meta`` package.
 
-In `pyramid_blogr/__init__.py`:
+Open ``pyramid_blogr/__init__.py`` and edit the import such that this:
 
 .. code-block:: python
 
@@ -282,28 +327,93 @@ becomes:
         Base,
         )
 
+
+Update ``tests.py``
+===================
+
+Since we updated the imports in ``models`` and ``scripts/initializebd.py``, we
+need to update the import in ``pyramid_blogr/tests.py`` as well.
+
+Open ``tests.py`` at the root of our project. Change the following line from:
+
+.. code-block:: python
+
+    from .models import DBSession
+
+to:
+
+.. code-block:: python
+
+    from .models.meta import DBSession
+
 .. warning::
 
     Remember to replace the imports of the ``MyModel`` and ``DBSession``
-    classes in ``/pyramid_blogr/scripts/initializedb.py`` **and**
-    ``/pyramid_blogr/tests.py``. Otherwise your app will not start because of
-    failed imports.
+    classes in ``scripts/initializedb.py`` **and** ``tests.py``. Otherwise your
+    app will not start because of failed imports.
+
+.. TODO: Add sufficient details for how to modify tests.py to the above
+  warning.
 
 Same as with models, when your application grows over time, you will want to
 organize views into logical sections based on their functionality. Fow now
 remove the ``views.py`` file completely.
 
-Our application should start again if we try running the server. In case you
-have problems starting the application, you can see complete source code
-of the files we modifed below.
+.. code-block:: bash
+
+    $ rm views.py
+
+Our application should start again if we try running the server.
+
+.. code-block:: bash
+
+    $ $VENV/bin/pserve --reload development.ini
+
+If you visit the URL http://0.0.0.0:6543 then you should see a "404 Not Found"
+error message.
+
+In case you have problems starting the application, you can see complete source
+code of the files we modifed below.
+
+.. code-block:: bash
+
+    $ $VENV/bin/initialize_pyramid_blogr_db development.ini
+
+``models/__init__.py``
+
+.. literalinclude:: ../pyramid_blogr/models/__init__.py
+    :linenos:
+
+``models/meta.py``
+
+.. literalinclude:: ../pyramid_blogr/models/meta.py
+    :linenos:
+
+``models/user.py``
+
+.. literalinclude:: ../pyramid_blogr/models/user.py
+    :linenos:
+
+``models/blog_record.py``
+
+.. literalinclude:: ../pyramid_blogr/models/blog_record.py
+    :linenos:
+
+``scripts/initializedb.py``
+
+.. literalinclude:: ../pyramid_blogr/scripts/initializedb.py
+    :linenos:
+
+``__init__.py``
+
+.. literalinclude:: ../pyramid_blogr/__init__.py
+    :linenos:
+
+``tests.py``
+
+.. literalinclude:: ../pyramid_blogr/tests.py
 
 If our application starts correctly, you should run the
-``initialize_pyramid_blogr_db`` command from your environment. It may look like
-this.
-
-.. code-block:: text
-
-    $VENV/bin/initialize_pyramid_blogr_db development.ini
-
+``initialize_pyramid_blogr_db`` command to update the database.
 
 Next :doc:`routes`.
