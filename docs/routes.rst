@@ -8,118 +8,149 @@ view callables to request paths.
 URL dispatch provides a simple way to map URLs to view code using a simple 
 pattern matching language.
 
-Our application will consist of few sections:
+Our application will consist of a few sections:
 
 * index page that will list all of our sorted blog entries
 * a sign in/sign out section that will be used for authentication
 * a way to create and edit our blog posts
 
-Our urls could look like this:
+Our URLs will look like the following.
 
 To sign in users::
 
     /sign/in
 
-So when a user visits http://somedomain.foo/sign/in - the view callable responsible 
-for signing in the user based on POST vars will be executed.
+When a user visits ``http://somedomain.foo/sign/in``, the view callable
+responsible for signing in the user based on POST variables from the request
+will be executed.
 
 To sign out users::
     
     /sign/out
 
-Index page (it is already defined via default the scaffold we used earlier under the name "home")::
+The index page (this was already defined via the alchemy scaffold we used
+earlier, under the name "home")::
 
     /
 
-Creation of new blog entries::
+Create new, or edit existing blog entries::
 
     /blog/{action}
  
-You probably noted that this url looks somewhat different, the {action} part in 
-the pattern determines that this part is dynamic, so our URL could look like::
+You probably noticed that this URL appears unusual.  The ``{action}`` part in
+the matching pattern determines that this part is dynamic, so our URL could
+look like any of the following::
 
     /blog/create
     /blog/edit
     /blog/foobar
  
-This single route could map to different views. 
- 
+This single route could map to different views.
+
 Finally a route used to view our blog entries::
 
     /blog/{id:\d+}/{slug} 
     
-This route constists of two dynamic parts, {id:\\d+} and {slug}.
+This route constists of two dynamic parts, ``{id:\\d+}`` and ``{slug}``.
 
-The **:\d+** pattern means that the route will only match integers, so url like::
+The ``:\d+`` pattern means that the route will only match digits.  So an URL
+where the first dynamic part consists of only digits like the following would
+be matched::
 
     /blog/156/Some-blog-entry
    
-would work, but this one will not be matched::
+But the below example would not be matched, because the first dynamic part
+contains a non-digit character::
 
     /blog/something/Some-blog-entry
     
-Basics of pyramid configuration
+
+Basics of Pyramid configuration
 -------------------------------
 
-Now that we know what routes we want we should add them to our application.
+Now that we know what routes we want, we should add them to our application.
 
-Pyramid's config object will store them for us. To access it we will need to 
-open the file __init__.py in root of our project. This is the central point that 
-will perform initial application configuration on runtime.
+Pyramid's ``config`` object will store our routes. To do so, we will need to
+modify the file ``__init__.py`` in the root of our project. This is the central
+point where initial application configuration is performed at runtime.
 
-The main function will accept parsed ini file that we passed to our pserve 
-command.
+The ``main`` function will accept a parsed ``ini`` file that we pass to our
+``pserve`` command.  Let's quickly go over what the ``main`` function does.
 
-Let's quickly go over what this file does by default.
-::
+.. literalinclude:: src/basic_models/__init__.py
+    :language: python
+    :linenos:
+    :lines: 13-15
+    :lineno-start: 13
 
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
-    
-Those lines read the settings for SQLAlchemy and configure connection engine and 
-session maker objects. ::
+The above lines read the settings for SQLAlchemy, and configure the connection
+engine and session maker objects.
 
-    config = Configurator(settings=settings)
-    
-This creates the configurator itself, when needed we will be able to access it 
-in our views via request object as *request.registry.settings*.
-::
+.. literalinclude:: src/basic_models/__init__.py
+    :language: python
+    :linenos:
+    :lines: 16
+    :lineno-start: 16
 
-    config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('home', '/')
-    
-Now two routes are added:
+The above line creates the configurator.  When needed we will be able to access
+it in our views via the request object as ``request.registry.settings``.
 
-* **static route** that starts with */static* - that will serve all our 
-  static files like javascript, css, images. When a browser makes a request to 
-  */static/some/resource.foo*, our application will check if /some/resource.foo 
-  resource is present in our static dir, if it's there it will get 
-  served to browser. 
-  
-* **view route** called *"home"* that maps to path */*.
+.. literalinclude:: src/basic_models/__init__.py
+    :language: python
+    :linenos:
+    :lines: 17
+    :lineno-start: 17
 
-::
+The above line configures ``pyramid_jinja2`` as the template binding for
+rendering our views.
 
-    config.scan()
-    
-This runs the scan process that will scan all our whole project and load all 
-decorators and includes to add them to our config object.
+.. literalinclude:: src/basic_models/__init__.py
+    :language: python
+    :linenos:
+    :lines: 18-19
+    :lineno-start: 18
 
-::
+In the above, two routes are added:
 
-    return config.make_wsgi_app()
+* a **static route** that starts with ``/static``.  This route will serve all
+  our static files like JavaScript, CSS, and images.  When a browser makes a
+  request to ``/static/some/resource.foo``, our application will check if
+  ``/some/resource.foo`` resource is present in our static directory, and if
+  it's there then it will get served to browser.
 
-An instance of a WSGI app is returned to the server.
+* a **view route** called ``home`` that maps to the path ``/``.
 
-Adding routes to application configuration
-------------------------------------------
+.. literalinclude:: src/basic_models/__init__.py
+    :language: python
+    :linenos:
+    :lines: 20
+    :lineno-start: 20
 
-Lets add our routes to configurator after "home" route::
+The above runs the scan process which will scan our entire project and load all
+decorators and includes, and add them to our ``config`` object.
 
-    config.add_route('blog', '/blog/{id:\d+}/{slug}')
-    config.add_route('blog_action', '/blog/{action}')
-    config.add_route('auth', '/sign/{action}')
-    
-Now we are ready to develop actual views
+.. literalinclude:: src/basic_models/__init__.py
+    :language: python
+    :linenos:
+    :lines: 21
+    :lineno-start: 21
 
-Next  :doc:`initial_views`
+The above returns an instance of a WSGI app to the server.
+
+
+Adding routes to the application configuration
+----------------------------------------------
+
+Let's add our routes to the configurator immediately after the ``home`` route
+in our ``__init__.py`` at the root of our project.
+
+.. literalinclude:: src/routes/__init__.py
+    :language: python
+    :linenos:
+    :lines: 19-22
+    :lineno-start: 19
+    :emphasize-lines: 2-4
+
+Now we are ready to develop views.
+
+Next: :doc:`initial_views`.
