@@ -4,20 +4,25 @@
 
 Now it's time to create our views files and add our view callables.
 
-Every view will be decorated with **@view_config** decorator.
+Every view will be decorated with a ``@view_config`` decorator.
 
-**@view_config** will configure our pyramid application by telling it how to 
-corellate our view callables with routes, also setting some restrictions on 
-specific view resolution mechanisms.
-It's is being picked up when config.scan() gets run from our __init__.py, 
-all of our views are registerd with our app.
+``@view_config`` will configure our Pyramid application by telling it how to
+correlate our view callables with routes, and set some restrictions on specific
+view resolution mechanisms.  It gets picked up when ``config.scan()`` is called
+in our ``__init__.py``, and all of our views are registered with our app.
 
 .. note::
-    You could do it explictly with **config.add_view()** method 
-    but this approach is often more convenient. 
 
-First lets create a new package called views and create 3 files, `views/__init__.py`,
-`views/default.py` and `views/blog.py`.
+    You could explictly configure your application with the
+    ``config.add_view()`` method, but the approach with ``@view_config`` and
+    ``config.scan()`` is often more convenient.
+
+
+Create a package for ``views``
+==============================
+
+First lets create a new package called ``views`` and create 3 files,
+``views/__init__.py``, ``views/default.py``, and ``views/blog.py``.
 
 Your project structure should look like this at this point::
 
@@ -37,104 +42,128 @@ Your project structure should look like this at this point::
           ├── blog.py
           └── default.py
 
-Lets make some stubs for our views, we will populate them with actual
-code in next chapters.
 
-In `views/default.py` add::
+Edit our ``views`` files
+========================
 
-    from pyramid.view import view_config
+Let's make some stubs for our views.  We will populate them with actual code in
+later chapters.
 
-    @view_config(route_name='home', renderer='pyramid_blogr:templates/index.jinja2')
-    def index_page(request):
-        return {}
-    
-Here @view_config takes 2 params that will register our index_page callable 
-within pyramid's registry, specifying the route that should be used to match this 
-view, we also specified renderer that will be used to transform the data view 
-returns into response suitable for the client.
+Open ``views/default.py`` and add the following.
 
-The template location is specified using *asset location* format which is in 
-form of *package_name:path_to_template*.
+.. literalinclude:: src/initial_views/views/default.py
+    :language: python
+    :linenos:
+    :lines: 1-6
+
+Here ``@view_config`` takes two parameters that will register our
+``index_page`` callable in Pyramid's registry, specifying the route that should
+be used to match this view.  We also specify the renderer that will be used to
+transform the data which the view returns into a response suitable for the
+client.
+
+The template location is specified using the *asset location* format, which is
+in the form of *package_name:path_to_template*.
 
 .. note::
-    It also easy to add your own custom renderer, or use a drop in package like 
-    `pyramid_mako`.
+
+    It also easy to add your own custom renderer, or use an add-on package like
+    `pyramid_mako
+    <http://docs.pylonsproject.org/projects/pyramid-mako/en/latest/>`_.
     
-    The renderer is picked up automaticly by specifying file extension 
-    like: *asset.jinja2*/*asset.jinja2* or when your provide name for
-    string/json renderer.   
+    The renderer is picked up automatically by specifying the file extension,
+    like *asset.jinja2*/*asset.jinja2* or when you provide a name, such as for
+    the ``string/json`` renderer.
     
-    Pyramid provides few renderers including:
+    Pyramid provides a few renderers including:
         * jinja2 templates (by external package)
         * mako templates (by external package)
         * chameleon templates (by external package)
         * string output
         * json encoder
 
+Open ``views/blog.py`` and add the following.
 
-In `views/blog.py` add::
+.. literalinclude:: src/initial_views/views/blog.py
+    :language: python
+    :linenos:
+    :lines: 1-6
 
-    from pyramid.view import view_config
+This registers ``blog_view`` with a route named ``'blog'`` using the
+``view_blog.jinja2`` template as the response.
 
-    @view_config(route_name='blog', renderer='pyramid_blogr:templates/view_blog.jinja2')
-    def blog_view(request):
-        return {}
-        
-Registers blog_view with a route named "blog" using view_blog.jinja2 template as
-response.
-
-The next views we should create are views that will handle creation and updates 
+The next views we should create are views that will handle creation and updates
 to our blog entries.
 
-::
+.. literalinclude:: src/initial_views/views/blog.py
+    :language: python
+    :linenos:
+    :lines: 8-11
+    :lineno-start: 8
 
-    @view_config(route_name='blog_action', match_param='action=create',
-                 renderer='pyramid_blogr:templates/edit_blog.jinja2')
-    def blog_create(request):
-        return {}
+Notice that there is a new keyword introduced to the ``@view_config``
+decorator. The purpose of ``match_param`` is to tell Pyramid which view
+callable to use when the dynamic part of the route ``{action}`` is matched.
+For example, the above view will be launched for the URL ``/blog/create``.
 
-Notice that there is a new keyword introduced to @view_config decorator. 
+Next we add the view for the URL ``/blog/edit``.
 
-**match_params** purpose is to tell pyramid which view callable to use when our 
-dynamic part of route {action} is matched, so this view will be launched for 
-following URL: */blog/create*.
-
-And then we have the view for */blog/edit* URL. 
-
-::
-
-    @view_config(route_name='blog_action', match_param='action=edit',
-                 renderer='pyramid_blogr:templates/edit_blog.jinja2')
-    def blog_update(request):
-        return {}
-
+.. literalinclude:: src/initial_views/views/blog.py
+    :language: python
+    :linenos:
+    :lines: 13-
+    :lineno-start: 13
 
 .. note::
-    Every view can be decorated unlimited times with different parameters passed 
-    to @view_config, . 
 
-Now back in `views/default.py` add::
+    Every view can be decorated unlimited times with different parameters
+    passed to ``@view_config``.
 
-    @view_config(route_name='auth', match_param='action=in', renderer='string',
-                 request_method='POST')
-    @view_config(route_name='auth', match_param='action=out', renderer='string')
-    def sign_in_out(request):
-        return {}
+Now switch back to ``views/default.py``, and add the following.
 
-These routes will handle user authentication and logout. They are not using any 
+.. literalinclude:: src/initial_views/views/default.py
+    :language: python
+    :linenos:
+    :lines: 8-
+    :lineno-start: 8
+
+These routes will handle user authentication and logout. They do not use a
 template because they will just perform HTTP redirects.
 
-Note that this view is decorated more than once, also it introduces one new 
-parameter.
+Note that this view is decorated more than once. It also introduces one new
+parameter. ``request_method`` restricts view resolution to a specific request
+method, or in this example, to just POST requests.  This route will not be
+reachable with GET requests.
 
-**request_method** just restricts view resolution to specific request method,
-this route will not be reachable with GET requests.
+.. note::
 
-.. hint::
-    if you navigate your browser directly to /sign/in - you will get a 404 page, 
-    because this view is not matched for GET requests.
+    If you navigate your browser directly to ``/sign/in``, you will get a 404
+    page because this view is not matched for GET requests.
+
+Content of ``views`` files
+==========================
+
+Here's how our ``views`` files look at this point.
+
+
+``views/blog.py``
+-----------------
+
+.. literalinclude:: src/initial_views/views/blog.py
+    :language: python
+    :linenos:
+
+
+``views/default.py``
+--------------------
+
+.. literalinclude:: src/initial_views/views/default.py
+    :language: python
+    :linenos:
+
+
+``views/__init__.py`` is currently an empty file.
 
 At this point we can start implementing our view code.
 
-Next :doc:`blog_models_and_views`
-
+Next: :doc:`blog_models_and_views`.
