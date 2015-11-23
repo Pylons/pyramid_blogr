@@ -3,7 +3,7 @@
 {% block content %}
 <form action="{{request.route_url('blog_action',action=action)}}" method="post" class="form">
     {% if action =='edit' %}
-        ${form.id()}
+        {{ form.id() }}
     {% endif %}
 
     {% for error in form.title.errors %}
@@ -16,7 +16,7 @@
     </div>
 
     {% for error in form.body.errors %}
-        <div class="error">{{error}}</div>
+        <div class="error">{{ error }}</div>
     {% endfor %}
 
     <div class="form-group">

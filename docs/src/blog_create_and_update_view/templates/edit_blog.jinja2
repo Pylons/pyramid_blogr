@@ -3,7 +3,7 @@
 {% block content %}
 <form action="{{request.route_url('blog_action',action=action)}}" method="post" class="form">
     {% if action =='edit' %}
-        ${form.id()}
+        {{ form.id() }}
     {% endif %}
 
     {% for error in form.title.errors %}
