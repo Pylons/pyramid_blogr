@@ -70,11 +70,11 @@ in the form of *package_name:path_to_template*.
     It also easy to add your own custom renderer, or use an add-on package like
     `pyramid_mako
     <http://docs.pylonsproject.org/projects/pyramid-mako/en/latest/>`_.
-    
+
     The renderer is picked up automatically by specifying the file extension,
     like *asset.jinja2*/*asset.jinja2* or when you provide a name, such as for
     the ``string/json`` renderer.
-    
+
     Pyramid provides a few renderers including:
         * jinja2 templates (by external package)
         * mako templates (by external package)
