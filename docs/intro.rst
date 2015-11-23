@@ -22,7 +22,7 @@ Pyramid_blogr makes some initial assumptions:
 * We will use the **webhelpers** package for pagination.
 * The **WTForms** form library will provide form validation.
 
-This tutorial was originally created by **Marcin Lulek**, developer, freelancer 
+This tutorial was originally created by **Marcin Lulek**, developer, freelancer
 and founder of `app enlight <https://appenlight.com>`_.
 
 :doc:`Start the tutorial <project_structure>`.

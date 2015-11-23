@@ -24,7 +24,7 @@ Then we create a ``BlogCreateForm`` class that defines two fields:
 * ``title`` has a label of "Title" and a single validator that will check the
   length of our trimmed data.  The title length needs to be in the range of
   1-255 characters.
-  
+
 * ``body`` has a label of "Contents" and a validator that requires its length
   to be at least 1 character.
 
@@ -95,13 +95,13 @@ Here's what the view does:
 * Show a 404 Not Found page if the requested record is not present.
 * Create the form object, populating it from the POST parameters or from the
   actual blog entry, if we haven't POSTed any values yet.
-  
+
 .. note ::
 
   This approach ensures our form is always populated with the latest data from
   the database, or if the submission is not valid then the values we POSTed in
   our last request will populate the form fields.
-   
+
 * If the form is valid, our form sets its values to the model instance.
 * Redirect to the blog page.
 

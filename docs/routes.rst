@@ -2,10 +2,10 @@
 3. Application routes
 =====================
 
-This is the point where we want to define our routes that will be used to map 
-view callables to request paths. 
+This is the point where we want to define our routes that will be used to map
+view callables to request paths.
 
-URL dispatch provides a simple way to map URLs to view code using a simple 
+URL dispatch provides a simple way to map URLs to view code using a simple
 pattern matching language.
 
 Our application will consist of a few sections:
@@ -25,7 +25,7 @@ responsible for signing in the user based on POST variables from the request
 will be executed.
 
 To sign out users::
-    
+
     /sign/out
 
 The index page (this was already defined via the alchemy scaffold we used
@@ -36,7 +36,7 @@ earlier, under the name "home")::
 Create new, or edit existing blog entries::
 
     /blog/{action}
- 
+
 You probably noticed that this URL appears unusual.  The ``{action}`` part in
 the matching pattern determines that this part is dynamic, so our URL could
 look like any of the following::
@@ -44,13 +44,13 @@ look like any of the following::
     /blog/create
     /blog/edit
     /blog/foobar
- 
+
 This single route could map to different views.
 
 Finally a route used to view our blog entries::
 
-    /blog/{id:\d+}/{slug} 
-    
+    /blog/{id:\d+}/{slug}
+
 This route constists of two dynamic parts, ``{id:\\d+}`` and ``{slug}``.
 
 The ``:\d+`` pattern means that the route will only match digits.  So an URL
@@ -58,12 +58,12 @@ where the first dynamic part consists of only digits like the following would
 be matched::
 
     /blog/156/Some-blog-entry
-   
+
 But the below example would not be matched, because the first dynamic part
 contains a non-digit character::
 
     /blog/something/Some-blog-entry
-    
+
 
 Basics of Pyramid configuration
 -------------------------------

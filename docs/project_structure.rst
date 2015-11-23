@@ -36,7 +36,7 @@ structure as explained below.
     ├── static/     <- usually css, js, images
     ├── templates/  <- template files
     ├── tests.py    <- tests
-    └── views.py    <- views aka business logic 
+    └── views.py    <- views aka business logic
 
 
 .. _adding_dependencies:
@@ -68,8 +68,8 @@ it should look like the following.
         'paginate==0.5', # pagination helpers
         'paginate_sqlalchemy==0.2.0'
         ]
-        
-Now we can setup our application for development and add it to our environment 
+
+Now we can setup our application for development and add it to our environment
 path. Change directory to the root of our project where ``setup.py`` lives, and
 install the dependencies in ``setup.py`` with the following commands.
 
