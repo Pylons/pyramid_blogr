@@ -2,120 +2,140 @@
 7. Authorization
 ================
 
-At this point we have a fully working application but you have probably noticed 
-everyone can alter our entries. We should change that by introducing user 
-authentication and permission checks.
+At this point we have a fully working application, but you may have noticed
+that anyone can alter our entries.  We should change that by introducing user
+*authorization*, where we assign security statements to resources (e.g., blog
+entries) describing the permissions required to perform an operation (e.g., add
+or edit a blog entry).
 
-For the sake of simplicity of this tutorial we will assume that every user can 
-edit every blog entry as long as he/she is signed in to our application.
+For the sake of simplicity, in this tutorial we will assume that every user can
+edit every blog entry as long as they are signed in to our application.
 
-Pyramid provides some ready-made policies for this and mechanisms for writing 
-custom ones aswell.
+Pyramid provides some ready-made policies for this, as well as mechanisms for
+writing custom policies.
 
-We will use the ones provided by the framework:
+We will use the policies provided by the framework:
 
-* **AuthTktAuthenticationPolicy**
+* ``AuthTktAuthenticationPolicy``
 
-  Obtains user data from a Pyramid “auth ticket” cookie.
-  
-* **ACLAuthorizationPolicy**
+  Obtains user data from a Pyramid "auth ticket" cookie.
 
-  An authorization policy which consults an ACL object attached to a context to 
+* ``ACLAuthorizationPolicy``
+
+  An authorization policy which consults an ACL object attached to a context to
   determine authorization information about a principal or multiple principals.
 
-OK, so **ACLAuthorizationPolicy** explanation has a lots of scary words in it, 
-but in practice it's a simple concept that allows for great flexibility when 
-defining permission systems.
+OK, so the description for ``ACLAuthorizationPolicy`` has a lot of scary words
+in it, but in practice it's a simple concept that allows for great flexibility
+when defining permission systems.
 
-The policy basicly checks if user has a permission to specific context of a view 
-based on Access Control Lists.
-
-**What does this mean, what is a context?**
-
-A context could be anything, imagine you are building a forum application, 
-and you want to add a functionality where only moderators will be able to edit 
-specific topic of a specific forum. - in this case our context would be forum 
-object - it would have attached info about who has specific permissions to this 
-resource.
-
-Or something simplier, who can access admin page? In this case a context would 
-be an arbitrary object that has information attached about who is administrator 
-of the site.
-
-**How does this relate to our application?**
-
-Since our application does not track who owns blog entries, we will also assume 
-the latter scenario. We will make the most trivial context factory object - as 
-its name implies factory will return the context object (in our class an 
-arbitrary class).
-
-It will say that *everyone logged* to our application can create and edit, 
-blog entries.
-
-In root of our application package lets create a new file called `security.py`
-with following contents ::
-
-    from pyramid.security import Allow, Everyone, Authenticated
-
-    class BlogRecordFactory(object):
-        __acl__ = [(Allow, Everyone, 'view'),
-                   (Allow, Authenticated, 'create'),
-                   (Allow, Authenticated, 'edit'), ]
-        
-        def __init__(self, request):
-            pass
-
-This is the object that was mentioned a moment ago (It's called context factory), 
-it's **not** tied to any specific entity in a database, and returns __acl__ 
-property that says that everyone has a *'view'* permission and users that are 
-logged in also have *create* and *edit* permissions.
-
-Now it's time to tell pyramid about what policies we want to register with our 
-app.
+The policy basically checks if a user has a permission to the specific context
+of a view based on Access Control Lists.
 
 
-Let's open our configuration related `__init__.py` and add following imports::
+What does this mean? What is a context?
+=======================================
 
-    from pyramid.authentication import AuthTktAuthenticationPolicy
-    from pyramid.authorization import ACLAuthorizationPolicy
+A context could be anything.  Imagine you are building a forum application,
+and you want to add a feature where only moderators will be able to edit a
+specific topic in a specific forum.  In this case, our context would be the
+forum object; it would have info attached to it about who has specific
+permissions to this resource.
 
-Now it's time to update our configuration, we need to create our policies, and 
-pass them to configurator::
+Or something simpler, who can access admin pages?  In this case, a context
+would be an arbitrary object that has information attached to it about who is
+an administrator of the site.
 
-    authentication_policy = AuthTktAuthenticationPolicy('somesecret', hashalg='sha512')
-    authorization_policy = ACLAuthorizationPolicy()
-    config = Configurator(settings=settings,
-                          authentication_policy=authentication_policy,
-                          authorization_policy=authorization_policy
-                          )
 
-"somesecret" passed to policy will be a secret string used for cookie signing, 
-so our auth cookie is secure.
+How does this relate to our application?
+========================================
 
-The last thing we need to add is to assign our context factory to our routes, 
-we want this to be the route responsible for entry creation/updates::
+Since our application does not track who owns blog entries, we will assume the
+latter scenario: any authenticated (logged in) user has authorization to
+administer the blog entries.  We will make the most trivial context factory
+object.  As its name implies, the factory will return the context object (in
+our case, an arbitrary class).  It will say that *everyone logged in* to our
+application can create and edit blog entries.
 
-    config.add_route('blog_action', '/blog/{action}',
-                     factory='pyramid_blogr.security.BlogRecordFactory')
 
-Now the finishing touch, we set "create" and "edit" permissions on our views.
+Create a context factory
+========================
 
-For this we need to change our view_config decorators like this::
+In the root of our application package, let's create a new file called
+``security.py`` with the following content.
 
-    @view_config(route_name='blog_action', match_param='action=create',
-                 renderer='pyramid_blogr:templates/edit_blog.jinja2',
-                 permission='create')
-                 ...
-                 
-    @view_config(route_name='blog_action', match_param='action=edit',
-                 renderer='pyramid_blogr:templates/edit_blog.jinja2',
-                 permission='edit')
-                 ...
-             
-Now if you try to visit the links to create/update entries you will see that 
-they actually respond with 403 HTTP status because pyramid detects that there there is no user object
-that has `edit` or `create` permissions.
+.. literalinclude:: src/authorization/security.py
+    :language: python
+    :linenos:
+
+This is the object that was mentioned a moment ago, a *context factory*.  It's
+*not* tied to any specific entity in a database, and it returns an ``__acl__``
+property which says that everyone has a ``'view'`` permission, and users that
+are logged in also have ``'create'`` and ``'edit'`` permissions.
+
+
+Create authentication and authorization policies
+================================================
+
+Now it's time to tell Pyramid about the policies we want to register with our
+application.
+
+Let's open our configuration ``__init__.py`` at the root of our project, and
+add the following imports as indicated by the emphasized lines.
+
+.. literalinclude:: src/authorization/__init__.py
+    :language: python
+    :linenos:
+    :lines: 1-3
+    :lineno-start: 1
+    :emphasize-lines: 2-3
+
+Now it's time to update our configuration.  We need to create our policies, and
+pass them to the configurator.  Add or edit the emphasized lines.
+
+.. literalinclude:: src/authorization/__init__.py
+    :language: python
+    :linenos:
+    :lines: 17-24
+    :lineno-start: 17
+    :emphasize-lines: 2-8
+
+The string "somesecret" passed into the policy will be a secret string used for
+cookie signing, so that our authentication cookie is secure.
+
+The last thing we need to add is to assign our context factory to our routes.
+We want this to be the route responsible for entry creation and updates.
+Modify the following emphasized lines.
+
+.. literalinclude:: src/authorization/__init__.py
+    :language: python
+    :linenos:
+    :lines: 29-30
+    :lineno-start: 29
+    :emphasize-lines: 1-2
+
+Now for the finishing touch.  We set "create" and "edit" permissions on our
+views.  Open ``views/blog.py``, and change our ``@view_config`` decorators as
+shown by the following emphasized lines.
+
+.. literalinclude:: src/authorization/views/blog.py
+    :language: python
+    :linenos:
+    :lines: 17-19
+    :lineno-start: 17
+    :emphasize-lines: 2-3
+
+.. literalinclude:: src/authorization/views/blog.py
+    :language: python
+    :linenos:
+    :lines: 30-32
+    :lineno-start: 30
+    :emphasize-lines: 2-3
+
+Now if you try to visit the links to create or update entries, you will see
+that they respond with a 403 HTTP status because Pyramid detects that there is
+no user object that has ``edit`` or ``create`` permissions.
 
 **Our views are secured!**
 
-Next :doc:`authentication`
+Next: :doc:`authentication`.
