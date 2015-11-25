@@ -132,6 +132,31 @@ shown by the following emphasized lines.
     :lineno-start: 30
     :emphasize-lines: 2-3
 
+
+Current state of our application
+================================
+
+For convenience here are the two files you have edited in their entirety up to
+this point (``security.py`` was already rendered above).
+
+
+``__init__.py``
+---------------
+
+.. literalinclude:: src/authorization/__init__.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 2-3,18-24,29-30
+
+
+``views/blog.py``
+-----------------
+
+.. literalinclude:: src/authorization/views/blog.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 18-19,31-32
+
 Now if you try to visit the links to create or update entries, you will see
 that they respond with a 403 HTTP status because Pyramid detects that there is
 no user object that has ``edit`` or ``create`` permissions.
