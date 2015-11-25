@@ -2,108 +2,132 @@
 8. Authentication
 =================
 
-Great, we secured our views, but now no one can add new entries to our 
-application, so the finishing touch is to implement our authentication views.
+Great, we secured our views, but now no one can add new entries to our
+application.  The finishing touch is to implement our authentication views.
 
-First we need to add a login form to our existing **index.jinja2** template::
 
-    {% extends "pyramid_blogr:templates/layout.jinja2" %}
+Create a sign-in/sign-out form
+==============================
 
-    {% block content %}
+First we need to add a login form to our existing ``index.jinja2`` template as
+shown by the emphasized lines.
 
-        {% if request.authenticated_userid %}
-        Welcome <strong>{{request.authenticated_userid}}</strong> ::
-        <a href="{{request.route_url('auth',action='out')}}">Sign Out</a>
-        {% else %}
-        <form action="{{request.route_url('auth',action='in')}}" method="post" class="form-inline">
-            <div class="form-group">
-                <label>User</label> <input type="text" name="username" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Password</label> <input type="password" name="password" class="form-control">
-                <input type="submit" value="Sign in" class="btn btn-default">
-            </div>
-        </form>
-        {% endif %}
+.. literalinclude:: src/authentication/templates/index.jinja2
+    :language: jinja
+    :linenos:
+    :lines: 1-20
+    :lineno-start: 1
+    :emphasize-lines: 5-19
 
-        {% if paginator.items %}
-        ...
+Now the template first checks if we are logged in.  If we are logged in, it
+greets the user and presents a sign-out link.  Otherwise we are presented with
+the sign-in form.
 
-Now the template first check if we are logged in, if we are it greets the user, 
-and presents sign-out link. Otherwise we are presented with sign-in form.
 
-Now it's time to update our views and User model.
+Update ``User`` model
+=====================
 
-Lets update our model with two methods, "verify_password" to check user input 
-with password associated with user instance and "by_name" that will fetch 
-our user from database based on login.
+Now it's time to update our ``User`` model.
 
-We add following method to our User class in models.py::
+Lets update our model with two methods: ``verify_password`` to check user input
+with a password associated with the user instance, and ``by_name`` that will
+fetch our user from the database, based on login.
 
-    def verify_password(self, password):
-        return self.password == password
+Add the following method to our ``User`` class in ``models/user.py``.
 
-We also need to create UserService class in models/services/user.py::
+.. literalinclude:: src/authentication/models/user.py
+    :language: python
+    :linenos:
+    :lines: 16-
+    :lineno-start: 16
+    :emphasize-lines: 2-4
 
-    from ..meta import DBSession
-    from ..user import User
+We also need to create the ``UserService`` class in a new file
+``models/services/user.py``.
 
-    class UserService(object):
-
-        @classmethod
-        def by_name(cls, name):
-            return DBSession.query(User).filter(User.name == name).first()
+.. literalinclude:: src/authentication/models/services/user.py
+    :language: python
+    :linenos:
 
 .. warning::
-    In a real application verify_password should be using some strong way 
-    one-way hashing algorithm like bcrypt or pbkdf2. Use a package like 
-    **cryptacular** to provide strong hashing.
+
+    In a real application, ``verify_password`` should use some strong one-way
+    hashing algorithm like ``bcrypt`` or ``pbkdf2``.  Use a package like
+    ``passlib`` or ``cryptacular`` which use strong hashing algorithms for
+    hashing of passwords.
+
+
+Update views
+============
 
 The final step is to update the view that handles authentication.
 
-First we need to add following import to views/default.py::
+First we need to add the following import to ``views/default.py``.
 
-    from pyramid.httpexceptions import HTTPFound
-    from pyramid.security import remember, forget
-    from ..models.services.user import UserService
+.. literalinclude:: src/authentication/views/default.py
+    :language: python
+    :linenos:
+    :lines: 1-5
+    :lineno-start: 1
+    :emphasize-lines: 2-4
 
-Those functions will return headers used to set our AuthTkt cookie 
-(from AuthTktAuthenticationPolicy) for users browser, "remember" is used to 
-set the current user, "forget" is used to sign out our users.
+Those functions will return HTTP headers which are used to set our ``AuthTkt``
+cookie (from ``AuthTktAuthenticationPolicy``) in the user's browser.
+``remember`` is used to set the current user, whereas "forget" is used to sign
+out our user.
 
-Now we have everything ready to implement our actual view::
+Now we have everything ready to implement our actual view.
 
-    @view_config(route_name='auth', match_param='action=in', renderer='string',
-                 request_method='POST')
-    @view_config(route_name='auth', match_param='action=out', renderer='string')
-    def sign_in_out(request):
-        username = request.POST.get('username')
-        if username:
-            user = UserService.by_name(username)
-            if user and user.verify_password(request.POST.get('password')):
-                headers = remember(request, user.name)
-            else:
-                headers = forget(request)
-        else:
-            headers = forget(request)
-        return HTTPFound(location=request.route_url('home'),
-                         headers=headers)
+.. literalinclude:: src/authentication/views/default.py
+    :language: python
+    :linenos:
+    :lines: 19-
+    :lineno-start: 19
+    :emphasize-lines: 2-
 
-This is a very simple view that checks if database row with name supplied by 
-user is present is in database, if it is a password check is performed.
-If password check was successful a new set of headers used to set the cookie is 
-generated and passed back to the client on redirect.
-If user is not found or password doesnt match a set of headers meant to remove 
-the cookie (if any) is issued.
+This is a very simple view that checks if a database row with the supplied
+username is present in the database.  If it is, a password check against the
+username is performed.  If the password check is successful, then a new set of
+headers (which is used to set the cookie) is generated and passed back to the
+client on redirect.  If the username is not found, or if the password doesn't
+match, then a set of headers meant to remove the cookie (if any) is issued.
 
-**Voilà!!!** 
 
-Congratulations, this tutorial is now complete, you can now sign in and out to 
-add/edit blog entries using login `admin` with password `admin` (this user was added to database during `initialize_db step`).
+Current state of our application
+================================
 
-Now is the time to go back to documentation to read on the details of 
-functions/packages used in this example. I've barely scratched the surface of 
-what is possible with Pyramid.
+For convenience here are the files you edited in their entirety
+(``models/services/user.py`` was already rendered above).
 
-Next :doc:`registration`
 
+``templates/index.jinja2``
+--------------------------
+
+.. literalinclude:: src/authentication/templates/index.jinja2
+    :language: jinja
+    :linenos:
+
+
+``models/user.py``
+------------------
+
+.. literalinclude:: src/authentication/models/user.py
+    :language: python
+    :linenos:
+
+
+``views/default.py``
+--------------------
+
+.. literalinclude:: src/authentication/views/default.py
+    :language: python
+    :linenos:
+
+**Voilà!**
+
+You can now sign in and out to add and edit blog entries using the login
+``admin`` with password ``admin`` (this user was added to the database during
+the ``initialize_db`` step).  But we have a few more steps to complete this
+project.
+
+Next: :doc:`registration`.
