@@ -6,7 +6,7 @@ from sqlalchemy import engine_from_config
 from .models.meta import (
     DBSession,
     Base,
-)
+    )
 
 
 def main(global_config, **settings):
@@ -29,6 +29,5 @@ def main(global_config, **settings):
     config.add_route('blog_action', '/blog/{action}',
                      factory='pyramid_blogr.security.BlogRecordFactory')
     config.add_route('auth', '/sign/{action}')
-    config.add_route('register', '/register')
     config.scan()
     return config.make_wsgi_app()

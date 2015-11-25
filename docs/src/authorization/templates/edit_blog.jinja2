@@ -1,0 +1,34 @@
+{% extends "pyramid_blogr:templates/layout.jinja2" %}
+
+{% block content %}
+<form action="{{request.route_url('blog_action',action=action)}}" method="post" class="form">
+    {% if action =='edit' %}
+        {{ form.id() }}
+    {% endif %}
+
+    {% for error in form.title.errors %}
+        <div class="error">{{ error }}</div>
+    {% endfor %}
+
+    <div class="form-group">
+        <label for="title">{{ form.title.label }}</label>
+        {{ form.title(class_='form-control') }}
+    </div>
+
+    {% for error in form.body.errors %}
+        <div class="error">{{ error }}</div>
+    {% endfor %}
+
+    <div class="form-group">
+        <label for="body">{{ form.body.label }}</label>
+        {{ form.body(class_='form-control') }}
+    </div>
+    <div class="form-group">
+        <label></label>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+
+
+</form>
+<p><a href="{{ request.route_url('home') }}">Go Back</a></p>
+{% endblock %}
