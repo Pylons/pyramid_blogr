@@ -4,107 +4,109 @@
 9. Registration
 ===============
 
-Now we have a basic functioning application, but we have only one user hardcoded administrator that can add blogs.
-We can provide a registration page for our users to sign in to.
+Now we have a basic functioning application, but we have only one hardcoded
+administrator user that can add and edit blog entries.  We can provide a
+registration page for new users, too.
 
-Then we need to to provide a quality hashing solution so we can store secure password hashes instead of cleartextm
-this functionality will be provided by **passlib**.
-
-
-We should create a form to handle registration requests, lets open `forms.py` and add a new form class::
-
-   # add missing PasswordField at the top of the file
-
-   class RegistrationForm(Form):
-       username = StringField('Username', [validators.Length(min=1, max=255)],
-                              filters=[strip_filter])
-       password = PasswordField('Password', [validators.Length(min=3)])
+Then we need to to provide a quality hashing solution so we can store secure
+password hashes instead of clear text.  This functionality will be provided by
+``passlib``.
 
 
-Our second step will be adding a new route that handles user registration in our main `__init__.py` file::
+Create the registration class, route, and form
+==============================================
 
-    ...
-    config.add_route('auth', '/sign/{action}')
-    config.add_route('register', '/register')
-    config.scan()
-    ...
+We should create a form to handle registration requests.  Let's open
+``forms.py`` at the root of our project, and edit an import at the top of the
+files and add a new form class at the end as indicated by the emphasized lines.
 
-We should add link to the registration page in our `index.jinja2` template so we can easly navigate to it::
+.. literalinclude:: src/registration/forms.py
+    :language: python
+    :linenos:
+    :lines: 1-2
+    :lineno-start: 1
+    :emphasize-lines: 2
 
-    % if request.authenticated_userid:
-        Welcome <strong>${request.authenticated_userid}</strong> ::
-        <a href="${request.route_url('auth',action='out')}">Sign Out</a>
-    %else:
-        <form action="${request.route_url('auth',action='in')}" method="post" class="form-inline">
-         ...
-        </form>
-        <a href="{{request.route_url('register')}}">Register here</a>
-    %endif
+.. literalinclude:: src/registration/forms.py
+    :language: python
+    :linenos:
+    :lines: 18-
+    :lineno-start: 18
+    :emphasize-lines: 1-
 
-So at this point we have the form object and routing set up, we are missing related view, model and template code.
-Let us move forward with the view code in `views/default.py`.
+Our second step will be adding a new route that handles user registration in
+our main ``__init__.py`` file as shown by the emphasized line.
 
-First we need to import our form definition user model at the top of the file::
+.. literalinclude:: src/registration/__init__.py
+    :language: python
+    :linenos:
+    :lines: 31-33
+    :lineno-start: 31
+    :emphasize-lines: 2
 
-    ...
-    from ..forms import RegistrationForm
-    from ..models.meta import DBSession
-    from ..models.user import User
-    ...
+We should add a link to the registration page in our ``templates/index.jinja2``
+template so we can easily navigate to it as shown by the emphasized line.
 
-And we can start implementing our view logic::
-
-    @view_config(route_name='register', renderer='pyramid_blogr:templates/register.jinja2')
-    def register(request):
-        form = RegistrationForm(request.POST)
-        if request.method == 'POST' and form.validate():
-            new_user = User()
-            new_user.username = form.username.data
-            new_user.password = form.password.data
-            DBSession.add(new_user)
-            return HTTPFound(location=request.route_url('home'))
-        return {'form': form}
-
-Next, let us start by creating a new registration template called `register.jinja2` with following contents::
-
-    {% extends "pyramid_blogr:templates/layout.jinja2" %}
-
-    {% block content %}
-    <h1>Register</h1>
-
-    <form action="{{request.route_url('register')}}" method="post" class="form">
-
-        {% for error in form.username.errors %}
-        <div class="error">{{ error }}</div>
-        {% endfor %}
-
-        <div class="form-group">
-            <label for="title">{{form.username.label}}</label>
-            {{form.username(class_='form-control')}}
-        </div>
-
-        {% for error in form.password.errors %}
-        <div class="error">{{error}}</div>
-        {% endfor %}
-
-        <div class="form-group">
-            <label for="body">{{form.password.label}}</label>
-            {{form.password(class_='form-control')}}
-        </div>
-        <div class="form-group">
-            <label></label>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </div>
+.. literalinclude:: src/registration/templates/index.jinja2
+    :language: jinja
+    :linenos:
+    :lines: 17-19
+    :lineno-start: 17
+    :emphasize-lines: 2
 
 
-    </form>
-    <p><a href="{{request.route_url('home')}}">Go Back</a></p>
-    {% endblock %}
+Create the registration view
+============================
 
-Our users can now register themselves and are stored within database using unencrypted passwords (which is
-a really bad idea).
+At this point we have the form object and routing set up.  We are missing a
+related view, model, and template code.  Let us move forward with the view code
+in ``views/default.py``.
 
-This is exactly where **passlib** comes into play, so we should add it to our projects requirements in `setup.py`::
+First we need to import our form definition user model at the top of the file
+as shown by the emphasized lines.
+
+.. literalinclude:: src/registration/views/default.py
+    :language: python
+    :linenos:
+    :lines: 5-8
+    :lineno-start: 5
+    :emphasize-lines: 2-4
+
+Then we can start implementing our view logic by adding the following lines to
+the end of the file.
+
+.. literalinclude:: src/registration/views/default.py
+    :language: python
+    :linenos:
+    :lines: 33-40
+    :lineno-start: 33
+    :emphasize-lines: 1-
+
+.. literalinclude:: src/registration/views/default.py
+    :language: python
+    :linenos:
+    :lines: 44-
+    :lineno-start: 39
+    :emphasize-lines: 1-
+
+Next let's create a new registration template called
+``templates/register.jinja2`` with the following content.
+
+.. literalinclude:: src/registration/templates/register.jinja2
+    :language: jinja
+    :linenos:
+
+
+Hashing passwords
+=================
+
+Our users can now register themselves and are stored in the database using
+unencrypted passwords (which is a really bad idea).
+
+This is exactly where ``passlib`` comes into play.  We should add it to our
+project's requirements in ``setup.py`` at the root of our project.
+
+.. code-block:: python
 
     requires = [
         ...
@@ -113,51 +115,108 @@ This is exactly where **passlib** comes into play, so we should add it to our pr
         'passlib'
     ]
 
-Now we can run `pip install passlib` or run `python setup.py develop` to pull in new dependency to our project -
-password hashing will be implemented in our `User` model class.
+Now we can run either command ``pip install passlib`` or ``python setup.py
+develop`` to pull in the new dependency of our project.  Password hashing can
+now be implemented in our ``User`` model class.
 
-We need to import the hash context object from passlib and alter `User` class to contain new versions of methods
-`verify_password` and `set_password`, our file should look like this::
+We need to import the hash context object from ``passlib`` and alter the
+``User`` class to contain new versions of methods ``verify_password`` and
+``set_password``.  Open ``models/user.py`` and edit it as indicated by the
+emphasized lines.
 
-    from passlib.apps import custom_app_context as blogger_pwd_context
+.. literalinclude:: src/registration/models/user.py
+    :language: python
+    :linenos:
+    :lines: 12-21
+    :lineno-start: 12
+    :emphasize-lines: 1-2,10-
 
-    class User(Base):
-        __tablename__ = 'users'
+.. literalinclude:: src/registration/models/user.py
+    :language: python
+    :linenos:
+    :lines: 26-
+    :lineno-start: 22
+    :emphasize-lines: 26-
 
-        ...
+The last step is to alter our ``views/default.py`` to set the password, as
+shown by the emphasized lines.
 
-        def verify_password(self, password):
-            return blogger_pwd_context.verify(password, self.password)
-
-        def set_password(self, password):
-            password_hash = blogger_pwd_context.encrypt(password)
-            self.password = password_hash
-
-The last step is to alter our `views/default.py` to set password like this::
-
-        ...
-        new_user.name = form.username.data
-        new_user.set_password(form.password.data.encode('utf8'))
-        DBSession.add(new_user)
-        ...
-
+.. literalinclude:: src/registration/views/default.py
+    :language: python
+    :linenos:
+    :lines: 40-44
+    :lineno-start: 40
+    :emphasize-lines: 2-4
 
 Now our passwords are properly hashed and can be securely stored.
 
-If you tried to log in with `admin/admin` credentials you may notice that the application threw exception
-`ValueError: hash could not be identified` because our old clear text passwords are not identified,
-so we should allow our application to migrate to secure hashes (usually strong sha512_crypt if we are using the
-quickstart class).
+If you tried to log in with ``admin/admin`` credentials, you may notice that
+the application threw an exception ``ValueError: hash could not be identified``
+because our old clear text passwords are not identified.  So we should allow
+our application to migrate to secure hashes (usually strong sha512_crypt if we
+are using the quick start class).
 
-We can easly fix this by altering our `verify_password` method::
+We can easly fix this by altering our ``verify_password`` method in
+``models/user.py``.
 
-    def verify_password(self, password):
-        # is it cleartext?
-        if password == self.password:
-            self.set_password(password)
+.. literalinclude:: src/registration/models/user.py
+    :language: python
+    :linenos:
+    :lines: 21-26
+    :lineno-start: 21
+    :emphasize-lines: 2-5
 
-        return blogger_pwd_context.verify(password, self.password)
+Keep in mind that for proper migration of valid hash schemes, ``passlib``
+provides a mechanism you can use to quickly upgrade from one scheme to another.
 
-Keep in mind that for proper migration of valid hash schemes passlib provides
-mechanism you can use to quickly upgrade from one scheme to another.
 
+Current state of our application
+================================
+
+For convenience here are the files you edited in their entirety, with edited
+lines emphasized.  Files already rendered in their entirety are omitted.
+
+
+``forms.py``
+------------
+
+.. literalinclude:: src/registration/forms.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 2,18-21
+
+
+``__init__.py``
+---------------
+
+.. literalinclude:: src/registration/__init__.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 32
+
+
+``templates/index.jinja2``
+--------------------------
+
+.. literalinclude:: src/registration/templates/index.jinja2
+    :language: jinja
+    :linenos:
+    :emphasize-lines: 18
+
+
+``views/default.py``
+--------------------
+
+.. literalinclude:: src/registration/views/default.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 6-8,33-
+
+
+``models/user.py``
+------------------
+
+.. literalinclude:: src/registration/models/user.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 12-13,22-

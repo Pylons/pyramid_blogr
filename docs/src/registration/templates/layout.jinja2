@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pyramid Blogr</title>
+</head>
+<!-- Bootstrap core CSS -->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+      rel="stylesheet">
+<link href="{{ request.static_url('pyramid_blogr:static/theme.css') }}"
+      rel="stylesheet">
+
+<style type="text/css">
+    a, a:link, a:visited, a:hover{
+        color: #ffcc00;
+        font-weight:bold;
+    }
+</style>
+
+<body>
+
+<div class="container">
+    <header class="row">
+        <div class="col-sm-3">
+            <img src="{{ request.static_url('pyramid_blogr:static/pyramid.png') }}"
+                 alt="logo">
+        </div>
+        <div class="col-sm-9">
+            <h1>Pyramid Powered Blog</h1>
+        </div>
+    </header>
+
+    <div class="row">
+        {% block content %}Empty{% endblock %}
+    </div>
+
+    <footer class="row">Our footer</footer>
+</div>
+</body>
+</html>
