@@ -37,7 +37,6 @@ Contents
    authorization
    authentication
    registration
-   summary
 
 The complete source code for this application is available at:
 
