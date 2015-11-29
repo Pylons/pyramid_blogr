@@ -46,7 +46,7 @@ Adding dependencies to the project
 
 Since Pyramid tries its best to be a non-opinionated solution, we will have to
 decide which libraries we want for form handling and template helpers. For this
-tutorial, we will use the WTForms library and webhelpers package.
+tutorial, we will use the WTForms library and ``webhelpers2`` package.
 
 To make them dependencies of our application, we need to open the ``setup.py``
 file and extend the ``requires`` section with additional packages. In the end,
