@@ -38,9 +38,7 @@ extensions = [
 # Looks for objects in external projects
 intersphinx_mapping = {
     'jinja2': ('http://docs.pylonsproject.org/projects/pyramid-jinja2/en/latest/', None),
-    'mako': ('http://docs.makotemplates.org/en/latest/', None),
     'pyramid': ('http://docs.pylonsproject.org/projects/pyramid/en/latest/', None),
-    'pyramidmako': ('http://docs.pylonsproject.org/projects/pyramid-mako/en/latest/', None),
     'python': ('http://docs.python.org', None),
     'python3': ('http://docs.python.org/3', None),
     'sqla': ('http://docs.sqlalchemy.org/en/latest', None),
