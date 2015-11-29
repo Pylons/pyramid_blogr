@@ -119,6 +119,9 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 html_theme = 'pyramid'
 html_theme_path = pylons_sphinx_themes.get_html_themes_path()
+html_theme_options = dict(
+    github_url='https://github.com/Pylons/pyramid',
+    )
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
