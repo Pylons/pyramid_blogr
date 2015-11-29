@@ -220,3 +220,5 @@ lines emphasized.  Files already rendered in their entirety are omitted.
     :language: python
     :linenos:
     :emphasize-lines: 12-13,22-
+
+Next: :doc:`summary`.
