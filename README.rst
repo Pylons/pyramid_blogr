@@ -1,18 +1,11 @@
 pyramid_blogr README
 ====================
 
-pyramid_blogr is an example implementation of Flaskr app with Pyramid Web Framework
+pyramid_blogr is an example implementation of the Flaskr app using the Pyramid
+Web Framework.
 
 Getting Started
 ---------------
 
-**Read the docs** :: http://pyramid-blogr.readthedocs.org/
-
-- cd <directory containing this file>
-
-- $venv/bin/python setup.py develop
-
-- $venv/bin/initialize_pyramid_blogr_db development.ini
-
-- $venv/bin/pserve development.ini
-
+See the `pyramid_blogr Documentation
+<http://docs.pylonsproject.org/projects/pyramid-blogr/en/latest/>`_.
