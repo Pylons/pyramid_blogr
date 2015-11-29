@@ -27,6 +27,7 @@ and founder of `app enlight <https://appenlight.com>`_.
 
 :doc:`Start the tutorial <project_structure>`.
 
+
 Documentation links
 ===================
 
@@ -40,3 +41,13 @@ Documentation links
 The complete source code for this application is available on GitHub at:
 
 https://github.com/Pylons/pyramid_blogr
+
+
+Improve this tutorial
+=====================
+
+There may be mistakes in this tutorial, and we always appreciate pull requests
+to improve this tutorial.  Please use the `issue tracker on GitHub
+<https://github.com/Pylons/pyramid_blogr>`_ or submit pull requests to the
+project through GitHub.  Please see `contributing.md
+<https://github.com/Pylons/pyramid_blogr>`_ for details.
