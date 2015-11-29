@@ -19,7 +19,7 @@ Pyramid_blogr makes some initial assumptions:
 * We will perform simple authentication of the user.
 * The authenticated user will be authorized to make blog entries.
 * The blog entries will be listed from newest to oldest.
-* We will use the **webhelpers** package for pagination.
+* We will use the **webhelpers2** package for pagination.
 * The **WTForms** form library will provide form validation.
 
 This tutorial was originally created by **Marcin Lulek**, developer, freelancer

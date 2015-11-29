@@ -19,7 +19,7 @@ We will leave ``__init__.py`` empty.
 
 Open ``models/services/blog_record.py``. Import some helper modules to generate
 our slugs, add pagination, and print nice dates. They all come from the
-excellent ``webhelpers`` package.  Add the following imports at the top of
+excellent ``webhelpers2`` package.  Add the following imports at the top of
 ``blog_record.py``.
 
 .. literalinclude:: src/blog_models_and_views/models/services/blog_record.py
