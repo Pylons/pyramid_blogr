@@ -12,7 +12,8 @@ You can contribute to this project in several ways.
   submit a pull request for consideration. [GitHub
   Flow](https://guides.github.com/introduction/flow/index.html) describes the
   workflow process and why it's a good practice.
-* Join the IRC channel #pyramid on irc.freenode.net.
+* Join the IRC channel [#pyramid on irc.freenode.net]
+  (http://webchat.freenode.net/?channels=pyramid).
 
 
 Prerequisites
