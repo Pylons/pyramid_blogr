@@ -39,7 +39,7 @@ Our directory structure should look like this after issuing the above commands.
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
     ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
-    │     ├-─ __init__.py
+    │     ├── __init__.py
     │     └── meta.py <- former models.py
     ├── scripts/    <- util python scripts
     ├── static/     <- usually css, js, images
