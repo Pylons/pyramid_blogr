@@ -144,7 +144,7 @@ users will do well to use ``c:\`` as the location for ``projects`` in order to
 avoid spaces in any of the path names.
 
 Next within ``projects`` is your workspace directory, here named
-``quick_tutorial``. A workspace is a common term used by integrated development
+``blogr_tutorial``. A workspace is a common term used by integrated development
 environments (IDE) like PyCharm and PyDev that stores isolated Python
 environments (virtualenvs) and specific project files and repositories.
 
