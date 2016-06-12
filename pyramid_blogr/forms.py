@@ -10,7 +10,6 @@ class BlogCreateForm(Form):
     body = TextAreaField('Contents', [validators.Length(min=1)],
                          filters=[strip_filter])
 
-
 class BlogUpdateForm(BlogCreateForm):
     id = HiddenField()
 

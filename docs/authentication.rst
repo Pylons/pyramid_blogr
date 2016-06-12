@@ -15,9 +15,9 @@ shown by the emphasized lines.
 .. literalinclude:: src/authentication/templates/index.jinja2
     :language: jinja
     :linenos:
-    :lines: 1-20
+    :lines: 1-22
     :lineno-start: 1
-    :emphasize-lines: 5-19
+    :emphasize-lines: 5-20
 
 Now the template first checks if we are logged in.  If we are logged in, it
 greets the user and presents a sign-out link.  Otherwise we are presented with
@@ -45,7 +45,7 @@ Add the following method to our ``User`` class in ``models/user.py``.
 We also need to create the ``UserService`` class in a new file
 ``models/services/user.py``.
 
-.. literalinclude:: src/authentication/models/services/user.py
+.. literalinclude:: src/authentication/services/user.py
     :language: python
     :linenos:
 
@@ -81,8 +81,8 @@ Now we have everything ready to implement our actual view.
 .. literalinclude:: src/authentication/views/default.py
     :language: python
     :linenos:
-    :lines: 19-
-    :lineno-start: 19
+    :lines: 18-
+    :lineno-start: 18
     :emphasize-lines: 2-
 
 This is a very simple view that checks if a database row with the supplied

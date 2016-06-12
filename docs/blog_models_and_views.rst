@@ -11,26 +11,26 @@ Let's start with models. Now that we have them, we can create some service
 classes, and implement some methods that we will use in our views and
 templates.
 
-Create a new directory ``models/services/``. Inside of that, create two new
+Create a new directory ``services/``. Inside of that, create two new
 empty files, ``__init__.py`` and ``blog_record.py``. These files comprise a new
 subpackage.
 
 We will leave ``__init__.py`` empty.
 
-Open ``models/services/blog_record.py``. Import some helper modules to generate
+Open ``services/blog_record.py``. Import some helper modules to generate
 our slugs, add pagination, and print nice dates. They all come from the
 excellent ``webhelpers2`` package.  Add the following imports at the top of
 ``blog_record.py``.
 
-.. literalinclude:: src/blog_models_and_views/models/services/blog_record.py
+.. literalinclude:: src/blog_models_and_views/services/blog_record.py
     :linenos:
-    :lines: 1-4
+    :lines: 1-3
 
 Next we need to create our ``BlogRecordService`` class with methods as follows.
 
-.. literalinclude:: src/blog_models_and_views/models/services/blog_record.py
+.. literalinclude:: src/blog_models_and_views/services/blog_record.py
     :linenos:
-    :lines: 6-10
+    :lines: 6-11
     :lineno-start: 6
 
 The method ``all`` will return a query object that can return an entire dataset
@@ -38,18 +38,18 @@ when needed.
 
 The query object will sort the rows by date in descending order.
 
-.. literalinclude:: src/blog_models_and_views/models/services/blog_record.py
+.. literalinclude:: src/blog_models_and_views/services/blog_record.py
     :linenos:
-    :lines: 12-14
-    :lineno-start: 12
+    :lines: 13-16
+    :lineno-start: 13
 
 The above method will return either a single blog entry by id or the ``None``
 object if nothing is found.
 
-.. literalinclude:: src/blog_models_and_views/models/services/blog_record.py
+.. literalinclude:: src/blog_models_and_views/services/blog_record.py
     :linenos:
-    :lines: 16-
-    :lineno-start: 16
+    :lines: 18-
+    :lineno-start: 18
 
 The ``get_paginator`` method will return a paginator object that returns the
 entries from a specific "page" of records from a database resultset. It will
@@ -66,23 +66,11 @@ Your project structure should look like this at this point.
 ::
 
     pyramid_blogr/
-    ├── __init__.py <- main file that will configure and return WSGI application
-    ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
-    │     ├── services      <- they query the models for data
-    │     │     ├── __init__.py
-    │     │     └── blog_record.py
+    ......
+    ├── services      <- they query the models for data
     │     ├── __init__.py
-    │     ├── meta.py <- former models.py
-    │     ├── blog_record.py
-    │     └── user.py
-    ├── scripts/    <- util python scripts
-    ├── static/     <- usually css, js, images
-    ├── templates/  <- template files
-    ├── tests.py    <- tests
-    └── views    <- views aka business logic
-          ├── __init__.py <- empty
-          ├── blog.py
-          └── default.py
+    │     └── blog_record.py
+    ......
 
 Now it is time to move up to the parent directory, to add imports and
 properties to ``models/blog_record.py``.
@@ -130,8 +118,8 @@ Now it's time to implement our actual index view by modifying our view
 
 .. literalinclude:: src/blog_models_and_views/views/default.py
     :linenos:
-    :lines: 4-9
-    :lineno-start: 4
+    :lines: 5-10
+    :lineno-start: 5
 
 We first retrieve from the URL's request object the page number that we want to
 present to the user. If the page number is not present, it defaults to 1.
@@ -150,25 +138,23 @@ in the template to build a nice list of entries.
 Index view template
 -------------------
 
-First delete everything in the ``/templates`` folder.
+First rename ``mytemplate.jinja2`` to ``index.jinja2``.
 
-We will now create the file ``layout.jinja2``, a template file that will store
-a "master" template that from which other view templates will inherit. This
-template will contain the page header and footer shared by all pages.
-
-In ``/templates`` create the file ``layout.jinja2`` with the following
-content.
+Lets now go over the contents of the file ``layout.jinja2``,
+a template file that will store a "master" template that from which other view
+templates will inherit. This template will contain the page header and footer
+shared by all pages.
 
 .. literalinclude:: src/blog_models_and_views/templates/layout.jinja2
     :language: jinja
     :linenos:
-    :emphasize-lines: 25,34
+    :emphasize-lines: 17,36
 
 .. note::
 
     The ``request`` object is always available inside your templates namespace.
 
-Inside your template, you will notice that we used the method
+Inside your template, you will notice that we use the method
 ``request.static_url`` which will generate correct links to your static assets.
 This is handy when building apps using URL prefixes.
 
@@ -177,8 +163,7 @@ In the middle of the template, you will also notice the tag
 layout file, this is the place where our index template (or others for other
 views) will appear.
 
-Now let's create another template in ``templates/`` called ``index.jinja2``
-with the following content.
+Now let's open ``index.jinja2`` and put this content in it:
 
 .. literalinclude:: src/blog_models_and_views/templates/index.jinja2
     :language: jinja
@@ -208,7 +193,7 @@ following imports
 .. literalinclude:: src/blog_models_and_views/views/blog.py
     :language: python
     :linenos:
-    :lines: 2-5
+    :lines: 2-4
     :lineno-start: 2
 
 Those HTTP exceptions will be used to perform redirects inside our apps.
@@ -268,7 +253,7 @@ provided in their entirety.
 models/services/blog_record.py
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. literalinclude:: src/blog_models_and_views/models/services/blog_record.py
+.. literalinclude:: src/blog_models_and_views/services/blog_record.py
     :linenos:
 
 

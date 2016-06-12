@@ -1,14 +1,15 @@
 import datetime #<- will be used to set default dates on models
-from pyramid_blogr.models.meta import Base  # <- we need to import our sqlalchemy metadata from which model classes will inherit
-
+from pyramid_blogr.models.meta import Base  #<- we need to import our sqlalchemy metadata from which model classes will inherit
 from sqlalchemy import (
     Column,
     Integer,
-    Unicode,      # <- will provide Unicode field
-    DateTime,     # <- time abstraction field
-    )
+    Unicode,     #<- will provide Unicode field
+    UnicodeText, #<- will provide Unicode text field
+    DateTime,    #<- time abstraction field
+)
 
 from passlib.apps import custom_app_context as blogger_pwd_context
+
 
 class User(Base):
     __tablename__ = 'users'

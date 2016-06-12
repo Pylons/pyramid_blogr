@@ -6,7 +6,7 @@
 
 .. note::
 
-  At the time of writing, 1.5.7 was the most recent stable version of Pyramid.
+  At the time of writing, 1.7 was the most recent stable version of Pyramid.
   You can use newer versions of Pyramid, but there may be some slight
   differences in default project templates.
 
@@ -31,12 +31,27 @@ structure as explained below.
 
     pyramid_blogr/
     ├── __init__.py <- main file that will configure and return WSGI application
-    ├── models.py   <- model definitions aka data sources (often RDBMS or noSQL)
-    ├── scripts/    <- util Python scripts
-    ├── static/     <- usually css, js, images
-    ├── templates/  <- template files
-    ├── tests.py    <- tests
-    └── views.py    <- views aka business logic
+    ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
+    │   ├── __init__.py
+    │   ├── meta.py
+    │   └── mymodel.py
+    ├── routes.py
+    ├── scripts/    <- util Python scripts
+    │   ├── __init__.py
+    │   └── initializedb.py
+    ├── static/     <- usually css, js, images
+    │   ├── pyramid-16x16.png
+    │   ├── pyramid.png
+    │   └── theme.css
+    ├── templates/  <- template files
+    │   ├── 404.jinja2
+    │   ├── layout.jinja2
+    │   └── mytemplate.jinja2
+    ├── tests.py    <- tests
+    └── views       <- views aka business logic
+    │   ├── __init__.py
+    │   ├── default.py
+    │   └── notfound.py
 
 
 .. _adding_dependencies:
@@ -54,18 +69,19 @@ it should look like the following.
 
 .. code-block:: ini
 
+
     requires = [
-        'pyramid==1.5.7',
-        'pyramid_jinja2', # replaces default chameleon templates
+        'pyramid',
+        'pyramid_jinja2',
         'pyramid_debugtoolbar',
         'pyramid_tm',
-        'SQLAlchemy==1.0.8',
+        'SQLAlchemy>=1.0',
         'transaction',
         'zope.sqlalchemy',
         'waitress',
-        'wtforms==2.0.2',  # form library
+        'wtforms==2.1',  # form library
         'webhelpers2==2.0', # various web building related helpers
-        'paginate==0.5', # pagination helpers
+        'paginate==0.5.4', # pagination helpers
         'paginate_sqlalchemy==0.2.0'
         ]
 
@@ -108,26 +124,6 @@ is used to provide all the configuration details. The ``--reload`` parameter
 tells the server to restart our application every time its code changes. This
 is a very useful setting for fast development and testing changes to our app
 with live reloading.
-
-Unfortunately on our first run the application will throw an exception.
-
-.. code-block:: python
-
-    ImportError: No module named 'pyramid_chameleon'
-
-This is because we switched from the chameleon templating engine to mako.
-
-To fix this you need to open ``pyramid_blogr/__init__.py`` and change one line
-as follows.
-
-.. code-block:: python
-
-    config.include('pyramid_chameleon')
-    # to
-    config.include('pyramid_jinja2')
-
-Try the command to start the server again, and you should see something like
-the following.
 
 .. code-block:: bash
 

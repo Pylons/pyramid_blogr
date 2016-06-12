@@ -44,8 +44,8 @@ Lets start by importing our freshly created form schemas to ``views/blog.py``.
 .. literalinclude:: src/blog_create_and_update_view/views/blog.py
     :language: python
     :linenos:
-    :lines: 5-6
-    :lineno-start: 5
+    :lines: 4-5
+    :lineno-start: 4
     :emphasize-lines: 2
 
 Add the emphasized line as indicated.
@@ -83,8 +83,8 @@ The following view will handle updates to existing blog entries.
 .. literalinclude:: src/blog_create_and_update_view/views/blog.py
     :language: python
     :linenos:
-    :lines: 28-
-    :lineno-start: 28
+    :lines: 29-
+    :lineno-start: 29
     :emphasize-lines: 4-13
 
 Only the emphasized lines need to be added or edited.

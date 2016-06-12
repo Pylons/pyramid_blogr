@@ -96,9 +96,9 @@ pass them to the configurator.  Add or edit the emphasized lines.
 .. literalinclude:: src/authorization/__init__.py
     :language: python
     :linenos:
-    :lines: 17-24
-    :lineno-start: 17
-    :emphasize-lines: 2-8
+    :lines: 8-14
+    :lineno-start: 8
+    :emphasize-lines: 1-5
 
 The string "somesecret" passed into the policy will be a secret string used for
 cookie signing, so that our authentication cookie is secure.
@@ -107,12 +107,12 @@ The last thing we need to add is to assign our context factory to our routes.
 We want this to be the route responsible for entry creation and updates.
 Modify the following emphasized lines.
 
-.. literalinclude:: src/authorization/__init__.py
+.. literalinclude:: src/authorization/routes.py
     :language: python
     :linenos:
-    :lines: 29-30
-    :lineno-start: 29
-    :emphasize-lines: 1-2
+    :lines: 1-
+    :lineno-start: 1
+    :emphasize-lines: 5-6
 
 Now for the finishing touch.  We set "create" and "edit" permissions on our
 views.  Open ``views/blog.py``, and change our ``@view_config`` decorators as
@@ -121,15 +121,15 @@ shown by the following emphasized lines.
 .. literalinclude:: src/authorization/views/blog.py
     :language: python
     :linenos:
-    :lines: 17-19
-    :lineno-start: 17
+    :lines: 18-20
+    :lineno-start: 18
     :emphasize-lines: 2-3
 
 .. literalinclude:: src/authorization/views/blog.py
     :language: python
     :linenos:
-    :lines: 30-32
-    :lineno-start: 30
+    :lines: 31-33
+    :lineno-start: 31
     :emphasize-lines: 2-3
 
 
@@ -155,7 +155,7 @@ this point (``security.py`` was already rendered above).
 .. literalinclude:: src/authorization/views/blog.py
     :language: python
     :linenos:
-    :emphasize-lines: 18-19,31-32
+    :emphasize-lines: 18-20,31-33
 
 Now if you try to visit the links to create or update entries, you will see
 that they respond with a 403 HTTP status because Pyramid detects that there is

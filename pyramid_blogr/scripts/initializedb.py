@@ -2,16 +2,19 @@ import os
 import sys
 import transaction
 
-from sqlalchemy import engine_from_config
-
 from pyramid.paster import (
     get_appsettings,
     setup_logging,
-    )
+)
 
 from pyramid.scripts.common import parse_vars
 
-from ..models.meta import DBSession, Base
+from ..models.meta import Base
+from ..models import (
+    get_engine,
+    get_session_factory,
+    get_tm_session,
+)
 from ..models import User
 
 
@@ -29,9 +32,14 @@ def main(argv=sys.argv):
     options = parse_vars(argv[2:])
     setup_logging(config_uri)
     settings = get_appsettings(config_uri, options=options)
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
+
+    engine = get_engine(settings)
     Base.metadata.create_all(engine)
+
+    session_factory = get_session_factory(engine)
+
     with transaction.manager:
+        dbsession = get_tm_session(session_factory, transaction.manager)
+
         admin = User(name=u'admin', password=u'admin')
-        DBSession.add(admin)
+        dbsession.add(admin)

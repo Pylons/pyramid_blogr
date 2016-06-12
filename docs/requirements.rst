@@ -100,23 +100,30 @@ proceed through the tutorial:
                 ├── README.txt
                 ├── development.ini
                 ├── production.ini
+                ├── pytest.ini
                 ├── pyramid_blogr/
                 │   ├── __init__.py
-                │   ├── __pycache__
-                │   ├── models.py
+                │   ├── models
+                │   │   ├── __init__.py
+                │   │   ├── meta.py
+                │   │   └── mymodel.py
+                │   ├── routes.py
                 │   ├── scripts/
                 │   │   ├── __init__.py
-                │   │   ├── __pycache__
                 │   │   └── initializedb.py
                 │   ├── static/
                 │   │   ├── pyramid-16x16.png
                 │   │   ├── pyramid.png
-                │   │   ├── theme.css
-                │   │   └── theme.min.css
+                │   │   └── theme.css
                 │   ├── templates/
-                │   │   └── mytemplate.pt
+                │   │   ├── 404.jinja2
+                │   │   ├── layout.jinja2
+                │   │   └── mytemplate.jinja2
                 │   ├── tests.py
-                │   └── views.py
+                │   └── views
+                │   │   ├── __init__.py
+                │   │   ├── default.py
+                │   │   └── notfound.py
                 └── setup.py
 
 For Linux, the commands to do so are as follows:
@@ -130,7 +137,7 @@ For Linux, the commands to do so are as follows:
 
 For Windows:
 
-.. code-block:: posh
+.. code-block:: bash
 
     # Windows
     c:\> cd \
@@ -225,10 +232,10 @@ pretty easy:
 .. code-block:: bash
 
     # Mac and Linux
-    $ $VENV/bin/pip install pyramid==1.5.7
+    $ $VENV/bin/pip install pyramid==1.7
 
     # Windows
-    c:\> %VENV%\Scripts\pip install pyramid==1.5.7
+    c:\> %VENV%\Scripts\pip install pyramid==1.7
 
 Our Python virtual environment now has the Pyramid software available.
 

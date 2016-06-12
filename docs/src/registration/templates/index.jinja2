@@ -1,21 +1,23 @@
-{% extends "pyramid_blogr:templates/layout.jinja2" %}
+{% extends "layout.jinja2" %}
 
 {% block content %}
 
     {% if request.authenticated_userid %}
-    Welcome <strong>{{request.authenticated_userid}}</strong> ::
-      <a href="{{request.route_url('auth',action='out')}}">Sign Out</a>
+        Welcome <strong>{{request.authenticated_userid}}</strong> ::
+        <a href="{{request.route_url('auth',action='out')}}">Sign Out</a>
     {% else %}
-    <form action="{{request.route_url('auth',action='in')}}" method="post" class="form-inline">
-        <div class="form-group">
-            <label>User</label> <input type="text" name="username" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>Password</label> <input type="password" name="password" class="form-control">
-            <input type="submit" value="Sign in" class="btn btn-default">
-        </div>
-    </form>
-    <a href="{{request.route_url('register')}}">Register here</a>
+        <form action="{{request.route_url('auth',action='in')}}" method="post" class="form-inline">
+            <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Sign in" class="btn btn-default">
+            </div>
+        </form>
+        <a href="{{request.route_url('register')}}">Register here</a>
     {% endif %}
 
     {% if paginator.items %}
@@ -24,11 +26,11 @@
 
         <ul>
             {% for entry in paginator.items %}
-            <li>
-                <a href="{{ request.route_url('blog', id=entry.id, slug=entry.slug) }}">
-                    {{ entry.title }}
-                </a>
-            </li>
+                <li>
+                    <a href="{{ request.route_url('blog', id=entry.id, slug=entry.slug) }}">
+                        {{ entry.title }}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
 

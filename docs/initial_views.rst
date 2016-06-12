@@ -18,31 +18,6 @@ in our ``__init__.py``, and all of our views are registered with our app.
     ``config.scan()`` is often more convenient.
 
 
-Create a package for ``views``
-==============================
-
-First lets create a new package called ``views`` and create 3 files,
-``views/__init__.py``, ``views/default.py``, and ``views/blog.py``.
-
-Your project structure should look like this at this point::
-
-    pyramid_blogr/
-    ├── __init__.py <- main file that will configure and return WSGI application
-    ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
-    │     ├── __init__.py
-    │     ├── meta.py <- former models.py
-    │     ├── blog_record.py
-    │     └── user.py
-    ├── scripts/    <- util python scripts
-    ├── static/     <- usually css, js, images
-    ├── templates/  <- template files
-    ├── tests.py    <- tests
-    └── views    <- views aka business logic
-          ├── __init__.py <- empty
-          ├── blog.py
-          └── default.py
-
-
 Edit our ``views`` files
 ========================
 
@@ -54,7 +29,7 @@ Open ``views/default.py`` and add the following.
 .. literalinclude:: src/initial_views/views/default.py
     :language: python
     :linenos:
-    :lines: 1-6
+    :lines: 1-7
 
 Here ``@view_config`` takes two parameters that will register our
 ``index_page`` callable in Pyramid's registry, specifying the route that should
@@ -63,7 +38,8 @@ transform the data which the view returns into a response suitable for the
 client.
 
 The template location is specified using the *asset location* format, which is
-in the form of *package_name:path_to_template*.
+in the form of *package_name:path_to_template*, or by specifying relative
+path to the template.
 
 .. note::
 
@@ -82,12 +58,12 @@ in the form of *package_name:path_to_template*.
         * string output
         * json encoder
 
-Open ``views/blog.py`` and add the following.
+Create new file ``views/blog.py`` and add the following contents:
 
 .. literalinclude:: src/initial_views/views/blog.py
     :language: python
     :linenos:
-    :lines: 1-6
+    :lines: 1-7
 
 This registers ``blog_view`` with a route named ``'blog'`` using the
 ``view_blog.jinja2`` template as the response.
@@ -98,8 +74,8 @@ to our blog entries.
 .. literalinclude:: src/initial_views/views/blog.py
     :language: python
     :linenos:
-    :lines: 8-11
-    :lineno-start: 8
+    :lines: 10-13
+    :lineno-start: 10
 
 Notice that there is a new keyword introduced to the ``@view_config``
 decorator. The purpose of ``match_param`` is to tell Pyramid which view
@@ -111,8 +87,8 @@ Next we add the view for the URL ``/blog/edit``.
 .. literalinclude:: src/initial_views/views/blog.py
     :language: python
     :linenos:
-    :lines: 13-
-    :lineno-start: 13
+    :lines: 16-
+    :lineno-start: 16
 
 .. note::
 
@@ -124,8 +100,8 @@ Now switch back to ``views/default.py``, and add the following.
 .. literalinclude:: src/initial_views/views/default.py
     :language: python
     :linenos:
-    :lines: 8-
-    :lineno-start: 8
+    :lines: 10-
+    :lineno-start: 10
 
 These routes will handle user authentication and logout. They do not use a
 template because they will just perform HTTP redirects.

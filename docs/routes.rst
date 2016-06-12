@@ -65,84 +65,11 @@ contains a non-digit character::
     /blog/something/Some-blog-entry
 
 
-Basics of Pyramid configuration
--------------------------------
-
-Now that we know what routes we want, we should add them to our application.
-
-Pyramid's ``config`` object will store our routes. To do so, we will need to
-modify the file ``__init__.py`` in the root of our project. This is the central
-point where initial application configuration is performed at runtime.
-
-The ``main`` function will accept a parsed ``ini`` file that we pass to our
-``pserve`` command.  Let's quickly go over what the ``main`` function does.
-
-.. literalinclude:: src/basic_models/__init__.py
-    :language: python
-    :linenos:
-    :lines: 13-15
-    :lineno-start: 13
-
-The above lines read the settings for SQLAlchemy, and configure the connection
-engine and session maker objects.
-
-.. literalinclude:: src/basic_models/__init__.py
-    :language: python
-    :linenos:
-    :lines: 16
-    :lineno-start: 16
-
-The above line creates the configurator.  When needed we will be able to access
-it in our views via the request object as ``request.registry.settings``.
-
-.. literalinclude:: src/basic_models/__init__.py
-    :language: python
-    :linenos:
-    :lines: 17
-    :lineno-start: 17
-
-The above line configures ``pyramid_jinja2`` as the template binding for
-rendering our views.
-
-.. literalinclude:: src/basic_models/__init__.py
-    :language: python
-    :linenos:
-    :lines: 18-19
-    :lineno-start: 18
-
-In the above, two routes are added:
-
-* a **static route** that starts with ``/static``.  This route will serve all
-  our static files like JavaScript, CSS, and images.  When a browser makes a
-  request to ``/static/some/resource.foo``, our application will check if
-  ``/some/resource.foo`` resource is present in our static directory, and if
-  it's there then it will get served to browser.
-
-* a **view route** called ``home`` that maps to the path ``/``.
-
-.. literalinclude:: src/basic_models/__init__.py
-    :language: python
-    :linenos:
-    :lines: 20
-    :lineno-start: 20
-
-The above runs the scan process which will scan our entire project and load all
-decorators and includes, and add them to our ``config`` object.
-
-.. literalinclude:: src/basic_models/__init__.py
-    :language: python
-    :linenos:
-    :lines: 21
-    :lineno-start: 21
-
-The above returns an instance of a WSGI app to the server.
-
-
 Adding routes to the application configuration
 ----------------------------------------------
 
 Let's add our routes to the configurator immediately after the ``home`` route
-in our ``__init__.py`` at the root of our project.
+in our ``routes.py`` at the root of our project.
 
 .. literalinclude:: src/routes/__init__.py
     :language: python

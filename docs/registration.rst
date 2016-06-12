@@ -37,11 +37,11 @@ files and add a new form class at the end as indicated by the emphasized lines.
 Our second step will be adding a new route that handles user registration in
 our main ``__init__.py`` file as shown by the emphasized line.
 
-.. literalinclude:: src/registration/__init__.py
+.. literalinclude:: src/registration/routes.py
     :language: python
     :linenos:
-    :lines: 31-33
-    :lineno-start: 31
+    :lines: 7-
+    :lineno-start: 7
     :emphasize-lines: 2
 
 We should add a link to the registration page in our ``templates/index.jinja2``
@@ -50,8 +50,8 @@ template so we can easily navigate to it as shown by the emphasized line.
 .. literalinclude:: src/registration/templates/index.jinja2
     :language: jinja
     :linenos:
-    :lines: 17-19
-    :lineno-start: 17
+    :lines: 19-21
+    :lineno-start: 19
     :emphasize-lines: 2
 
 
@@ -68,7 +68,7 @@ as shown by the emphasized lines.
 .. literalinclude:: src/registration/views/default.py
     :language: python
     :linenos:
-    :lines: 5-8
+    :lines: 5-7
     :lineno-start: 5
     :emphasize-lines: 2-4
 
@@ -78,15 +78,15 @@ the end of the file.
 .. literalinclude:: src/registration/views/default.py
     :language: python
     :linenos:
-    :lines: 33-40
-    :lineno-start: 33
+    :lines: 34-39
+    :lineno-start: 34
     :emphasize-lines: 1-
 
 .. literalinclude:: src/registration/views/default.py
     :language: python
     :linenos:
-    :lines: 44-
-    :lineno-start: 39
+    :lines: 41-
+    :lineno-start: 41
     :emphasize-lines: 1-
 
 Next let's create a new registration template called
@@ -127,8 +127,8 @@ emphasized lines.
 .. literalinclude:: src/registration/models/user.py
     :language: python
     :linenos:
-    :lines: 12-21
-    :lineno-start: 12
+    :lines: 11-21
+    :lineno-start: 11
     :emphasize-lines: 1-2,10-
 
 .. literalinclude:: src/registration/models/user.py
@@ -136,7 +136,7 @@ emphasized lines.
     :linenos:
     :lines: 26-
     :lineno-start: 22
-    :emphasize-lines: 26-
+    :emphasize-lines: 1-
 
 The last step is to alter our ``views/default.py`` to set the password, as
 shown by the emphasized lines.
@@ -146,7 +146,7 @@ shown by the emphasized lines.
     :linenos:
     :lines: 40-44
     :lineno-start: 40
-    :emphasize-lines: 2-4
+    :emphasize-lines: 1
 
 Now our passwords are properly hashed and can be securely stored.
 
@@ -201,7 +201,7 @@ lines emphasized.  Files already rendered in their entirety are omitted.
 .. literalinclude:: src/registration/templates/index.jinja2
     :language: jinja
     :linenos:
-    :emphasize-lines: 18
+    :emphasize-lines: 20
 
 
 ``views/default.py``
