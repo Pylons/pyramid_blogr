@@ -35,7 +35,7 @@ files and add a new form class at the end as indicated by the emphasized lines.
     :emphasize-lines: 1-
 
 Our second step will be adding a new route that handles user registration in
-our main ``__init__.py`` file as shown by the emphasized line.
+ ``routes.py`` file as shown by the emphasized line.
 
 .. literalinclude:: src/registration/routes.py
     :language: python
