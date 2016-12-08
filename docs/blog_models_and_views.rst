@@ -251,7 +251,7 @@ provided in their entirety.
 
 
 services/blog_record.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. literalinclude:: src/blog_models_and_views/services/blog_record.py
     :linenos:
