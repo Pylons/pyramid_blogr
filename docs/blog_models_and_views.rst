@@ -250,7 +250,7 @@ Here are the entire file contents up to this point, except for those already
 provided in their entirety.
 
 
-models/services/blog_record.py
+services/blog_record.py
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. literalinclude:: src/blog_models_and_views/services/blog_record.py
