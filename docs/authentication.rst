@@ -43,7 +43,7 @@ Add the following method to our ``User`` class in ``models/user.py``.
     :emphasize-lines: 2-4
 
 We also need to create the ``UserService`` class in a new file
-``models/services/user.py``.
+``services/user.py``.
 
 .. literalinclude:: src/authentication/services/user.py
     :language: python
@@ -97,7 +97,7 @@ Current state of our application
 ================================
 
 For convenience here are the files you edited in their entirety
-(``models/services/user.py`` was already rendered above).
+(``services/user.py`` was already rendered above).
 
 
 ``templates/index.jinja2``
