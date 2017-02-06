@@ -24,7 +24,7 @@ Edit our ``views`` files
 Let's make some stubs for our views.  We will populate them with actual code in
 later chapters.
 
-Open ``views/default.py`` and add the following.
+Open ``views/default.py`` and replace the current `@view_config` decorator and the `def my_view()` function with the following.
 
 .. literalinclude:: src/initial_views/views/default.py
     :language: python
