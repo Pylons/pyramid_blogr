@@ -51,7 +51,7 @@ Finally a route used to view our blog entries::
 
     /blog/{id:\d+}/{slug}
 
-This route constists of two dynamic parts, ``{id:\\d+}`` and ``{slug}``.
+This route constists of two dynamic parts, ``{id:\d+}`` and ``{slug}``.
 
 The ``:\d+`` pattern means that the route will only match digits.  So an URL
 where the first dynamic part consists of only digits like the following would
