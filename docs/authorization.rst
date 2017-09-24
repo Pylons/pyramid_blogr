@@ -146,7 +146,7 @@ this point (``security.py`` was already rendered above).
 .. literalinclude:: src/authorization/__init__.py
     :language: python
     :linenos:
-    :emphasize-lines: 2-3,18-24,29-30
+    :emphasize-lines: 2-3
 
 
 ``views/blog.py``

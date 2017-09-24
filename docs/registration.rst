@@ -70,7 +70,7 @@ as shown by the emphasized lines.
     :linenos:
     :lines: 5-7
     :lineno-start: 5
-    :emphasize-lines: 2-4
+    :emphasize-lines: 2-3
 
 Then we can start implementing our view logic by adding the following lines to
 the end of the file.
@@ -144,7 +144,7 @@ shown by the emphasized lines.
 .. literalinclude:: src/registration/views/default.py
     :language: python
     :linenos:
-    :lines: 40-44
+    :lines: 40-43
     :lineno-start: 40
     :emphasize-lines: 1
 
@@ -183,7 +183,7 @@ lines emphasized.  Files already rendered in their entirety are omitted.
 .. literalinclude:: src/registration/forms.py
     :language: python
     :linenos:
-    :emphasize-lines: 2,18-21
+    :emphasize-lines: 2,18-20
 
 
 ``__init__.py``
@@ -192,7 +192,6 @@ lines emphasized.  Files already rendered in their entirety are omitted.
 .. literalinclude:: src/registration/__init__.py
     :language: python
     :linenos:
-    :emphasize-lines: 32
 
 
 ``templates/index.jinja2``
