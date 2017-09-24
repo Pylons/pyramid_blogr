@@ -13,16 +13,19 @@
 When we installed Pyramid, several scripts were installed in your virtual
 environment including:
 
-* ``pcreate`` - Used to create a new project and directory structures from
-  Pyramid scaffolds (project templates) shipped with Pyramid.
+* ``cookiecutter`` - Used to create a new project and directory structures from
+  Pyramid scaffolds (project templates) provided in separate repository.
 * ``pserve`` - Used to start a WSGI server.
 
-Using the ``pcreate`` script, we will create our project using the alchemy
+Using the ``cookiecutter`` script, we will create our project using the alchemy
 scaffold, which will provide SQLAlchemy as our default ORM layer.
 
 .. code-block:: bash
 
-    $ $VENV/bin/pcreate -s alchemy pyramid_blogr
+    $ $VENV/bin/cookiecutter gh:Pylons/pyramid-cookiecutter-alchemy --checkout 1.9-branch
+
+When asked for the project name enter `pyramid_blogr`, `repo_name` can be the same.
+
 
 We will end up with the directory ``pyramid_blogr`` which should have the
 structure as explained below.

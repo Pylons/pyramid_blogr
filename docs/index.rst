@@ -17,7 +17,7 @@ development.
 
 .. note::
     This tutorial is meant for **Python 2.7** and **Python 3.3+** versions of
-    the language.
+    the language. **We strongly recommend using Python 3.x.**
 
 
 Contents

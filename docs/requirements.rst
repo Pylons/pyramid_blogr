@@ -32,6 +32,8 @@ This *Pyramid Blogr Tutorial* is based on:
 
 * **pip**. We use ``pip`` for package management.
 
+* **cookiecutter**. We use ``cookiecutter`` for fresh project creation.
+
 * **Workspaces, projects, and packages**. Our home directory will contain a
   *tutorial workspace* with our Python virtual environment(s) and *Python
   projects* (a directory with packaging information and *Python packages* of
@@ -210,34 +212,22 @@ environment variable.
 
 .. _install-pyramid:
 
-Install Pyramid
----------------
+Install Cookiecutter
+--------------------
 
-We have our Python standard prerequisites out of the way. The Pyramid part is
-pretty easy:
+Cookiecutter A command-line utility that creates projects from cookiecutters (project templates),
+e.g. creating a Python package project from a Python package project template.
 
-.. TODO
-  whenever this gets merged into the official Pyramid docs, uncomment the
-  following parsed-literal block and delete the subsequent code-block.
-
-.. .. parsed-literal::
-    # Mac and Linux
-    $ $VENV/bin/pip "pyramid==\ |release|\ "
-
-
-..  # Windows
-    c:\\> %VENV%\\Scripts\\pip "pyramid==\ |release|\ "
 
 
 .. code-block:: bash
 
     # Mac and Linux
-    $ $VENV/bin/pip install pyramid==1.7
+    $ $VENV/bin/pip install cookiecutter
 
     # Windows
-    c:\> %VENV%\Scripts\pip install pyramid==1.7
+    c:\\> %VENV%\\Scripts\\pip install cookiecutter
 
-Our Python virtual environment now has the Pyramid software available.
 
 With the requirements satisfied, you may continue to the next step in this
 tutorial :doc:`project_structure`.
