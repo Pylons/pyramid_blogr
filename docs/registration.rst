@@ -183,7 +183,7 @@ lines emphasized.  Files already rendered in their entirety are omitted.
 .. literalinclude:: src/registration/forms.py
     :language: python
     :linenos:
-    :emphasize-lines: 2,18-20
+    :emphasize-lines: 2,18-21
 
 
 ``__init__.py``

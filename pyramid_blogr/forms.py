@@ -1,5 +1,6 @@
 from wtforms import Form, StringField, TextAreaField, validators
-from wtforms import HiddenField, PasswordField
+from wtforms import IntegerField, PasswordField
+from wtforms.widgets import HiddenInput
 
 strip_filter = lambda x: x.strip() if x else None
 
@@ -11,7 +12,7 @@ class BlogCreateForm(Form):
                          filters=[strip_filter])
 
 class BlogUpdateForm(BlogCreateForm):
-    id = HiddenField()
+    id = IntegerField(widget=HiddenInput())
 
 
 class RegistrationForm(Form):
