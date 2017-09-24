@@ -85,7 +85,7 @@ The following view will handle updates to existing blog entries.
     :linenos:
     :lines: 29-
     :lineno-start: 29
-    :emphasize-lines: 4-13
+    :emphasize-lines: 4-14
 
 Only the emphasized lines need to be added or edited.
 
@@ -105,13 +105,33 @@ Here's what the view does:
 * If the form is valid, our form sets its values to the model instance.
 * Redirect to the blog page.
 
+Plase notice the line:
+
+.. literalinclude:: src/blog_create_and_update_view/views/blog.py
+    :language: python
+    :linenos:
+    :lines: 38
+    :lineno-start: 38
+
+.. note ::
+
+    **IMPORTANT SECURITY INFORMATION**
+
+    For the sake of tutorial, we showcase how to create inheritable form schemas where creation view might be have
+    different fields than update/moderation view, in this case this is `id` field.
+
+    One important thing to remember is that `populate_obj` will overwrite
+    ALL fields that are present in the `Form` object, so you need to remember to remove the read-only fields or
+    better yet implement your own population method on your model. As of today WTForms does not provide any built-in
+    field exclusion mechanisms.
+
 For convenience, here is the complete ``views/blog.py`` thusfar, with added and
 edited lines emphasized.
 
 .. literalinclude:: src/blog_create_and_update_view/views/blog.py
     :language: python
     :linenos:
-    :emphasize-lines: 6,20-26,31-40
+    :emphasize-lines: 6,20-26,31-42
 
 
 

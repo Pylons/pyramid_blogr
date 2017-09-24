@@ -35,6 +35,7 @@ def blog_update(request):
         return HTTPNotFound()
     form = BlogUpdateForm(request.POST, entry)
     if request.method == 'POST' and form.validate():
+        del form.id  # SECURITY: prevent overwriting of primary key
         form.populate_obj(entry)
         return HTTPFound(
             location=request.route_url('blog', id=entry.id,slug=entry.slug))
