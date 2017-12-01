@@ -55,8 +55,8 @@ Next we implement a view callable that will handle new entries for us.
 .. literalinclude:: src/blog_create_and_update_view/views/blog.py
     :language: python
     :linenos:
-    :lines: 17-26
-    :lineno-start: 17
+    :lines: 18-27
+    :lineno-start: 18
     :emphasize-lines: 4-10
 
 Only the emphasized lines need to be added or edited.
@@ -83,8 +83,8 @@ The following view will handle updates to existing blog entries.
 .. literalinclude:: src/blog_create_and_update_view/views/blog.py
     :language: python
     :linenos:
-    :lines: 29-
-    :lineno-start: 29
+    :lines: 30-
+    :lineno-start: 30
     :emphasize-lines: 4-14
 
 Only the emphasized lines need to be added or edited.
@@ -110,8 +110,8 @@ Plase notice the line:
 .. literalinclude:: src/blog_create_and_update_view/views/blog.py
     :language: python
     :linenos:
-    :lines: 38
-    :lineno-start: 38
+    :lines: 39
+    :lineno-start: 39
 
 .. note ::
 
@@ -131,7 +131,7 @@ edited lines emphasized.
 .. literalinclude:: src/blog_create_and_update_view/views/blog.py
     :language: python
     :linenos:
-    :emphasize-lines: 6,20-26,31-42
+    :emphasize-lines: 6,21-27,32-43
 
 
 

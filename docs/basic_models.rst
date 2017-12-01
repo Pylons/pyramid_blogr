@@ -165,15 +165,15 @@ After the import part in ``models/user.py`` add the following.
 .. literalinclude:: src/basic_models/models/user.py
     :language: python
     :linenos:
-    :lines: 11-16
-    :lineno-start: 11
+    :lines: 12-17
+    :lineno-start: 12
 
 After the import part in ``models/blog_record.py`` add the following.
 
 .. literalinclude:: src/basic_models/models/blog_record.py
     :language: python
     :linenos:
-    :lines: 11-17
+    :lines: 12-17
 
 Now it's time to update our ``models/__init__.py`` to include our models. This
 is especially handy because it ensures that SQLAlchemy mappers will pick up all
@@ -223,7 +223,7 @@ with this:
     :linenos:
     :lines: 41-45
     :lineno-start: 41
-    :emphasize-lines: 4
+    :emphasize-lines: 4-5
 
 When you initialize a fresh database, this will populate it with a single user,
 with both login and unencrypted password equal to ``admin``.

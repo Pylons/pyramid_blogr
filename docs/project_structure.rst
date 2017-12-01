@@ -6,7 +6,7 @@
 
 .. note::
 
-  At the time of writing, 1.7 was the most recent stable version of Pyramid.
+  At the time of writing, 1.9 was the most recent stable version of Pyramid.
   You can use newer versions of Pyramid, but there may be some slight
   differences in default project templates.
 
@@ -74,17 +74,18 @@ it should look like the following.
 
 
     requires = [
-        'pyramid',
+        'pyramid >= 1.9',
         'pyramid_jinja2',
         'pyramid_debugtoolbar',
         'pyramid_tm',
+        'pyramid_retry',
         'SQLAlchemy>=1.0',
         'transaction',
         'zope.sqlalchemy',
         'waitress',
         'wtforms==2.1',  # form library
         'webhelpers2==2.0', # various web building related helpers
-        'paginate==0.5.4', # pagination helpers
+        'paginate==0.5.6', # pagination helpers
         'paginate_sqlalchemy==0.2.0'
         ]
 

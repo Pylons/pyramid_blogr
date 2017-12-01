@@ -9,9 +9,7 @@
 pyramid_blogr tutorial
 ======================
 
-Pyramid_blogr was originally inspired by `Flaskr tutorial
-<http://flask.pocoo.org/docs/0.10/tutorial/introduction/>`_ and is aimed to
-introduce readers to basic concepts of the `Pyramid Web Framework
+Pyramid_blogr is aimed to introduce readers to basic concepts of the `Pyramid Web Framework
 <docs.pylonsproject.org/projects/pyramid/en/latest/>`_ and web application
 development.
 

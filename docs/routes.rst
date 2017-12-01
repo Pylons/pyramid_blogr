@@ -71,12 +71,12 @@ Adding routes to the application configuration
 Let's add our routes to the configurator immediately after the ``home`` route
 in our ``routes.py`` at the root of our project.
 
-.. literalinclude:: src/routes/__init__.py
+.. literalinclude:: src/routes/routes.py
     :language: python
     :linenos:
-    :lines: 19-22
-    :lineno-start: 19
-    :emphasize-lines: 2-4
+    :lines: 1-6
+    :lineno-start: 1
+    :emphasize-lines: 4-6
 
 Now we are ready to develop views.
 

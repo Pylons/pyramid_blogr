@@ -96,8 +96,8 @@ pass them to the configurator.  Add or edit the emphasized lines.
 .. literalinclude:: src/authorization/__init__.py
     :language: python
     :linenos:
-    :lines: 8-14
-    :lineno-start: 8
+    :lines: 9-15
+    :lineno-start: 9
     :emphasize-lines: 1-5
 
 The string "somesecret" passed into the policy will be a secret string used for

@@ -25,6 +25,7 @@ class User(Base):
 
         return blogger_pwd_context.verify(password, self.password)
 
+
     def set_password(self, password):
         password_hash = blogger_pwd_context.encrypt(password)
         self.password = password_hash

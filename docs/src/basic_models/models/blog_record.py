@@ -8,6 +8,7 @@ from sqlalchemy import (
     DateTime,    #<- time abstraction field
 )
 
+
 class BlogRecord(Base):
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)

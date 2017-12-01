@@ -4,6 +4,7 @@ from ..models.blog_record import BlogRecord
 from ..services.blog_record import BlogRecordService
 from ..forms import BlogCreateForm, BlogUpdateForm
 
+
 @view_config(route_name='blog',
              renderer='pyramid_blogr:templates/view_blog.jinja2')
 def blog_view(request):
@@ -40,3 +41,4 @@ def blog_update(request):
         return HTTPFound(
             location=request.route_url('blog', id=entry.id,slug=entry.slug))
     return {'form': form, 'action': request.matchdict.get('action')}
+

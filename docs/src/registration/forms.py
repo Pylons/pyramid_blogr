@@ -4,7 +4,6 @@ from wtforms.widgets import HiddenInput
 
 strip_filter = lambda x: x.strip() if x else None
 
-
 class BlogCreateForm(Form):
     title = StringField('Title', [validators.Length(min=1, max=255)],
                         filters=[strip_filter])

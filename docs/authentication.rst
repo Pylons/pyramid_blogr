@@ -38,8 +38,8 @@ Add the following method to our ``User`` class in ``models/user.py``.
 .. literalinclude:: src/authentication/models/user.py
     :language: python
     :linenos:
-    :lines: 16-
-    :lineno-start: 16
+    :lines: 17-
+    :lineno-start: 17
     :emphasize-lines: 2-4
 
 We also need to create the ``UserService`` class in a new file
@@ -81,8 +81,8 @@ Now we have everything ready to implement our actual view.
 .. literalinclude:: src/authentication/views/default.py
     :language: python
     :linenos:
-    :lines: 18-
-    :lineno-start: 18
+    :lines: 19-
+    :lineno-start: 19
     :emphasize-lines: 2-
 
 This is a very simple view that checks if a database row with the supplied

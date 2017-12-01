@@ -30,8 +30,8 @@ files and add a new form class at the end as indicated by the emphasized lines.
 .. literalinclude:: src/registration/forms.py
     :language: python
     :linenos:
-    :lines: 18-
-    :lineno-start: 18
+    :lines: 17-
+    :lineno-start: 17
     :emphasize-lines: 1-
 
 Our second step will be adding a new route that handles user registration in
@@ -110,7 +110,7 @@ project's requirements in ``setup.py`` at the root of our project.
 
     requires = [
         ...
-        'paginate==0.5', # pagination helpers
+        'paginate==0.5.6', # pagination helpers
         'paginate_sqlalchemy==0.2.0',
         'passlib'
     ]
@@ -183,7 +183,7 @@ lines emphasized.  Files already rendered in their entirety are omitted.
 .. literalinclude:: src/registration/forms.py
     :language: python
     :linenos:
-    :emphasize-lines: 2,18-21
+    :emphasize-lines: 2,17-20
 
 
 ``__init__.py``

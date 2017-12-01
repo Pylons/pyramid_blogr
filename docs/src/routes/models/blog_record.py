@@ -6,7 +6,8 @@ from sqlalchemy import (
     Unicode,     #<- will provide Unicode field
     UnicodeText, #<- will provide Unicode text field
     DateTime,    #<- time abstraction field
-    )
+)
+
 
 class BlogRecord(Base):
     __tablename__ = 'entries'

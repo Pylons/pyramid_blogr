@@ -1,6 +1,7 @@
 from pyramid.view import view_config
 from ..services.blog_record import BlogRecordService
 
+
 @view_config(route_name='home',
              renderer='pyramid_blogr:templates/index.jinja2')
 def index_page(request):
