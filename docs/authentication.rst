@@ -81,8 +81,8 @@ Now we have everything ready to implement our actual view.
 .. literalinclude:: src/authentication/views/default.py
     :language: python
     :linenos:
-    :lines: 19-
-    :lineno-start: 19
+    :lines: 18-
+    :lineno-start: 18
     :emphasize-lines: 2-
 
 This is a very simple view that checks if a database row with the supplied
