@@ -37,10 +37,9 @@ Add the following method to our ``User`` class in ``models/user.py``.
 
 .. literalinclude:: src/authentication/models/user.py
     :language: python
-    :linenos:
-    :lines: 17-
-    :lineno-start: 17
-    :emphasize-lines: 2-4
+    :pyobject: User.verify_password
+    :lineno-match:
+    :emphasize-lines: 1-
 
 We also need to create the ``UserService`` class in a new file
 ``services/user.py``.
