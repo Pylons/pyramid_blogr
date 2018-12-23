@@ -330,4 +330,6 @@ user.
 
     $ $VENV/bin/initialize_pyramid_blogr_db development.ini
 
+If you start the application you should be able to see index page.
+
 Next :doc:`routes`.

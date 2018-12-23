@@ -84,8 +84,8 @@ Then add the following method to the class ``BlogRecord``.
 
 .. literalinclude:: src/blog_models_and_views/models/blog_record.py
     :linenos:
-    :lines: 21-23
-    :lineno-start: 21
+    :lines: 22-24
+    :lineno-start: 22
 
 This property of entry instance will return nice slugs for us to use in URLs.
 For example, pages with the title of "Foo Bar Baz" will have URLs of
@@ -96,8 +96,8 @@ Next add another method.
 
 .. literalinclude:: src/blog_models_and_views/models/blog_record.py
     :linenos:
-    :lines: 25-
-    :lineno-start: 25
+    :lines: 26-
+    :lineno-start: 26
 
 This property will return information about when a specific entry was created
 in a human-friendly form, like "2 days ago".
@@ -182,6 +182,10 @@ HTML code outputted by the ``pager`` class.
 project. For example::
 
     {{request.route_url('blog_action',action='create')}} -> /blog/create
+
+
+If you start the application, you should see new index page showing that no blog entries found.
+It should also feature "create blog entru" link that will give a 404 response for now.
 
 
 Blog view
