@@ -22,9 +22,13 @@ scaffold, which will provide SQLAlchemy as our default ORM layer.
 
 .. code-block:: bash
 
-    $ $VENV/bin/cookiecutter gh:Pylons/pyramid-cookiecutter-alchemy --checkout 1.9-branch
+    $ $VENV/bin/cookiecutter gh:Pylons/pyramid-cookiecutter-starter --checkout 1.10-branch
 
 When asked for the project name enter `pyramid_blogr`, `repo_name` can be the same.
+
+When asked for the template system pick `jinja2` - the default option.
+
+When asked for the backend system pick `sqlalchemy`.
 
 
 We will end up with the directory ``pyramid_blogr`` which should have the
@@ -32,30 +36,43 @@ structure as explained below.
 
 .. code-block:: text
 
-    pyramid_blogr/
-    ├── __init__.py <- main file that will configure and return WSGI application
-    ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
-    │   ├── __init__.py
-    │   ├── meta.py
-    │   └── mymodel.py
-    ├── routes.py
-    ├── scripts/    <- util Python scripts
-    │   ├── __init__.py
-    │   └── initializedb.py
-    ├── static/     <- usually css, js, images
-    │   ├── pyramid-16x16.png
-    │   ├── pyramid.png
-    │   └── theme.css
-    ├── templates/  <- template files
-    │   ├── 404.jinja2
-    │   ├── layout.jinja2
-    │   └── mytemplate.jinja2
-    ├── tests.py    <- tests
-    └── views       <- views aka business logic
-    │   ├── __init__.py
-    │   ├── default.py
-    │   └── notfound.py
-
+    ├── CHANGES.txt
+    ├── .coveragerc
+    ├── development.ini <- configuration for local development
+    ├── .gitignore
+    ├── MANIFEST.in     <- manifest for python packaging tools
+    ├── production.ini  <- configuration for production deployments
+    ├── pytest.ini      <- configuration for test runner
+    ├── README.txt
+    ├── setup.py        <- python package build script
+    └── pyramid_blogr/  <- your application src dir
+        ├── __init__.py <- main file that will configure and return WSGI application
+        ├── alembic      <- model definitions aka data sources (often RDBMS or noSQL)
+        │   ├── versions
+        │   │   └── README.txt
+        │   ├── env.py
+        │   └── script.py.mako
+        ├── models      <- model definitions aka data sources (often RDBMS or noSQL)
+        │   ├── __init__.py
+        │   ├── meta.py
+        │   └── mymodel.py
+        ├── routes.py
+        ├── scripts/    <- util Python scripts
+        │   ├── __init__.py
+        │   └── initializedb.py
+        ├── static/     <- usually css, js, images
+        │   ├── pyramid-16x16.png
+        │   ├── pyramid.png
+        │   └── theme.css
+        ├── templates/  <- template files
+        │   ├── 404.jinja2
+        │   ├── layout.jinja2
+        │   └── mytemplate.jinja2
+        ├── tests.py    <- tests
+        └── views       <- views aka business logic
+            ├── __init__.py
+            ├── default.py
+            └── notfound.py
 
 .. _adding_dependencies:
 
@@ -74,20 +91,22 @@ it should look like the following.
 
 
     requires = [
-        'pyramid >= 1.9',
+        'plaster_pastedeploy',
+        'pyramid',
         'pyramid_jinja2',
         'pyramid_debugtoolbar',
-        'pyramid_tm',
+        'waitress',
+        'alembic',
         'pyramid_retry',
-        'SQLAlchemy>=1.0',
+        'pyramid_tm',
+        'SQLAlchemy',
         'transaction',
         'zope.sqlalchemy',
-        'waitress',
-        'wtforms==2.1',  # form library
-        'webhelpers2==2.0', # various web building related helpers
+        'wtforms==2.2.1',  # form library
+        'webhelpers2==2.0',  # various web building related helpers
         'paginate==0.5.6', # pagination helpers
-        'paginate_sqlalchemy==0.2.0'
-        ]
+        'paginate_sqlalchemy==0.3.0'
+    ]
 
 Now we can setup our application for development and add it to our environment
 path. Change directory to the root of our project where ``setup.py`` lives, and

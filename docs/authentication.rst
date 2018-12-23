@@ -17,7 +17,7 @@ shown by the emphasized lines.
     :linenos:
     :lines: 1-22
     :lineno-start: 1
-    :emphasize-lines: 5-20
+    :emphasize-lines: 5-21
 
 Now the template first checks if we are logged in.  If we are logged in, it
 greets the user and presents a sign-out link.  Otherwise we are presented with
@@ -52,7 +52,7 @@ We also need to create the ``UserService`` class in a new file
 
     In a real application, ``verify_password`` should use some strong one-way
     hashing algorithm like ``bcrypt`` or ``pbkdf2``.  Use a package like
-    ``passlib`` or ``cryptacular`` which use strong hashing algorithms for
+    ``passlib`` which uses strong hashing algorithms for
     hashing of passwords.
 
 

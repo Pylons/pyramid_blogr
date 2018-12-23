@@ -13,7 +13,7 @@ Pyramid_blogr is aimed to introduce readers to basic concepts of the `Pyramid We
 <docs.pylonsproject.org/projects/pyramid/en/latest/>`_ and web application
 development.
 
-This tutorial is based on project template for **1.9-branch** of the framework.
+This tutorial is based on project template for **1.10-branch** of the framework.
 
 .. note::
     This tutorial is meant for **Python 2.7** and **Python 3.3+** versions of

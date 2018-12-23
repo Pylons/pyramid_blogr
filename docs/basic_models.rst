@@ -81,7 +81,7 @@ To explain we need to start reading it from the ``includeme()`` part.
 .. literalinclude:: src/basic_models/models/__init__.py
     :language: python
     :linenos:
-    :lines: 52-73
+    :lines: 52-78
     :lineno-start: 52
     :emphasize-lines: 2
 
@@ -173,7 +173,8 @@ After the import part in ``models/blog_record.py`` add the following.
 .. literalinclude:: src/basic_models/models/blog_record.py
     :language: python
     :linenos:
-    :lines: 12-17
+    :lines: 12-18
+    :lineno-start: 12
 
 Now it's time to update our ``models/__init__.py`` to include our models. This
 is especially handy because it ensures that SQLAlchemy mappers will pick up all
@@ -195,35 +196,29 @@ Update database initialization script
 It's time to update our database initialization script to mirror the changes in
 our ``models`` package.
 
-Open ``scripts/initializedb.py``.  This is the file that actually gets executed
+Open ``scripts/initialize_db.py``.  This is the file that actually gets executed
 when we run ``initialize_pyramid_blogr_db``.
 
-We will remove the ``MyModel`` and import the ``User`` model.
-
-.. literalinclude:: src/basic_models/scripts/initializedb.py
-    :language: python
-    :linenos:
-    :lines: 18
-    :lineno-start: 18
-
-Since the ``MyModel`` model is now gone, we want to replace the following bits:
+We want to replace the following bits:
 
 .. code-block:: python
 
-    with transaction.manager:
-        dbsession = get_tm_session(session_factory, transaction.manager)
+    def setup_models(dbsession):
+        """
+        Add or update models / fixtures in the database.
 
-        model = MyModel(name='one', value=1)
+        """
+        model = models.mymodel.MyModel(name='one', value=1)
         dbsession.add(model)
 
 with this:
 
-.. literalinclude:: src/basic_models/scripts/initializedb.py
+.. literalinclude:: src/basic_models/scripts/initialize_db.py
     :language: python
     :linenos:
-    :lines: 41-45
-    :lineno-start: 41
-    :emphasize-lines: 4-5
+    :lines: 10-17
+    :lineno-start: 10
+    :emphasize-lines: 7
 
 When you initialize a fresh database, this will populate it with a single user,
 with both login and unencrypted password equal to ``admin``.
@@ -232,33 +227,19 @@ with both login and unencrypted password equal to ``admin``.
 
     This is just a tutorial example and **production code should utilize
     passwords hashed with a strong one-way encryption function**.  You can use
-    a package like `passlib <http://pythonhosted.org/passlib/>`_ or
-    `cryptacular <https://bitbucket.org/dholth/cryptacular/>`_ for this
-    purpose.
+    a package like `passlib <http://pythonhosted.org/passlib/>`_ for this
+    purpose. This is covered later in the tutorial.
 
 The last step to get the application running is to change ``views/default.py``
 ``MyModel`` class into out User model.
 
-.. code-block:: python
-
-    from ..models import MyModel
-
-into changes to
 
 .. literalinclude:: src/basic_models/views/default.py
     :language: python
     :linenos:
-    :lines: 6
-    :lineno-start: 6
-
-and the query in ``my_view`` changes to:
-
-.. literalinclude:: src/basic_models/views/default.py
-    :language: python
-    :linenos:
-    :lines: 10-16
-    :lineno-start: 12
-    :emphasize-lines: 3-4
+    :lines: 9-16
+    :lineno-start: 9
+    :emphasize-lines: 4-5
 
 Our application should start again if we try running the server.
 
@@ -287,9 +268,9 @@ code of the files we modifed below.
 .. literalinclude:: src/basic_models/models/blog_record.py
     :linenos:
 
-``scripts/initializedb.py``
+``scripts/initialize_db.py``
 
-.. literalinclude:: src/basic_models/scripts/initializedb.py
+.. literalinclude:: src/basic_models/scripts/initialize_db.py
     :linenos:
 
 ``__init__.py``
@@ -303,7 +284,47 @@ code of the files we modifed below.
     :linenos:
 
 If our application starts correctly, you should run the
-``initialize_pyramid_blogr_db`` command to update the database.
+``initialize_pyramid_blogr_db`` command to generate database migrations.
+
+.. code-block:: bash
+
+    # run this in the root of the project directory
+    $ $VENV/bin/alembic -c development.ini revision --autogenerate -m "init"
+
+This will generate database migration file out of your models
+in `pyramid_blogr/alembic/versions/` directory.
+
+Example output:
+
+.. code-block:: text
+
+    2018-12-23 15:49:16,408 INFO  [alembic.runtime.migration:117][MainThread] Context impl SQLiteImpl.
+    2018-12-23 15:49:16,408 INFO  [alembic.runtime.migration:122][MainThread] Will assume non-transactional DDL.
+    2018-12-23 15:49:16,423 INFO  [alembic.autogenerate.compare:115][MainThread] Detected added table 'entries'
+    2018-12-23 15:49:16,423 INFO  [alembic.autogenerate.compare:115][MainThread] Detected added table 'users'
+      Generating /home/ergo/workspace/pyramid_blogr/pyramid_blogr/alembic/versions/20181223_5899f27f265f.py ... done
+
+Generated migration file might look like this:
+
+.. literalinclude:: src/basic_models/alembic/versions/20181223_5899f27f265f.py
+    :linenos:
+
+Now you can run the migration against your database.
+
+.. code-block:: bash
+
+    $ $VENV/bin/alembic -c development.ini upgrade head
+
+Example output:
+
+.. code-block:: text
+
+    2018-12-23 15:51:49,238 INFO  [alembic.runtime.migration:117][MainThread] Context impl SQLiteImpl.
+    2018-12-23 15:51:49,238 INFO  [alembic.runtime.migration:122][MainThread] Will assume non-transactional DDL.
+    2018-12-23 15:51:49,239 INFO  [alembic.runtime.migration:327][MainThread] Running upgrade  -> 4325dedd2673, init
+
+Since your database has all the necessary user and blog tables you can populate it with admin
+user.
 
 .. code-block:: bash
 

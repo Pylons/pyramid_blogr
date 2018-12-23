@@ -10,6 +10,7 @@ from sqlalchemy import (
 from webhelpers2.text import urlify #<- will generate slugs
 from webhelpers2.date import distance_of_time_in_words #<- human friendly dates
 
+
 class BlogRecord(Base):
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)

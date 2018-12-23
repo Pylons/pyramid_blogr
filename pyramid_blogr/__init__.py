@@ -8,11 +8,11 @@ def main(global_config, **settings):
     """
     authentication_policy = AuthTktAuthenticationPolicy('somesecret')
     authorization_policy = ACLAuthorizationPolicy()
-    config = Configurator(settings=settings,
-                          authentication_policy=authentication_policy,
-                          authorization_policy=authorization_policy)
-    config.include('pyramid_jinja2')
-    config.include('.models')
-    config.include('.routes')
-    config.scan()
+    with Configurator(settings=settings,
+                      authentication_policy=authentication_policy,
+                      authorization_policy=authorization_policy) as config:
+        config.include('.models')
+        config.include('pyramid_jinja2')
+        config.include('.routes')
+        config.scan()
     return config.make_wsgi_app()

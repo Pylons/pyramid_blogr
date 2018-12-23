@@ -41,4 +41,3 @@ def blog_update(request):
         return HTTPFound(
             location=request.route_url('blog', id=entry.id,slug=entry.slug))
     return {'form': form, 'action': request.matchdict.get('action')}
-

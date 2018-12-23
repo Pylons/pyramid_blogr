@@ -86,7 +86,7 @@ the end of the file.
     :language: python
     :linenos:
     :lines: 41-
-    :lineno-start: 41
+    :lineno-start: 40
     :emphasize-lines: 1-
 
 Next let's create a new registration template called
